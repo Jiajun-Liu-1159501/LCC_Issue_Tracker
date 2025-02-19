@@ -105,9 +105,11 @@ def create_app() -> Flask:
     return app
 
 from loginapp.auth_handler import auth
+from loginapp.user_handler import user
 
 def register_router(app: Flask) -> None:
     app.register_blueprint(auth, url_prefix = '/auth')
+    app.register_blueprint(user, url_prefix = '/user')
     
 
 # Include all modules that define our Flask route-handling functions.

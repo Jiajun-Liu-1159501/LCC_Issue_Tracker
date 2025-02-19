@@ -1,6 +1,8 @@
 
 from dataclasses import asdict
+from flask import session
 from flask.sessions import SessionMixin
+from loginapp.constant.user_role import Role
 from loginapp.model.data_model import User
 from loginapp.utils.concurrent_dict import ConcurrentDict
 import hashlib, json, datetime
@@ -24,6 +26,10 @@ class SessionHolder:
         else:
             token: str = SessionHolder.generate_token(user)
             SessionHolder.session_dict.pop(token, None)
+
+    @staticmethod
+    def current_login() -> User:
+        return session.get('user')
 
     @staticmethod
     def generate_token(user: User) -> str:

@@ -1,6 +1,5 @@
-from abc import ABC
 from datetime import datetime
-from typing import TypeVar, Generic, Dict, Any
+from typing import TypeVar, List, Dict, Any
 from dataclasses import dataclass
 
 from loginapp.constant.issue_status import IssusStatus
@@ -39,6 +38,10 @@ class User:
             dict.get('role'),
             dict.get('status')
         )
+    
+    @staticmethod
+    def of_all(data_list: List[Dict[str, Any]]) -> List[UE]:
+        return list(map(lambda x: User.of(x)), data_list)
     
     def get_role_enum(self) -> Role:
         return Role.of(self.role)
