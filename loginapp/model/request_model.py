@@ -68,3 +68,26 @@ class LoginRequest:
     def verify(self) -> None:
         if not self.user_name: raise ArgumentError("not a valid user name input")
         if not self.password: raise ArgumentError("not a valid password input")
+
+UUR = TypeVar('UserUpdateRequest')
+
+@dataclass
+class UserUpdateRequest:
+
+    user_id: int
+    status: UserStatus
+    role: Role
+
+    @staticmethod
+    def build(request: Request) -> LRV:
+        model: UserUpdateRequest =  UserUpdateRequest(
+            int(request.form.get('user_id')),
+            UserStatus.of(request.form.get('status')),
+            Role.of(request.form.get('role'))
+        )
+        model.verify()
+        return model
+    
+    def verify(self) -> None:
+        if not self.role: raise ArgumentError("invalid user role input")
+        if not self.status: raise ArgumentError("invalid user status input")

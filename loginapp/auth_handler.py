@@ -19,7 +19,8 @@ def register_func() -> str:
 @auth.post('/login')
 def login_func() -> str:
     req: LoginRequest = LoginRequest.build(request)
-    user_service.user_login(req)
+    user: User = user_service.user_login(req)
+    SessionHolder.session_hold(session, user)
     return "success"
 
 @auth.post("/logout")

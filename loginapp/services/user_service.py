@@ -1,18 +1,16 @@
 
-from typing import Any, List
-from flask import session
+from typing import Any, Callable, List
 from loginapp import get_connection
 from loginapp.constant.user_status import UserStatus
 from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, NotFoundError
 from loginapp.model.data_model import User
 from mysql.connector import cursor
 
-from loginapp.model.request_model import LoginRequest, RegisterRequest
-from loginapp.session_holder import SessionHolder
+from loginapp.model.request_model import LoginRequest, RegisterRequest, UserUpdateRequest
 
 class UserService:
 
-    def get_user_by_id(self, user_id: id) -> User:
+    def get_user_by_id(self, user_id: int) -> User:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         cur.execute("SELECT * FROM users WHERE user_id = %s", [user_id])
         return User.of(cur.fetchone())
@@ -24,7 +22,7 @@ class UserService:
             raise ArgumentError("this user name is existing, use another instead")
         cur.execute("INSERT INTO users (user_name, password_hash, email, first_name, last_name, location, profile_image, role, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", [req.user_name, req.password, req.email, req.first_name, req.last_name, req.location, req.profile_image, req.role.value, req.status.value])
         
-    def user_login(self, req: LoginRequest) -> str:
+    def user_login(self, req: LoginRequest) -> User:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         cur.execute("SELECT * FROM users WHERE user_name = %s AND password_hash = %s;", [req.user_name, req.password])
         user: User = User.of(cur.fetchone())
@@ -32,7 +30,7 @@ class UserService:
             raise NotFoundError("user name or password is invalid")
         if UserStatus.INACTIVE is user.get_status_enum():
             raise AccessDeclinedError("login failed! current user is inactive")
-        SessionHolder.session_hold(session, user)
+        return user
 
     def list_users(self, user_name: str, first_name: str, last_name: str) -> List[User]:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
@@ -53,3 +51,21 @@ class UserService:
             query_statement += "AND ".join(where_statement)
         cur.execute(query_statement, query_args)
         return User.of_all(cur.fetchall())
+    
+    def update_user(self, req: UserUpdateRequest, on_update: Callable[[User], None]) -> None:
+        user: User = self.get_user_by_id(req.user_id)
+        if (user.get_role_enum() is req.role) and (user.get_status_enum() is req.status):
+            return
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        update_statement: str = "UPDATE TABLE user SET "
+        set_statement: List[str] = []
+        update_args: List[str] = []
+        if user.get_role_enum() is not req.role:
+            set_statement.append("role = %s ")
+            update_args.append(req.role.value)
+        if user.get_status_enum() is not req.status:
+            set_statement.append("status = %s ")
+            update_args.append(req.status.value)
+        update_statement += ", ".join(set_statement)
+        cur.execute(update_statement, update_args)
+        on_update(user)

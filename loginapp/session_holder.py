@@ -1,5 +1,6 @@
 
 from dataclasses import asdict
+import re
 from flask import session
 from flask.sessions import SessionMixin
 from loginapp.constant.user_role import Role
@@ -30,6 +31,10 @@ class SessionHolder:
     @staticmethod
     def current_login() -> User:
         return session.get('user')
+    
+    @staticmethod
+    def session_exists(token: str) -> bool:
+        return session.get('token') != None
 
     @staticmethod
     def generate_token(user: User) -> str:

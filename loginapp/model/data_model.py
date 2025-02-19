@@ -41,7 +41,7 @@ class User:
     
     @staticmethod
     def of_all(data_list: List[Dict[str, Any]]) -> List[UE]:
-        return list(map(lambda x: User.of(x)), data_list)
+        return list(map(lambda x: User.of(x), data_list))
     
     def get_role_enum(self) -> Role:
         return Role.of(self.role)
