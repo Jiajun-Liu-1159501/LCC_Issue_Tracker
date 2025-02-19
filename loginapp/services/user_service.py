@@ -1,12 +1,12 @@
 
 from typing import Any, Callable, List
-from loginapp import get_connection
+from loginapp import T, get_connection
 from loginapp.constant.user_status import UserStatus
 from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, NotFoundError
 from loginapp.model.data_model import User
 from mysql.connector import cursor
 
-from loginapp.model.request_model import LoginRequest, RegisterRequest, UserUpdateRequest
+from loginapp.model.request_model import LoginRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
 
 class UserService:
 
@@ -52,12 +52,37 @@ class UserService:
         cur.execute(query_statement, query_args)
         return User.of_all(cur.fetchall())
     
-    def update_user(self, req: UserUpdateRequest, on_update: Callable[[User], None]) -> None:
+    def edit_user(self, req: UserEditRequest, on_success: Callable[[User], T]) -> None:
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        cur.execute("SELECT * FROM users WHERE user_id = %s", [req.user_id])
+        user: User = User.of(cur.fetchone())
+        if user.email == req.email and user.first_name == req.first_name and user.last_name == req.last_name and user.location == req.location:
+            return on_success(user)
+        update_statement: str = "UPDATE users SET "
+        set_statement: List[str] = []
+        update_args: List[str] = []
+        if user.email != req.email:
+            set_statement.append("email = %s ")
+            update_args.append(req.email)
+        if user.first_name != req.first_name:
+            set_statement.append("first_name = %s ")
+            update_args.append(req.first_name)
+        if user.last_name != req.last_name:
+            set_statement.append("last_name = %s ")
+            update_args.append(req.last_name)
+        if user.location != req.location:
+            set_statement.append("location = %s ")
+            update_args.append(req.location)
+        update_statement += ", ".join(set_statement)
+        cur.execute(update_statement, update_args)
+        return on_success(user)
+
+    def update_user(self, req: UserUpdateRequest, on_update: Callable[[User], T]) -> T:
         user: User = self.get_user_by_id(req.user_id)
         if (user.get_role_enum() is req.role) and (user.get_status_enum() is req.status):
             return
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        update_statement: str = "UPDATE TABLE user SET "
+        update_statement: str = "UPDATE users SET "
         set_statement: List[str] = []
         update_args: List[str] = []
         if user.get_role_enum() is not req.role:
@@ -68,4 +93,4 @@ class UserService:
             update_args.append(req.status.value)
         update_statement += ", ".join(set_statement)
         cur.execute(update_statement, update_args)
-        on_update(user)
+        return on_update(user)

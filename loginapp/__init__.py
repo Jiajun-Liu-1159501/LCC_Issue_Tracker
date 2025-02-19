@@ -1,11 +1,13 @@
 # This script runs automatically when our `loginapp` module is first loaded,
 # and handles all the setup for our Flask app.
 from flask import Flask, g
-from typing import Dict, Any
+from typing import Dict, Any, TypeVar
 from mysql.connector import pooling, cursor
 # Set up database connection.
 from loginapp import connect
 from loginapp.error_handler import init_error_handlers
+
+T = TypeVar("T")
 
 def _init_connection_pool() -> pooling.MySQLConnectionPool:
     """

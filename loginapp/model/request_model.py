@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import email
 import re
 from typing import TypeVar
 from flask import Request
@@ -40,8 +41,7 @@ class RegisterRequest:
     
     def verify(self) -> None:
         if not self.user_name: raise ArgumentError("not a valid user name input")
-        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): 
-            raise ArgumentError("not a valid password input")
+        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("not a valid password input")
         if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("not a valid email input")
         if not self.first_name: raise ArgumentError("not a valid first name input")
         if not self.last_name: raise ArgumentError("not a valid last name input")
@@ -68,6 +68,36 @@ class LoginRequest:
     def verify(self) -> None:
         if not self.user_name: raise ArgumentError("not a valid user name input")
         if not self.password: raise ArgumentError("not a valid password input")
+
+
+UER = TypeVar('UserEditRequest')
+
+@dataclass
+class UserEditRequest:
+
+    user_id: int
+    email: str
+    first_name: str
+    last_name: str
+    location: str
+
+    def build(request: Request) -> UER:
+        model: UserEditRequest = UserEditRequest(
+            int(request.form.get('user_id')),
+            request.form.get('email'),
+            request.form.get('first_name'),
+            request.form.get('last_name'),
+            request.form.get('location')
+        )
+        model.verify()
+        return model
+
+    def verify(self) -> None:
+        if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("not a valid email input")
+        if not self.first_name: raise ArgumentError("not a valid first name input")
+        if not self.last_name: raise ArgumentError("not a valid last name input")
+        if not self.location: raise ArgumentError("not a valid location input")
+
 
 UUR = TypeVar('UserUpdateRequest')
 

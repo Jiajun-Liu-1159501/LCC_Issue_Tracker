@@ -11,19 +11,19 @@ from loginapp.model.data_model import User
 auth: Blueprint = Blueprint('auth', __name__)
 
 @auth.post('/register')
-def register_func() -> str:
+def register_endpoint() -> str:
     req: RegisterRequest = RegisterRequest.build(request)
     user_service.new_user_register(req)
     return "success"
 
 @auth.post('/login')
-def login_func() -> str:
+def login_endpoint() -> str:
     req: LoginRequest = LoginRequest.build(request)
     user: User = user_service.user_login(req)
     SessionHolder.session_hold(session, user)
     return "success"
 
 @auth.post("/logout")
-def logout_func() -> str:
+def logout_endpoint() -> str:
     SessionHolder.session_evict(session, None)
     return "success"
