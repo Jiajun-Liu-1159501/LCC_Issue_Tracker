@@ -1,10 +1,11 @@
 # This script runs automatically when our `loginapp` module is first loaded,
 # and handles all the setup for our Flask app.
 from flask import Flask, g
-from typing import Dict
+from typing import Dict, Any
 from mysql.connector import pooling, cursor
 # Set up database connection.
 from loginapp import connect
+from loginapp.error_handler import init_error_handlers
 
 def _init_connection_pool() -> pooling.MySQLConnectionPool:
     """
@@ -94,12 +95,20 @@ def _close_db(exception = None) -> None:
 # For the purpose of your assignments, you DON'T need to use any of those more
 # advanced and secure methods: it's fine to store your secret key in your
 # source code like we do here.
-def _create_app() -> Flask:
+
+def create_app() -> Flask:
     app: Flask = Flask(__name__)
     app.secret_key = '2025COMP639S1'
     app.teardown_appcontext(_close_db)
+    register_router(app)
+    init_error_handlers(app)
+    return app
 
-app: Flask = _create_app()
+from loginapp.auth_handler import auth
+
+def register_router(app: Flask) -> None:
+    app.register_blueprint(auth, url_prefix = '/auth')
+    
 
 # Include all modules that define our Flask route-handling functions.
 from loginapp import user

@@ -1,10 +1,13 @@
-from loginapp import app
+from flask import Flask
 from loginapp.exception.custom_error import *
 
-@app.errorhandler(ArgumentError)
-def argument_error_handler(err: ArgumentError) -> str:
-    pass
 
-@app.errorhandler(NotFoundError)
-def not_found_error_handler(err: NotFoundError) -> str:
-    pass
+def init_error_handlers(app: Flask) -> None:
+
+    @app.errorhandler(ArgumentError)
+    def argument_error_handler(error: ArgumentError) -> str:
+        return error.message
+
+    @app.errorhandler(NotFoundError)
+    def not_found_error_handler(error: NotFoundError) -> str:
+        return 'not found'

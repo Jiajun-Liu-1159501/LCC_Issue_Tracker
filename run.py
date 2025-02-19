@@ -43,10 +43,13 @@ them bypass run.py entirely, don't put any of your application code in here.
 Think of run.py as a "shortcut" or "launcher" used to run your Flask app,
 rather than a core part of the app itself.
 """
-from loginapp import app
+from flask import Flask
+from loginapp import create_app
 
 # If run.py was actually executed (run), not just imported into another script,
 # then start our Flask app on a local development server. To learn more about
 # how we check for this, refer to https://realpython.com/if-name-main-python/.
 if __name__ == "__main__":
-    app.run(debug=True)
+    app: Flask = create_app()
+    print(app.url_map)
+    app.run(debug = True)

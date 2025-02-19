@@ -16,5 +16,5 @@ class IssusStatus(Enum):
         return obj
 
     @classmethod
-    def of(cls, name: str) -> R:
+    def of(cls, name: str) -> IS:
         return cls.__members__.get(name.upper(), None)

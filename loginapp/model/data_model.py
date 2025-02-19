@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import TypeVar, Generic, Dict, Any
 from dataclasses import dataclass
 
+from loginapp.constant.issue_status import IssusStatus
 from loginapp.constant.user_role import Role
 from loginapp.constant.user_status import UserStatus
 
@@ -70,6 +71,9 @@ class Issue:
             dict.get('created_at'),
             dict.get('status')
         )
+    
+    def get_status_enum(self) -> IssusStatus:
+        return IssusStatus.of(self.status)
     
 
 CE = TypeVar('Comment')
