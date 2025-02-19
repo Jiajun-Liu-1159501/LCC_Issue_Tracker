@@ -1,13 +1,23 @@
+from enum import Enum
+from typing import List, TypeVar
 
-class Role:
+R = TypeVar('Role')
 
-    def name() -> str:
-        pass
+class Role(Enum):
 
-    def get_home_page() -> str: 
-        pass
+    ADMIN = ("admin", "111")
+    HELPER = ("helper", "222")
+    VISIOTR = ("helper", "333")
 
+    def __new__(cls, value: str, home_page: str):
+        obj = object.__new__(cls)
+        obj._value_ = value  
+        obj._home_page = home_page
+        return obj
 
-@staticmethod
-def role_of() -> Role:
-    pass
+    @classmethod
+    def of(cls, name: str) -> R:
+        return cls.__members__.get(name.upper(), None)
+    
+    def get_home_page(self) -> str: 
+        return self._home_page

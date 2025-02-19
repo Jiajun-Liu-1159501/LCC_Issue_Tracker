@@ -3,6 +3,9 @@ from datetime import datetime
 from typing import TypeVar, Generic, Dict, Any
 from dataclasses import dataclass
 
+from loginapp.constant.user_role import Role
+from loginapp.constant.user_status import UserStatus
+
 UE = TypeVar('User')
 
 @dataclass
@@ -21,6 +24,8 @@ class User:
 
     @staticmethod
     def of(dict: Dict[str, Any]) -> UE:
+        if dict == None or len(dict) == 0:
+            return None
         return User(
             dict.get('user_id'),
             dict.get('user_name'),
@@ -33,6 +38,13 @@ class User:
             dict.get('role'),
             dict.get('status')
         )
+    
+    def get_role_enum(self) -> Role:
+        return Role.of(self.role)
+    
+    def get_status_enum(self) -> UserStatus:
+        return UserStatus.of(self.status)
+    
 
 IE = TypeVar('Issue')
 
@@ -48,6 +60,8 @@ class Issue:
 
     @staticmethod
     def of(dict: Dict[str, Any]) -> IE:
+        if dict == None or len(dict) == 0:
+            return None
         return User(
             dict.get('issue_id'),
             dict.get('user_id'),
@@ -71,6 +85,8 @@ class Comment:
 
     @staticmethod
     def of(dict: Dict[str, Any]) -> CE:
+        if dict == None or len(dict) == 0:
+            return None
         return User(
             dict.get('comment_id'),
             dict.get('user_id'),

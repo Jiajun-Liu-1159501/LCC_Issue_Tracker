@@ -1,14 +1,3 @@
-CREATE TABLE `users` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  `password_hash` char(60) BINARY NOT NULL COMMENT 'Bcrypt Password Hash and Salt (60 bytes)',
-  `email` varchar(320) NOT NULL COMMENT 'Maximum email address length according to RFC5321 section 4.5.3.1 is 320 characters (64 for local-part, 1 for at sign, 255 for domain)',
-  `role` enum('customer','staff','admin') NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`)
-)
-
-
 /*
  Target Server Type    : MySQL
  Target Server Version : 80401 (8.4.1)
@@ -25,11 +14,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments` (
-  `issue_id` int NOT NULL AUTO_INCREMENT,
+  `comment_id` int NOT NULL AUTO_INCREMENT,
+  `issue_id` int NOT NULL,
   `user_id` int NOT NULL,
   `content` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`issue_id`) USING BTREE
+  PRIMARY KEY (`comment_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
