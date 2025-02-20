@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, url_for
 from loginapp.model.user_req_model import LoginRequest, RegisterRequest
 from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder

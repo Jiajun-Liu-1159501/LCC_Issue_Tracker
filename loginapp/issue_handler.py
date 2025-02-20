@@ -9,7 +9,7 @@ from loginapp.session_holder import SessionHolder
 issue: Blueprint = Blueprint('issue', __name__)
 
 @issue.post("/create")
-@token_check
+@token_check(options = None)
 def create_issue_endpoint() -> str:
     req: IssueCreateRequest = IssueCreateRequest.build(request)
     issue_service.create_issue(req, SessionHolder.current_login().user_id)
