@@ -6,16 +6,73 @@ Sign Up
 
 {% block usercontent %}
 <a href="{{ url_for('page.register_page') }}">
-  <button type="button" class="btn btn-outline-light">Sign Up</button>
+	<button type="button" class="btn btn-outline-light">Sign Up</button>
 </a>
 <a href="{{ url_for('page.login_page') }}">
-  <button type="button" class="btn btn-outline-light">Login</button>
+	<button type="button" class="btn btn-outline-light">Login</button>
 </a>
 {% endblock %}
 
 {% block content %}
 
-sign up
+<div class="container my-auto">
+	<div class="row justify-content-center">
+	  	<div class="col-md-8 col-lg-6"> <!-- 控制整体宽度 -->
+			<div class="card mt-4 shadow-sm p-4">
+			  	<h5 class="card-title text-center text-success mb-4">Welcome To Campground!</h5>
+			  	<form id="loginForm" class="needs-validation" onsubmit="handleSubmit(event)">
+				  	<div class="row">
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="loginUserName" class="form-label text-success">Username</label>
+						  	<input type="text" class="form-control" id="loginUserName" name="user_name">
+						  	<div id="userNameTip" class="invalid-feedback"></div>
+					  	</div>
+						<div class="col-12 col-md-6 mb-3">
+							<label for="email" class="form-label text-success">Email</label>
+							<input type="email" class="form-control" id="email" name="email">
+							<div id="emailTip" class="invalid-feedback"></div>
+						</div>
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="loginPassword" class="form-label text-success">Password</label>
+						  	<input type="password" class="form-control" id="loginPassword" name="password">
+						  	<div id="passwordTip" class="invalid-feedback"></div>
+					  	</div>
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="confirmPassword" class="form-label text-success">Confirm Password</label>
+						  	<input type="password" class="form-control" id="confirmPassword" name="confirm_password">
+						  	<div id="confirmPasswordTip" class="invalid-feedback"></div>
+					  	</div>
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="firstName" class="form-label text-success">First Name</label>
+						  	<input type="text" class="form-control" id="firstName" name="first_name">
+						  	<div id="firstNameTip" class="invalid-feedback"></div>
+					  	</div>
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="lastName" class="form-label text-success">Last Name</label>
+						  	<input type="text" class="form-control" id="lastName" name="last_name">
+						  	<div id="lastNameTip" class="invalid-feedback"></div>
+					  	</div>
+					  	<div class="col-12 col-md-6 mb-3">
+						  	<label for="location" class="form-label text-success">Location</label>
+						  	<input type="text" class="form-control" id="location" name="location">
+						  	<div id="locationTip" class="invalid-feedback"></div>
+					  	</div>
+				  	</div>
+					<div class="col-12">
+						<div class="form-check">
+						  	<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+						  	<label class="form-check-label" for="invalidCheck">I agree to <a href="">terms and conditions</a></label>
+						  	<div class="invalid-feedback">You must agree before submitting.</div>
+						</div>
+					</div>
+					<div class="d-flex justify-content-between align-items-center mt-4">
+						<button type="submit" class="btn btn-success w-100">Sign Up</button>
+				  	</div>
+			  	</form>
+			</div>
+	  	</div>
+	</div>
+</div>
 
 {% endblock %}
 

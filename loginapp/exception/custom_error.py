@@ -6,7 +6,7 @@ class ArgumentError(Exception):
 
     def __init__(self, args: str, message: str):
         super().__init__(message)
-        self._args_dict: Dict[str, str] = []
+        self._args_dict: Dict[str, str] = {}
         self._args_dict.setdefault(args, message)
 
     def get_error_args(self) -> Dict[str, str]:

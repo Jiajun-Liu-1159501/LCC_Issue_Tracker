@@ -17,5 +17,8 @@ def init_error_handlers(app: Flask) -> None:
         }), 400
     
     @app.errorhandler(Exception)
-    def unknown_error_handler(error: Exception) -> str:
-        return error
+    def unknown_error_handler(error: Exception) -> Response:
+        print(error)
+        return jsonify({
+            "err": "service unavilable"
+        }), 500

@@ -20,20 +20,20 @@ Login
 	  	<div class="col-md-6 col-lg-4">
 		  	<div class="card mt-4 shadow-sm p-4">
 			  	<h5 class="card-title text-center text-success mb-4">Welcome Back!</h5>
-			  	<form id = "loginForm" onsubmit="handleSubmit(event)">
+			  	<form id = "loginForm" class="needs-validation" onsubmit="handleSubmit(event)">
 				  	<div class="mb-3">
 					  	<label for="loginUserName" class="form-label text-success">Username</label>
-					  	<input type="text" class="form-control" id="loginUserName" name="user_name" required>
+					  	<input type="text" class="form-control" id="loginUserName" name="user_name">
 						<div id="userNameTip" class="invalid-feedback"></div>
 				  	</div>
 				  	<div class="mb-3">
 					  	<label for="loginPassword" class="form-label text-success">Password</label>
-					  	<input type="password" class="form-control" id="loginPassword" name="password" required>
+					  	<input type="password" class="form-control" id="loginPassword" name="password">
 						<div id="passwordTip" class="invalid-feedback"></div>
 				  	</div>
-				  	<div class="d-flex justify-content-between align-items-center">
-					  	<button type="submit" class="btn btn-success w-100">Login</button>
-				  	</div>
+					  <div class="d-flex justify-content-between align-items-center mt-5">
+						<button type="submit" class="btn btn-success w-100">Login</button>
+					</div>
 			  	</form>
 		  	</div>
 	  	</div>
@@ -41,6 +41,11 @@ Login
 </div>
 
 <script>
+
+	document.addEventListener("DOMContentLoaded", () => {
+		clearErrorOnInput('#loginUserName');
+		clearErrorOnInput('#loginPassword');
+	});
 
 	function handleSubmit(event) {
 		event.preventDefault();
