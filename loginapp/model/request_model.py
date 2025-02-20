@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import email
 import re
 from typing import TypeVar
 from flask import Request
@@ -9,10 +8,10 @@ from loginapp.constant.user_status import UserStatus
 from loginapp.exception.custom_error import ArgumentError
 
 
-RRV = TypeVar('RegisterRequest')
-
 @dataclass
 class RegisterRequest:
+
+    RRV = TypeVar('RegisterRequest')
 
     user_name: str
     password: str
@@ -48,10 +47,10 @@ class RegisterRequest:
         if not self.location: raise ArgumentError("not a valid location input")
 
 
-LRV = TypeVar('LoginRequest')
-
 @dataclass
 class LoginRequest:
+
+    LRV = TypeVar('LoginRequest')
 
     user_name: str
     password: str
@@ -70,10 +69,10 @@ class LoginRequest:
         if not self.password: raise ArgumentError("not a valid password input")
 
 
-UER = TypeVar('UserEditRequest')
-
 @dataclass
 class UserEditRequest:
+
+    UER = TypeVar('UserEditRequest')
 
     user_id: int
     email: str
@@ -99,10 +98,10 @@ class UserEditRequest:
         if not self.location: raise ArgumentError("not a valid location input")
 
 
-UUR = TypeVar('UserUpdateRequest')
-
 @dataclass
 class UserUpdateRequest:
+
+    UUR = TypeVar('UserUpdateRequest')
 
     user_id: int
     status: UserStatus
@@ -121,3 +120,45 @@ class UserUpdateRequest:
     def verify(self) -> None:
         if not self.role: raise ArgumentError("invalid user role input")
         if not self.status: raise ArgumentError("invalid user status input")
+
+
+@dataclass
+class PasswordResetRequest:
+
+    PRR = TypeVar('PasswordResetRequest')
+    
+    user_id: int
+    new_password: str
+
+    @staticmethod
+    def build(request: Request) -> PRR:
+        model: UserUpdateRequest =  UserUpdateRequest(
+            int(request.form.get('user_id')),
+            request.form.get('new_password')
+        )
+        model.verify()
+        return model
+    
+    def verify(self) -> None:
+        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("not a valid password input")
+
+
+@dataclass
+class ImageResetRequest:
+
+    IRR = TypeVar('ImageResetRequest')
+    
+    user_id: int
+    image_content: str
+
+    @staticmethod
+    def build(request: Request) -> IRR:
+        model: UserUpdateRequest =  UserUpdateRequest(
+            int(request.form.get('user_id')),
+            request.form.get('image_content', "")
+        )
+        model.verify()
+        return model
+    
+    def verify(self) -> None:
+        pass

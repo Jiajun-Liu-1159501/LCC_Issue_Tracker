@@ -19,8 +19,7 @@ def register_endpoint() -> str:
 @auth.post('/login')
 def login_endpoint() -> str:
     req: LoginRequest = LoginRequest.build(request)
-    user: User = user_service.user_login(req)
-    SessionHolder.session_hold(session, user)
+    user_service.user_login(req, lambda u: SessionHolder.session_hold(session, u) and u)
     return "success"
 
 @auth.post("/logout")

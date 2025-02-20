@@ -1,9 +1,10 @@
 
+import re
 from flask import Blueprint, request, session
 
 from loginapp.aspect import current_user, token_check
 from loginapp.constant.user_role import Role
-from loginapp.model.request_model import UserEditRequest, UserUpdateRequest
+from loginapp.model.request_model import ImageResetRequest, PasswordResetRequest, UserEditRequest, UserUpdateRequest
 from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder
 
@@ -27,11 +28,15 @@ def edit_profile_endpoint() -> str:
 @user.post("/resetpwd")
 @current_user(id_func = lambda: request.form.get('user_id'))
 def reset_pwd_endpoint() -> str:
+    req: PasswordResetRequest = PasswordResetRequest.build(request)
+    user_service.password_reset(req, lambda u: SessionHolder.session_evict(session, u) and None)
     return "success"
 
 @user.post("/resetimg")
 @current_user(id_func = lambda: request.form.get('user_id'))
 def reset_image_endpoint() -> str:
+    req: ImageResetRequest = ImageResetRequest.build(request)
+    user_service.image_reset(req)
     return "success"
 
 @user.post("/update")
