@@ -1,8 +1,10 @@
 
+from ast import List
 from flask import Blueprint, request, session
 
 from loginapp.aspect import current_user, token_check
 from loginapp.constant.user_role import Role
+from loginapp.model.data_model import User
 from loginapp.model.user_req_model import ImageResetRequest, PasswordResetRequest, UserEditRequest, UserUpdateRequest
 from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder
@@ -11,7 +13,7 @@ user: Blueprint = Blueprint('user', __name__)
 
 @user.get("/list")
 @token_check(options = [Role.ADMIN])
-def list_users_endpoint() -> str:
+def list_users_endpoint() -> List[User]:
     user_name: str = request.args.get('user_name', type = str)
     first_name: str = request.args.get('first_name', type = str)
     last_name: str = request.args.get('last_name', type = str)

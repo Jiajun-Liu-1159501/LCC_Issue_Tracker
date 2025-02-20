@@ -107,11 +107,13 @@ def create_app() -> Flask:
     init_error_handlers(app)
     return app
 
+from loginapp.page_handler import page
 from loginapp.auth_handler import auth
 from loginapp.user_handler import user
 from loginapp.issue_handler import issue
 
 def register_router(app: Flask) -> None:
-    app.register_blueprint(auth, url_prefix = '/auth')
-    app.register_blueprint(user, url_prefix = '/user')
-    app.register_blueprint(issue, url_prefix = '/issue')
+    app.register_blueprint(page, url_prefix = '/')
+    app.register_blueprint(auth, url_prefix = '/api/auth')
+    app.register_blueprint(user, url_prefix = '/api/user')
+    app.register_blueprint(issue, url_prefix = '/api/issue')

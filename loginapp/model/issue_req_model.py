@@ -9,14 +9,12 @@ from loginapp.exception.custom_error import ArgumentError
 @dataclass
 class IssueCreateRequest:
 
-    user_id: int
     summary: str
     description: str
     status: IssusStatus
 
     def build(request: Request) -> 'IssueCreateRequest':
         model: IssueCreateRequest =  IssueCreateRequest(
-            int(request.form.get('user_id')),
             request.form.get('summary'),
             request.form.get('description'),
             IssusStatus.NEW
