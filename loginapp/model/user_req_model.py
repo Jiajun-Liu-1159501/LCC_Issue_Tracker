@@ -60,8 +60,8 @@ class LoginRequest:
         return model
     
     def verify(self) -> None:
-        if not self.user_name: raise ArgumentError("not a valid user name input")
-        if not self.password: raise ArgumentError("not a valid password input")
+        if not self.user_name: raise ArgumentError("username", "not a valid user name input")
+        if not self.password: raise ArgumentError("password", "not a valid password input")
 
 
 @dataclass
