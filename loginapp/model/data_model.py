@@ -6,8 +6,6 @@ from loginapp.constant.issue_status import IssusStatus
 from loginapp.constant.user_role import Role
 from loginapp.constant.user_status import UserStatus
 
-UE = TypeVar('User')
-
 @dataclass
 class User:
 
@@ -23,7 +21,7 @@ class User:
     status: str
 
     @staticmethod
-    def of(dict: Dict[str, Any]) -> UE:
+    def of(dict: Dict[str, Any]) -> 'User':
         if dict == None or len(dict) == 0:
             return None
         return User(
@@ -40,7 +38,7 @@ class User:
         )
     
     @staticmethod
-    def of_all(data_list: List[Dict[str, Any]]) -> List[UE]:
+    def of_all(data_list: List[Dict[str, Any]]) -> List['User']:
         return list(map(lambda x: User.of(x), data_list))
     
     def get_role_enum(self) -> Role:
@@ -49,8 +47,6 @@ class User:
     def get_status_enum(self) -> UserStatus:
         return UserStatus.of(self.status)
     
-
-IE = TypeVar('Issue')
 
 @dataclass
 class Issue:
@@ -63,7 +59,7 @@ class Issue:
     status: str
 
     @staticmethod
-    def of(dict: Dict[str, Any]) -> IE:
+    def of(dict: Dict[str, Any]) -> 'Issue':
         if dict == None or len(dict) == 0:
             return None
         return User(
@@ -79,8 +75,6 @@ class Issue:
         return IssusStatus.of(self.status)
     
 
-CE = TypeVar('Comment')
-
 @dataclass
 class Comment:
 
@@ -91,7 +85,7 @@ class Comment:
     created_at: datetime
 
     @staticmethod
-    def of(dict: Dict[str, Any]) -> CE:
+    def of(dict: Dict[str, Any]) -> 'Comment':
         if dict == None or len(dict) == 0:
             return None
         return User(

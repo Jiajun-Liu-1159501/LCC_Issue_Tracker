@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 import re
-from typing import TypeVar
 from flask import Request
 
 from loginapp.constant.user_role import Role
@@ -10,8 +9,6 @@ from loginapp.exception.custom_error import ArgumentError
 
 @dataclass
 class RegisterRequest:
-
-    RRV = TypeVar('RegisterRequest')
 
     user_name: str
     password: str
@@ -23,7 +20,7 @@ class RegisterRequest:
     role: Role
     status: UserStatus
 
-    def build(request: Request) -> RRV:
+    def build(request: Request) -> 'RegisterRequest':
         model: RegisterRequest =  RegisterRequest(
             request.form.get('user_name'),
             request.form.get('password'),
@@ -50,13 +47,11 @@ class RegisterRequest:
 @dataclass
 class LoginRequest:
 
-    LRV = TypeVar('LoginRequest')
-
     user_name: str
     password: str
 
     @staticmethod
-    def build(request: Request) -> LRV:
+    def build(request: Request) -> 'LoginRequest':
         model: LoginRequest =  LoginRequest(
             request.form.get('user_name'),
             request.form.get('password')
@@ -72,15 +67,13 @@ class LoginRequest:
 @dataclass
 class UserEditRequest:
 
-    UER = TypeVar('UserEditRequest')
-
     user_id: int
     email: str
     first_name: str
     last_name: str
     location: str
 
-    def build(request: Request) -> UER:
+    def build(request: Request) -> 'UserEditRequest':
         model: UserEditRequest = UserEditRequest(
             int(request.form.get('user_id')),
             request.form.get('email'),
@@ -101,14 +94,12 @@ class UserEditRequest:
 @dataclass
 class UserUpdateRequest:
 
-    UUR = TypeVar('UserUpdateRequest')
-
     user_id: int
     status: UserStatus
     role: Role
 
     @staticmethod
-    def build(request: Request) -> LRV:
+    def build(request: Request) -> 'UserUpdateRequest':
         model: UserUpdateRequest =  UserUpdateRequest(
             int(request.form.get('user_id')),
             UserStatus.of(request.form.get('status')),
@@ -125,13 +116,11 @@ class UserUpdateRequest:
 @dataclass
 class PasswordResetRequest:
 
-    PRR = TypeVar('PasswordResetRequest')
-    
     user_id: int
     new_password: str
 
     @staticmethod
-    def build(request: Request) -> PRR:
+    def build(request: Request) -> 'PasswordResetRequest':
         model: UserUpdateRequest =  UserUpdateRequest(
             int(request.form.get('user_id')),
             request.form.get('new_password')
@@ -145,14 +134,12 @@ class PasswordResetRequest:
 
 @dataclass
 class ImageResetRequest:
-
-    IRR = TypeVar('ImageResetRequest')
     
     user_id: int
     image_content: str
 
     @staticmethod
-    def build(request: Request) -> IRR:
+    def build(request: Request) -> 'ImageResetRequest':
         model: UserUpdateRequest =  UserUpdateRequest(
             int(request.form.get('user_id')),
             request.form.get('image_content', "")

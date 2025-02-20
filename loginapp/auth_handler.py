@@ -1,12 +1,7 @@
-from flask import Blueprint, render_template, request, session, url_for
-from mysql.connector import cursor
-from loginapp import get_connection
-from loginapp.constant.user_status import UserStatus
-from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, NotFoundError
-from loginapp.model.request_model import LoginRequest, RegisterRequest
+from flask import Blueprint, request, session
+from loginapp.model.user_req_model import LoginRequest, RegisterRequest
 from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder
-from loginapp.model.data_model import User
 
 auth: Blueprint = Blueprint('auth', __name__)
 
