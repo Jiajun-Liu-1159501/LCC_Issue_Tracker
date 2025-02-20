@@ -3,7 +3,7 @@ from flask import Blueprint, request, session
 
 from loginapp.aspect import current_user, token_check
 from loginapp.constant.user_role import Role
-from loginapp.model.request_model import ImageResetRequest, PasswordResetRequest, UserEditRequest, UserUpdateRequest
+from loginapp.model.user_req_model import ImageResetRequest, PasswordResetRequest, UserEditRequest, UserUpdateRequest
 from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder
 

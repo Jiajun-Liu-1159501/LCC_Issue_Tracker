@@ -6,7 +6,7 @@ from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, 
 from loginapp.model.data_model import User
 from mysql.connector import cursor
 
-from loginapp.model.request_model import ImageResetRequest, LoginRequest, PasswordResetRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
+from loginapp.model.user_req_model import ImageResetRequest, LoginRequest, PasswordResetRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
 
 class UserService:
 

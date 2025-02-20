@@ -1,5 +1,6 @@
 # This script runs automatically when our `loginapp` module is first loaded,
 # and handles all the setup for our Flask app.
+from nturl2path import url2pathname
 from flask import Flask, g
 from typing import Dict, Any, TypeVar
 from mysql.connector import pooling, cursor
@@ -108,14 +109,9 @@ def create_app() -> Flask:
 
 from loginapp.auth_handler import auth
 from loginapp.user_handler import user
+from loginapp.issue_handler import issue
 
 def register_router(app: Flask) -> None:
     app.register_blueprint(auth, url_prefix = '/auth')
     app.register_blueprint(user, url_prefix = '/user')
-    
-
-# Include all modules that define our Flask route-handling functions.
-from loginapp import user
-from loginapp import customer
-from loginapp import staff
-from loginapp import admin
+    app.register_blueprint(issue, url_prefix = '/issue')
