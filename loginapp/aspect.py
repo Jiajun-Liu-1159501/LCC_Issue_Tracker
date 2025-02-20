@@ -35,18 +35,25 @@ def token_check(*, options: List[Role]):
         ```
     """
     def decorator(func):
+        # Preserve the original function's metadata
         @wraps(func)
         def wrapper(*args, **kwargs):
             token: str = session.get('token', None)
+            # Check if the token is absent
             if token is None:
                 raise AccessDeclinedError('no login information')
+            # Check if the session is still valid
             if not SessionHolder.session_exists():
                 raise AccessDeclinedError('no login information expires')
+            # Retrieve the currently logged-in user from the session
             current_login: User = session.get('user')
+            # If no role restrictions are provided, allow access
             if options is None or len(options) == 0:
                 return func(*args, **kwargs)
+            # Check if the user’s role is in the allowed options
             if current_login.get_role_enum() not in options:
                 raise AccessDeclinedError('this operation is not allowed')
+            # If all checks pass, call the original function
             return func(*args, **kwargs)
         return wrapper
     return decorator
@@ -77,15 +84,19 @@ def current_user(*, id_func: Callable[[], str]):
         ```
     """
     def decorator(func):
+        # Preserve the original function's metadata
         @wraps(func)
         def wrapper(*args, **kwargs):
-            print(id_func())
             token: str = session.get('token', None)
+            # Check if the token is absent
             if token is None:
                 raise AccessDeclinedError('no login information')
+            # Retrieve the currently logged-in user from the session
             current_login: User = session.get('user')
+            # Check if the current user's ID matches the expected ID
             if current_login.user_id != id_func():
                 raise AccessDeclinedError('this operation is not allowed')
+            # If all checks pass, execute the original function
             return func(*args, **kwargs)
         return wrapper
     return decorator

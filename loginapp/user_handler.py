@@ -1,5 +1,4 @@
 
-import re
 from flask import Blueprint, request, session
 
 from loginapp.aspect import current_user, token_check
