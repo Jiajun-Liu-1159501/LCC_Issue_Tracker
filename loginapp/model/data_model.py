@@ -62,7 +62,7 @@ class Issue:
     def of(dict: Dict[str, Any]) -> 'Issue':
         if dict == None or len(dict) == 0:
             return None
-        return User(
+        return Issue(
             dict.get('issue_id'),
             dict.get('user_id'),
             dict.get('summary'),
@@ -73,7 +73,7 @@ class Issue:
     
     def get_status_enum(self) -> IssusStatus:
         return IssusStatus.of(self.status)
-    
+
 
 @dataclass
 class Comment:

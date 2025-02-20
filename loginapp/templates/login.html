@@ -24,10 +24,12 @@ Login
 				  	<div class="mb-3">
 					  	<label for="loginUserName" class="form-label text-success">Username</label>
 					  	<input type="text" class="form-control" id="loginUserName" name="user_name" required>
+						<div id="userNameTip" class="invalid-feedback"></div>
 				  	</div>
 				  	<div class="mb-3">
 					  	<label for="loginPassword" class="form-label text-success">Password</label>
 					  	<input type="password" class="form-control" id="loginPassword" name="password" required>
+						<div id="passwordTip" class="invalid-feedback"></div>
 				  	</div>
 				  	<div class="d-flex justify-content-between align-items-center">
 					  	<button type="submit" class="btn btn-success w-100">Login</button>
@@ -50,7 +52,19 @@ Login
 		}).onSuccess(data => {
 			console.log(data)
 		}).onBadRequest(data => {
-			console.log(data)
+			const errData = data['err']
+			if ('user_name' in errData) {
+				const passwordInput = document.querySelector('#loginUserName');
+          		passwordInput.classList.add('is-invalid');
+          		const invalidFeedback = passwordInput.nextElementSibling;
+         		invalidFeedback.textContent = errData['user_name']
+			}
+			if ('password' in errData) {
+				const passwordInput = document.querySelector('#loginPassword');
+          		passwordInput.classList.add('is-invalid');
+          		const invalidFeedback = passwordInput.nextElementSibling;
+          		invalidFeedback.textContent = errData['password']
+			}
 		});
 	}
 

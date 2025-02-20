@@ -60,8 +60,10 @@ class LoginRequest:
         return model
     
     def verify(self) -> None:
-        if not self.user_name: raise ArgumentError("username", "not a valid user name input")
-        if not self.password: raise ArgumentError("password", "not a valid password input")
+        if not self.user_name: 
+            raise ArgumentError("username", "not a valid user name input")
+        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): 
+            raise ArgumentError("password", "not a valid password input")
 
 
 @dataclass
