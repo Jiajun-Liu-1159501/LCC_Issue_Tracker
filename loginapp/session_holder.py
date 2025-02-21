@@ -1,12 +1,10 @@
 
 from dataclasses import asdict
-import re
 from flask import session
 from flask.sessions import SessionMixin
-from loginapp.constant.user_role import Role
 from loginapp.model.data_model import User
 from loginapp.utils.concurrent_dict import ConcurrentDict
-import hashlib, json, datetime
+import hashlib, json
 
 class SessionHolder:
     """
