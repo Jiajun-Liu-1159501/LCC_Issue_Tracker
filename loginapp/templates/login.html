@@ -70,6 +70,8 @@ Login
           		const invalidFeedback = passwordInput.nextElementSibling;
           		invalidFeedback.textContent = errData['password']
 			}
+		}).onNotAllowed(data => {
+			showAlterModal(data['err'], "OK", null)
 		});
 	}
 

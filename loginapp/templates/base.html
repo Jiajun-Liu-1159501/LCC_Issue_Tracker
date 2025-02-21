@@ -19,6 +19,24 @@
 		<script src="../static/js/http_client.js"></script>
 		<script src="../static/js/form_control.js"></script>
 
+		<div class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered w-auto">
+                <div class="modal-content">
+                    <div class="modal-header">
+						<h1 class="modal-title fs-5 text-danger" id="alertModalTitle">Waring: </h1>
+					</div>
+					<div class="modal-body">
+						<div class="row align-items-center justify-content-center">
+							<p id="alertModalMessage" class="text-center fw-bold" style="font-style: italic;"></p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="alertModalButton" class="btn btn-outline-danger">OK</button>
+					</div>
+                </div>
+            </div>
+        </div>
+
 		<nav class="navbar navbar-expand-md bg-success sticky-top" data-bs-theme="dark">
 			<div class="container-fluid">
 				<div class="d-flex flex-wrap w-100 justify-content-between align-items-center py-2">

@@ -14,7 +14,13 @@ def init_error_handlers(app: Flask) -> None:
     def not_found_error_handler(error: NotFoundError) -> Response:
         return jsonify({
             "err": error.message
-        }), 400
+        }), 404
+    
+    @app.errorhandler(AccessDeclinedError)
+    def declined_error_handler(error: AccessDeclinedError) -> Response:
+        return jsonify({
+            "err": error.message
+        }), 403
     
     @app.errorhandler(Exception)
     def unknown_error_handler(error: Exception) -> Response:
