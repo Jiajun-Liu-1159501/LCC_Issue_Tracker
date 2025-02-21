@@ -27,7 +27,7 @@ class UserService:
         cur.execute("SELECT * FROM users WHERE user_name = %s AND password_hash = %s;", [req.user_name, req.password])
         user: User = User.of(cur.fetchone())
         if user == None:
-            raise AccessDeclinedError("user name or password is invalid")
+            raise AccessDeclinedError("user name or password is incorrect")
         if UserStatus.INACTIVE is user.get_status_enum():
             raise AccessDeclinedError("login failed! current user is inactive")
         return on_pass(user) if on_pass is not None else None
