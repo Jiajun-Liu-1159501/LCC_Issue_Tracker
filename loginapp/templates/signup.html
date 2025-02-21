@@ -150,14 +150,18 @@ Sign Up
 			method: "POST",
 			body: urlEncodedData
 		}).onSuccess(data => {
-			// TODO 
-			console.log(data)
+			showAlertModal('Successful, redirect to login page in 5 seconds ...', "Login", () => {
+				window.location.href = "/login";
+			})
+			setTimeout(() => {
+				window.location.href = "/login";
+			}, 5000)
 		}).onBadRequest(data => {
 			const errData = data['err']
 			if ('user_name' in errData) {
-				const passwordInput = document.querySelector('#user_name');
-          		passwordInput.classList.add('is-invalid', 'border-danger');
-          		const invalidFeedback = passwordInput.nextElementSibling;
+				const usrInput = document.querySelector('#user_name');
+				usrInput.classList.add('is-invalid', 'border-danger');
+          		const invalidFeedback = usrInput.nextElementSibling;
          		invalidFeedback.textContent = errData['user_name']
 			}
 			if ('email' in errData) {
@@ -173,7 +177,7 @@ Sign Up
           		invalidFeedback.textContent = errData['password']
 			}
 		}).onNotAllowed(data => {
-			showAlterModal(data['err'], "OK", null)
+			
 		});
 	}
 

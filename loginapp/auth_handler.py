@@ -10,7 +10,9 @@ auth: Blueprint = Blueprint('auth', __name__)
 def register_endpoint() -> str:
     req: RegisterRequest = RegisterRequest.build(request)
     user_service.new_user_register(req)
-    return "success"
+    return jsonify({
+        "message": "success",
+    }), 200
 
 @auth.post('/login')
 def login_endpoint() -> Response:

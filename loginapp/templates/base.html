@@ -19,11 +19,29 @@
 		<script src="../static/js/http_client.js"></script>
 		<script src="../static/js/form_control.js"></script>
 
+		<div class="modal fade" id="warningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warningModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered w-auto">
+                <div class="modal-content">
+                    <div class="modal-header">
+						<h1 class="modal-title fs-5 text-danger" id="warningModalTitle">Waring: </h1>
+					</div>
+					<div class="modal-body">
+						<div class="row align-items-center justify-content-center">
+							<p id="warningModalMessage" class="text-center fw-bold" style="font-style: italic;"></p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="warningModalButton" class="btn btn-outline-danger">OK</button>
+					</div>
+                </div>
+            </div>
+        </div>
+
 		<div class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered w-auto">
                 <div class="modal-content">
                     <div class="modal-header">
-						<h1 class="modal-title fs-5 text-danger" id="alertModalTitle">Waring: </h1>
+						<h1 class="modal-title fs-5 text-success" id="alertModalTitle">Tips: </h1>
 					</div>
 					<div class="modal-body">
 						<div class="row align-items-center justify-content-center">
@@ -31,7 +49,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button id="alertModalButton" class="btn btn-outline-danger">OK</button>
+						<button id="alertModalButton" class="btn btn-outline-success">OK</button>
 					</div>
                 </div>
             </div>

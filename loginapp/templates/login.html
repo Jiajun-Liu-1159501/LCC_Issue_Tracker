@@ -74,7 +74,7 @@ Login
           		invalidFeedback.textContent = errData['password']
 			}
 		}).onNotAllowed(data => {
-			showAlterModal(data['err'], "OK", null)
+			showWarningModal(data['err'], "OK", null)
 		});
 	}
 

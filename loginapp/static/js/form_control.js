@@ -24,7 +24,35 @@ function clearErrorOnInput(selector) {
  * @param {string} btn_text - The text to display on the modal button (defaults to "OK").
  * @param {function|null} btn_func - A custom function to execute when the button is clicked (defaults to closing the modal).
  */
-function showAlterModal(message, btn_text = "OK", btn_func = null) {
+function showWarningModal(message, btn_text = "OK", btn_func = null) {
+    // Set the modal message
+    document.getElementById("warningModalMessage").textContent = message;
+
+    // Get the button inside the modal and update its text content
+    const modalButton = document.getElementById("warningModalButton");
+    modalButton.textContent = btn_text;
+
+    // Clone the button to remove previous event listeners before reattaching
+    modalButton.replaceWith(modalButton.cloneNode(true));
+    const newModalButton = document.getElementById("warningModalButton");
+
+    // If a custom function is provided, bind it to the button click event
+    if (btn_func && typeof btn_func === "function") {
+        newModalButton.addEventListener("click", btn_func);
+    } else {
+        // Default behavior: close the modal when the button is clicked
+        newModalButton.addEventListener("click", () => {
+            let modal = bootstrap.Modal.getInstance(document.getElementById("warningModal"));
+            modal.hide(); // Hide the modal
+        });
+    }
+
+    // Initialize and show the modal
+    let modal = new bootstrap.Modal(document.getElementById("warningModal"));
+    modal.show();
+}
+
+function showAlertModal(message, btn_text = "OK", btn_func = null) {
     // Set the modal message
     document.getElementById("alertModalMessage").textContent = message;
 

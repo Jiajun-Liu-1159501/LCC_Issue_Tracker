@@ -54,7 +54,7 @@ Promise.prototype.onUnauthorized = async function(callback) {
             // Parse the response JSON data to get the error message
             response.json().then((data) => {
                 // Show the modal with the error message and redirect logic
-                const message = data['err'] + "/nYou will be redirected to login page in 3s ...";
+                const message = data['err'] + "/nYou will be redirected to login page in 5s ...";
                 showAlterModal(message, "OK", () => {
                     window.location.href = "/login"; // Redirect immediately if button is clicked
                 });
@@ -62,7 +62,7 @@ Promise.prototype.onUnauthorized = async function(callback) {
                 // Set a timeout to redirect to login after 3 seconds
                 setTimeout(() => {
                     window.location.href = "/login"; // Redirect automatically after 3 seconds
-                }, 3000);
+                }, 5000);
             });
         }
         // Return the original response if the status is not 401
