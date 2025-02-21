@@ -54,8 +54,9 @@ Promise.prototype.onUnauthorized = async function(callback) {
             // Parse the response JSON data to get the error message
             response.json().then((data) => {
                 // Show the modal with the error message and redirect logic
-                const message = data['err'] + "/nYou will be redirected to login page in 5s ...";
-                showAlterModal(message, "OK", () => {
+                console.log("401 request")
+                const message = data['err'] + "<br>You will be redirected to login page in 5s ...";
+                showWarningModal(message, "OK", () => {
                     window.location.href = "/login"; // Redirect immediately if button is clicked
                 });
 
@@ -110,6 +111,8 @@ async function dataFetcher(url, options = {}) {
     return fetch(url, finalOptions)
         .then((response) => {
             return response; // Return the response for further handling
+        }).onUnauthorized(data => {
+
         }).catch((err) => {
             console.error("Error sending request:", err); // Log any errors encountered during the fetch
         });
@@ -127,8 +130,25 @@ async function formFetch(url, options = {}) {
     // Call the dataFetcher function with the necessary options and headers for form submission
     return dataFetcher(url, {
         ...options,
+        method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded" // Specify content type for form data
         }
+    });
+}
+
+/**
+ * A helper function to fetch form data with the `GET` request type.
+ * It uses the `dataFetcher` function with specific headers set for form submissions.
+ * 
+ * @param {string} url - The URL to submit the form data to.
+ * @param {object} options - The options to pass to the Fetch API (optional).
+ * @returns {Promise} - A Promise that resolves to the fetch response.
+ */
+async function getFetch(url, options = {}) {
+    // Call the dataFetcher function with the necessary options and headers for form submission
+    return dataFetcher(url, {
+        ...options,
+        method: "GET"
     });
 }

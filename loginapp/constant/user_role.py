@@ -1,24 +1,21 @@
 from enum import Enum
-import re
-from typing import List, TypeVar
-
-R = TypeVar('Role')
+from typing import List
 
 class Role(Enum):
 
-    ADMIN = ("admin", "111")
-    HELPER = ("helper", "222")
-    VISIOTR = ("helper", "333")
+    ADMIN = ("admin", ["my_issues", "all_issues", "user_management"])
+    HELPER = ("helper", ["my_issues", "all_issues"])
+    VISITOR = ("visitor", ["my_issues"])
 
-    def __new__(cls, value: str, home_page: str):
+    def __new__(cls, value: str, allowed_operations: List[str]):
         obj = object.__new__(cls)
         obj._value_ = value  
-        obj._home_page = home_page
+        obj._allowed_operations = allowed_operations
         return obj
 
     @classmethod
-    def of(cls, name: str) -> R:
-        return cls.__members__.get(name.upper(), None)
+    def of(cls, name: str) -> 'Role':
+        return cls.__members__.get(name.upper())
     
-    def get_home_page(self) -> str: 
-        return self._home_page
+    def get_allowed_operations(self) -> List[str]: 
+        return self._allowed_operations

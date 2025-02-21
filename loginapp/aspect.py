@@ -5,7 +5,7 @@ from functools import wraps
 
 from flask import session
 from loginapp.constant.user_role import Role
-from loginapp.exception.custom_error import AccessDeclinedError
+from loginapp.exception.custom_error import AccessDeclinedError, UnauthorizedError
 from loginapp.model.data_model import User
 from loginapp.session_holder import SessionHolder
 
@@ -41,10 +41,10 @@ def token_check(*, options: List[Role]):
             token: str = session.get('token', None)
             # Check if the token is absent
             if token is None:
-                raise AccessDeclinedError('no login information')
+                raise UnauthorizedError('no login information')
             # Check if the session is still valid
-            if not SessionHolder.session_exists():
-                raise AccessDeclinedError('no login information expires')
+            if not SessionHolder.session_exists(token):
+                raise UnauthorizedError('login information expires')
             # Retrieve the currently logged-in user from the session
             current_login: User = session.get('user')
             # If no role restrictions are provided, allow access
@@ -90,7 +90,7 @@ def current_user(*, id_func: Callable[[], str]):
             token: str = session.get('token', None)
             # Check if the token is absent
             if token is None:
-                raise AccessDeclinedError('no login information')
+                raise UnauthorizedError('no login information found')
             # Retrieve the currently logged-in user from the session
             current_login: User = session.get('user')
             # Check if the current user's ID matches the expected ID

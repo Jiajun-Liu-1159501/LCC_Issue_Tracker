@@ -26,7 +26,7 @@ function clearErrorOnInput(selector) {
  */
 function showWarningModal(message, btn_text = "OK", btn_func = null) {
     // Set the modal message
-    document.getElementById("warningModalMessage").textContent = message;
+    document.getElementById("warningModalMessage").innerHTML = message;
 
     // Get the button inside the modal and update its text content
     const modalButton = document.getElementById("warningModalButton");
@@ -54,7 +54,7 @@ function showWarningModal(message, btn_text = "OK", btn_func = null) {
 
 function showAlertModal(message, btn_text = "OK", btn_func = null) {
     // Set the modal message
-    document.getElementById("alertModalMessage").textContent = message;
+    document.getElementById("alertModalMessage").innerHTML = message;
 
     // Get the button inside the modal and update its text content
     const modalButton = document.getElementById("alertModalButton");

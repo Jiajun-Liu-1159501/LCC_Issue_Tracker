@@ -9,6 +9,12 @@ def init_error_handlers(app: Flask) -> None:
         return jsonify({
             "err": error.get_error_args()
         }), 400
+    
+    @app.errorhandler(UnauthorizedError)
+    def unauthorized_error_handler(error: UnauthorizedError) -> Response:
+        return jsonify({
+            "err": error.message
+        }), 401
 
     @app.errorhandler(NotFoundError)
     def not_found_error_handler(error: NotFoundError) -> Response:

@@ -4,13 +4,19 @@
 Login
 {% endblock %}
 
-{% block usercontent %}
-<a href="{{ url_for('page.register_page') }}">
-	<button type="button" class="btn btn-outline-light">Sign Up</button>
-</a>
-<a href="{{ url_for('page.login_page') }}">
-	<button type="button" class="btn btn-outline-light">Login</button>
-</a>
+{% block user %}
+<div/>
+{% endblock %}
+
+{% block menu %}
+<div class="offcanvas-body d-flex flex-column justify-content-center align-items-center">
+    <a href="{{ url_for('page.login_page') }}" class="btn btn-success w-75 py-2 d-block text-center">Sign In</a>
+    <div class="w-75 my-3 position-relative">
+        <div class="border-top"></div>
+        <span class="position-absolute top-50 start-50 translate-middle px-2 bg-white text-success">or</span>
+    </div>
+    <a href="{{ url_for('page.register_page') }}" class="btn btn-outline-success w-75 py-2 d-block text-center">Sign Up</a>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -55,8 +61,7 @@ Login
 			method: "POST",
 			body: urlEncodedData
 		}).onSuccess(data => {
-			// TODO 
-			console.log(data)
+			window.location.href = "/";
 		}).onBadRequest(data => {
 			const errData = data['err']
 			if ('user_name' in errData) {

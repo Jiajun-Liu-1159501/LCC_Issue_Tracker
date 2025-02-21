@@ -29,7 +29,7 @@ class SessionHolder:
         ```
     """
 
-    session_dict: ConcurrentDict[str, int] = ConcurrentDict()
+    session_dict: ConcurrentDict[str, User] = ConcurrentDict()
 
     @staticmethod
     def session_hold(session: SessionMixin, user: User) -> None:
@@ -49,9 +49,8 @@ class SessionHolder:
             ```
         """
         token: str = SessionHolder.generate_token(user)
-        SessionHolder.session_dict.setdefault(token, int(datetime.datetime.now().timestamp() * 1000))
+        SessionHolder.session_dict.setdefault(token, user)
         session.setdefault('token', token)
-        session.setdefault('user', user)
 
     @staticmethod
     def session_evict(session: SessionMixin, user: User) -> None:
@@ -72,7 +71,6 @@ class SessionHolder:
         """
         if user == None:
             SessionHolder.session_dict.pop(session.pop('token', None))
-            session.pop('user', None)
         else:
             token: str = SessionHolder.generate_token(user)
             SessionHolder.session_dict.pop(token, None)
@@ -92,7 +90,7 @@ class SessionHolder:
                 print(f"Logged in as {user.username}")
             ```
         """
-        return session.get('user')
+        return SessionHolder.session_dict.get(session.get('token'), None)
     
     @staticmethod
     def session_exists(token: str) -> bool:

@@ -1,6 +1,6 @@
 
 from typing import List
-from flask import Blueprint, request, session
+from flask import Blueprint, Response, jsonify, request, session
 
 from loginapp.aspect import current_user, token_check
 from loginapp.constant.user_role import Role
@@ -10,6 +10,14 @@ from loginapp.services import user_service
 from loginapp.session_holder import SessionHolder
 
 user: Blueprint = Blueprint('user', __name__)
+
+@user.get("/current")
+@token_check(options = [])
+def get_current_login() -> Response:
+    user: User = SessionHolder.current_login()
+    return jsonify({
+        "operations": user.get_role_enum().get_allowed_operations()
+    }), 200
 
 @user.get("/list")
 @token_check(options = [Role.ADMIN])
