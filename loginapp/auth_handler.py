@@ -25,4 +25,6 @@ def login_endpoint() -> Response:
 @auth.post("/logout")
 def logout_endpoint() -> str:
     SessionHolder.session_evict(session, None)
-    return "success"
+    return jsonify({
+        "message": "success",
+    }), 200
