@@ -19,7 +19,7 @@ class UserService:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         cur.execute("SELECT COUNT(1) as count FROM users WHERE user_name = %s;", [req.user_name])
         if cur.fetchone()['count'] != 0:
-            raise ArgumentError("this user name is existing, use another instead")
+            raise ArgumentError("user_name","user name is existing")
         cur.execute("INSERT INTO users (user_name, password_hash, email, first_name, last_name, location, profile_image, role, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", [req.user_name, req.password, req.email, req.first_name, req.last_name, req.location, req.profile_image, req.role.value, req.status.value])
         
     def user_login(self, req: LoginRequest, on_pass:Callable[[User], T]) -> T:

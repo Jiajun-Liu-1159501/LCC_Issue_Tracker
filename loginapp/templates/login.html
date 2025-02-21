@@ -23,12 +23,12 @@ Login
 			  	<form id = "loginForm" class="needs-validation" onsubmit="handleSubmit(event)">
 				  	<div class="mb-3">
 					  	<label for="loginUserName" class="form-label text-success">Username</label>
-					  	<input type="text" class="form-control" id="loginUserName" name="user_name">
+					  	<input type="text" class="form-control border-success" id="loginUserName" name="user_name">
 						<div id="userNameTip" class="invalid-feedback"></div>
 				  	</div>
 				  	<div class="mb-3">
 					  	<label for="loginPassword" class="form-label text-success">Password</label>
-					  	<input type="password" class="form-control" id="loginPassword" name="password">
+					  	<input type="password" class="form-control border-success" id="loginPassword" name="password">
 						<div id="passwordTip" class="invalid-feedback"></div>
 				  	</div>
 					  <div class="d-flex justify-content-between align-items-center mt-5">
@@ -55,18 +55,21 @@ Login
 			method: "POST",
 			body: urlEncodedData
 		}).onSuccess(data => {
+			// TODO 
 			console.log(data)
 		}).onBadRequest(data => {
 			const errData = data['err']
 			if ('user_name' in errData) {
-				const passwordInput = document.querySelector('#loginUserName');
-          		passwordInput.classList.add('is-invalid');
-          		const invalidFeedback = passwordInput.nextElementSibling;
+				const userNameInput = document.querySelector('#loginUserName');
+				userNameInput.classList.remove('border-green');
+				userNameInput.classList.add('is-invalid', 'border-danger');
+          		const invalidFeedback = userNameInput.nextElementSibling;
          		invalidFeedback.textContent = errData['user_name']
 			}
 			if ('password' in errData) {
 				const passwordInput = document.querySelector('#loginPassword');
-          		passwordInput.classList.add('is-invalid');
+				passwordInput.classList.remove('border-green');
+          		passwordInput.classList.add('is-invalid', 'border-danger');
           		const invalidFeedback = passwordInput.nextElementSibling;
           		invalidFeedback.textContent = errData['password']
 			}

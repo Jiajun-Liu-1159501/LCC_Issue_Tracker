@@ -36,12 +36,12 @@ class RegisterRequest:
         return model
     
     def verify(self) -> None:
-        if not self.user_name: raise ArgumentError("not a valid user name input")
-        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("not a valid password input")
-        if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("not a valid email input")
-        if not self.first_name: raise ArgumentError("not a valid first name input")
-        if not self.last_name: raise ArgumentError("not a valid last name input")
-        if not self.location: raise ArgumentError("not a valid location input")
+        if not self.user_name: raise ArgumentError("user_name", "not a valid user name input")
+        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("password", "at least 8 chars including number and letter")
+        if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("email", "not a valid email format")
+        if not self.first_name: raise ArgumentError("first_name", "not a valid first name input")
+        if not self.last_name: raise ArgumentError("last_name", "not a valid last name input")
+        if not self.location: raise ArgumentError("location", "not a valid location input")
 
 
 @dataclass

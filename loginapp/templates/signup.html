@@ -17,52 +17,55 @@ Sign Up
 
 <div class="container my-auto">
 	<div class="row justify-content-center">
-	  	<div class="col-md-8 col-lg-6"> <!-- 控制整体宽度 -->
+	  	<div class="col-md-8 col-lg-6">
 			<div class="card mt-4 shadow-sm p-4">
-			  	<h5 class="card-title text-center text-success mb-4">Welcome To Campground!</h5>
-			  	<form id="loginForm" class="needs-validation" onsubmit="handleSubmit(event)">
+			  	<h5 class="card-title text-center text-success mb-4">Welcome To Campground !</h5>
+			  	<form id="signUpForm" class="needs-validation" onsubmit="handleSubmit(event)">
 				  	<div class="row">
 					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="loginUserName" class="form-label text-success">Username</label>
-						  	<input type="text" class="form-control" id="loginUserName" name="user_name">
-						  	<div id="userNameTip" class="invalid-feedback"></div>
+						  	<label for="userName" class="form-label text-success">User name</label>
+						  	<input type="text" class="form-control border-success" id="userName" name="user_name" placeholder="Enter your username">
+						  	<div id="userNameTip" class="invalid-feedback">not a valid input</div>
 					  	</div>
 						<div class="col-12 col-md-6 mb-3">
 							<label for="email" class="form-label text-success">Email</label>
-							<input type="email" class="form-control" id="email" name="email">
-							<div id="emailTip" class="invalid-feedback"></div>
+							<input type="text" class="form-control border-success" id="email" name="email" placeholder="xxxx@xxxx.com">
+							<div id="emailTip" class="invalid-feedback">not a valid input</div>
 						</div>
 					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="loginPassword" class="form-label text-success">Password</label>
-						  	<input type="password" class="form-control" id="loginPassword" name="password">
-						  	<div id="passwordTip" class="invalid-feedback"></div>
+						  	<label for="password" class="form-label text-success">Password</label>
+						  	<input type="password" class="form-control border-success" id="password" name="password" placeholder="Enter your password">
+						  	<div id="passwordTip" class="invalid-feedback">not a valid input</div>
 					  	</div>
 					  	<div class="col-12 col-md-6 mb-3">
 						  	<label for="confirmPassword" class="form-label text-success">Confirm Password</label>
-						  	<input type="password" class="form-control" id="confirmPassword" name="confirm_password">
-						  	<div id="confirmPasswordTip" class="invalid-feedback"></div>
+						  	<input type="password" class="form-control border-success" id="confirmPassword" placeholder="Confirm your password" disabled>
+						  	<div id="confirmPasswordTip" class="invalid-feedback">input does not match the password</div>
 					  	</div>
 					  	<div class="col-12 col-md-6 mb-3">
 						  	<label for="firstName" class="form-label text-success">First Name</label>
-						  	<input type="text" class="form-control" id="firstName" name="first_name">
-						  	<div id="firstNameTip" class="invalid-feedback"></div>
+						  	<input type="text" class="form-control border-success" id="firstName" name="first_name" placeholder="Enter your first name">
+						  	<div id="firstNameTip" class="invalid-feedback">not a valid input</div>
 					  	</div>
 					  	<div class="col-12 col-md-6 mb-3">
 						  	<label for="lastName" class="form-label text-success">Last Name</label>
-						  	<input type="text" class="form-control" id="lastName" name="last_name">
-						  	<div id="lastNameTip" class="invalid-feedback"></div>
+						  	<input type="text" class="form-control border-success" id="lastName" name="last_name" placeholder="Enter your last name">
+						  	<div id="lastNameTip" class="invalid-feedback">not a valid input</div>
 					  	</div>
 					  	<div class="col-12 col-md-6 mb-3">
 						  	<label for="location" class="form-label text-success">Location</label>
-						  	<input type="text" class="form-control" id="location" name="location">
-						  	<div id="locationTip" class="invalid-feedback"></div>
+						  	<input type="text" class="form-control border-success" id="location" name="location" placeholder="input your location">
+						  	<div id="locationTip" class="invalid-feedback">not a valid input</div>
 					  	</div>
 				  	</div>
 					<div class="col-12">
 						<div class="form-check">
-						  	<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-						  	<label class="form-check-label" for="invalidCheck">I agree to <a href="">terms and conditions</a></label>
-						  	<div class="invalid-feedback">You must agree before submitting.</div>
+						  	<input class="form-check-input border-green" type="checkbox" value="" id="termCheck">
+						  	<label class="form-check-label" for="termCheck">
+								<span class="text-success">I agree to</span>
+								<a href="">terms and conditions</a>
+							</label>
+						  	<div class="invalid-feedback">You must agree before sign up.</div>
 						</div>
 					</div>
 					<div class="d-flex justify-content-between align-items-center mt-4">
@@ -73,6 +76,109 @@ Sign Up
 	  	</div>
 	</div>
 </div>
+
+<script>
+
+	document.addEventListener('DOMContentLoaded', () => {
+		clearErrorOnInput('#userName');
+		clearErrorOnInput('#email');
+		clearErrorOnInput('#password');
+		clearErrorOnInput('#confirmPassword');
+		clearErrorOnInput('#firstName');
+		clearErrorOnInput('#lastName');
+		clearErrorOnInput('#location');
+		clearErrorOnInput('#termCheck');
+	});
+
+	document.getElementById('password').addEventListener('input', function() {
+    	document.getElementById('confirmPassword').disabled = (this.value.trim() === "");
+	});
+
+	function preSubmitCheck() {
+		let canSubmit = true;
+		const usrInput = document.getElementById('userName')
+		if (usrInput.value.trim() === "") {
+			usrInput.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		const emailInput = document.getElementById('email')
+		if (emailInput.value.trim() === "") {
+			emailInput.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		const pwd = document.getElementById('password')
+		const pwdConform = document.getElementById('confirmPassword')
+		if (pwd.value.trim() === "") {
+			pwd.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		if (pwdConform.value.trim() !== pwd.value.trim()) {
+			pwdConform.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		const fnInput = document.getElementById('firstName')
+		if (fnInput.value.trim() === "") {
+			fnInput.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		const lnInput = document.getElementById('lastName')
+		if (lnInput.value.trim() === "") {
+			lnInput.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		const locationInput = document.getElementById('location')
+		if (locationInput.value.trim() === "") {
+			locationInput.classList.add('is-invalid', 'border-danger');
+			canSubmit = false;
+		}
+		return canSubmit;
+	}
+
+	function handleSubmit(event) {
+		event.preventDefault();
+		if (!preSubmitCheck()) {
+			return;
+		}
+		const termCheck = document.getElementById('termCheck')
+		if (!termCheck.checked) {
+			termCheck.classList.add('is-invalid', 'border-danger');
+			return;
+		}
+		const formData = new FormData(document.querySelector('#signUpForm'));
+		const urlEncodedData = new URLSearchParams(formData).toString();
+		formFetch('/api/auth/register', {
+			method: "POST",
+			body: urlEncodedData
+		}).onSuccess(data => {
+			// TODO 
+			console.log(data)
+		}).onBadRequest(data => {
+			const errData = data['err']
+			if ('user_name' in errData) {
+				const passwordInput = document.querySelector('#user_name');
+          		passwordInput.classList.add('is-invalid', 'border-danger');
+          		const invalidFeedback = passwordInput.nextElementSibling;
+         		invalidFeedback.textContent = errData['user_name']
+			}
+			if ('email' in errData) {
+				const emailInput = document.querySelector('#email');
+				emailInput.classList.add('is-invalid', 'border-danger');
+          		const invalidFeedback = emailInput.nextElementSibling;
+				invalidFeedback.textContent = errData['email']
+			}
+			if ('password' in errData) {
+				const passwordInput = document.querySelector('#password');
+          		passwordInput.classList.add('is-invalid', 'border-danger');
+          		const invalidFeedback = passwordInput.nextElementSibling;
+          		invalidFeedback.textContent = errData['password']
+			}
+		}).onNotAllowed(data => {
+			showAlterModal(data['err'], "OK", null)
+		});
+	}
+
+
+</script>
 
 {% endblock %}
 

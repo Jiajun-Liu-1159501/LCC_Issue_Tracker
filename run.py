@@ -43,7 +43,7 @@ them bypass run.py entirely, don't put any of your application code in here.
 Think of run.py as a "shortcut" or "launcher" used to run your Flask app,
 rather than a core part of the app itself.
 """
-from flask import Flask, url_for
+from flask import Flask
 from loginapp import create_app
 
 # If run.py was actually executed (run), not just imported into another script,

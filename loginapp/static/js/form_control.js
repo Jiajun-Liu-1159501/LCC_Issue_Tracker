@@ -11,13 +11,8 @@ function clearErrorOnInput(selector) {
     // Add event listener to the input element for 'input' event
     inputElement.addEventListener("input", () => {
         // Remove the 'is-invalid' class when the user starts typing
-        inputElement.classList.remove("is-invalid");
-
-        // Clear the invalid feedback message
-        const invalidFeedback = inputElement.nextElementSibling;
-        if (invalidFeedback) {
-            invalidFeedback.textContent = "";
-        }
+        inputElement.classList.remove('is-invalid', 'border-danger');
+        inputElement.classList.add("border-success");
     });
 }
 
