@@ -1,7 +1,5 @@
 from flask import Blueprint, render_template
 
-from loginapp.aspect import token_check
-
 
 page: Blueprint = Blueprint("page", __name__)
 

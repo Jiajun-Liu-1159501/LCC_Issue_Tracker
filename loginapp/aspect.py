@@ -43,10 +43,9 @@ def token_check(*, options: List[Role]):
             if token is None:
                 raise UnauthorizedError('no login information')
             # Check if the session is still valid
-            if not SessionHolder.session_exists(token):
+            current_login: User = SessionHolder.current_login()
+            if not current_login:
                 raise UnauthorizedError('login information expires')
-            # Retrieve the currently logged-in user from the session
-            current_login: User = session.get('user')
             # If no role restrictions are provided, allow access
             if options is None or len(options) == 0:
                 return func(*args, **kwargs)
