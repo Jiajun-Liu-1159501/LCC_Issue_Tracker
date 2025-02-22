@@ -85,10 +85,10 @@ class UserEditRequest:
         return model
 
     def verify(self) -> None:
-        if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("not a valid email input")
-        if not self.first_name: raise ArgumentError("not a valid first name input")
-        if not self.last_name: raise ArgumentError("not a valid last name input")
-        if not self.location: raise ArgumentError("not a valid location input")
+        if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("email", "not a valid email input")
+        if not self.first_name: raise ArgumentError("first_name", "not a valid first name input")
+        if not self.last_name: raise ArgumentError("last_name", "not a valid last name input")
+        if not self.location: raise ArgumentError("location", "not a valid location input")
 
 
 @dataclass

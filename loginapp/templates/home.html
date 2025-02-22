@@ -6,87 +6,25 @@
 
 
 {% block subContent %}
-    
-    <div class="video-container">
-        <iframe src="https://player.vimeo.com/video/678444090?background=1&autoplay=1&loop=1&muted=1"
-            frameborder="0"
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
-    </div>
-
-    <style>
-
-        .video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 56.25vw; /* 16:9 比例 */
-            max-height: 100vh;
-            max-width: 177.77vh;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: -1; /* 让 iframe 在遮罩下 */
-        }
-
-        /* 半透明遮罩 */
-        .video-container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
-        }
-
-        /* 内容层在视频之上 */
-        .content {
-            position: relative;
-            z-index: 2;
-        }
-
-        @media (max-width: 768px) {
-            .video-container iframe {
-                display: none; /* 隐藏视频 */
-            }
-            .video-container::before {
-                display: block; /* 确保遮罩显示 */
-            }
-        }
-
-    </style>
 
 
     <div class="container my-auto text-center">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
                 <div class="apple-style">
-                    <h1 class="display-4 mb-3 text-light"><strong>Welcome to Lincoln Community Campground</strong></h1>
-                    <p class="lead mb-4 text-light fst-italic">Easily manage your issues with our simple interface. You can quickly create or view issues in just a few clicks.</p>
+                    <h1 class="display-4 mb-3 text-success"><strong>Welcome to Lincoln Community Campground</strong></h1>
+                    <p class="lead mb-4 text-success fst-italic">Easily manage your issues with our simple interface. You can quickly create or view issues in just a few clicks.</p>
                 </div>
                 <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mb-4">
-                    <button class="btn btn-outline-light btn-lg mb-2 mb-md-0 mx-2 d-flex align-items-center gap-3">
+                    <button class="btn btn-success btn-lg mb-2 mb-md-0 mx-2 d-flex align-items-center gap-3">
                         Create Issue
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
                             <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
                         </svg>
                     </button>
-                    <span class="mx-2 mb-2 mb-md-0 text-light">OR</span>
-                    <button class="btn btn-outline-light btn-lg mb-2 mb-md-0 mx-2 d-flex align-items-center gap-3">
+                    <span class="mx-2 mb-2 mb-md-0 text-success">or</span>
+                    <button class="btn btn-outline-success btn-lg mb-2 mb-md-0 mx-2 d-flex align-items-center gap-3">
                         View Issues
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
@@ -98,7 +36,4 @@
         </div>
     </div>
 
-    <script>
-
-    </script>
 {% endblock %}

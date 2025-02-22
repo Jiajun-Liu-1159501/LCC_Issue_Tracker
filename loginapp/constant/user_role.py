@@ -5,7 +5,7 @@ class Role(Enum):
 
     ADMIN = ("admin", ["my_issues", "all_issues", "user_management"])
     HELPER = ("helper", ["my_issues", "all_issues"])
-    VISITOR = ("visitor", ["my_issues"])
+    VISITOR = ("visitor", ["my_issues", "all_issues"])
 
     def __new__(cls, value: str, allowed_operations: List[str]):
         obj = object.__new__(cls)
