@@ -1,6 +1,4 @@
 
-from dataclasses import asdict
-import token
 from flask import session
 from flask.sessions import SessionMixin
 from loginapp.model.data_model import User
@@ -9,24 +7,13 @@ import hashlib, json
 
 class SessionHolder:
     """
-    A utility class for managing user sessions in a Flask application.
-
-    This class provides static methods for handling session persistence, 
-    eviction, and validation. It uses a thread-safe `ConcurrentDict` to store 
-    active sessions, preventing conflicts in concurrent environments.
-
+    Manages user authentication sessions by storing and retrieving session-related data.
+    
     Attributes:
-        session_dict (ConcurrentDict[str, int]): A dictionary to store session 
-        timestamps, mapping session tokens to their creation time.
-
-    Example:
-        ```python
-        session_holder = SessionHolder()
-        session_holder.session_hold(flask_session, user)
-        if session_holder.session_exists("some_token"):
-            print("Session is valid")
-        ```
+        session_dict (ConcurrentDict): A dictionary mapping session tokens to User objects.
+        token_dict (ConcurrentDict): A dictionary mapping session tokens to session instances.
     """
+
 
     session_dict: ConcurrentDict[str, User] = ConcurrentDict()
     token_dict: ConcurrentDict[str, SessionMixin] = ConcurrentDict()
@@ -34,19 +21,11 @@ class SessionHolder:
     @staticmethod
     def session_hold(session: SessionMixin, user: User) -> None:
         """
-        Creates and stores a session for the given user.
-
-        Generates a unique token for the user and stores it in both the 
-        `session_dict` and the Flask session object.S
-
+        Establishes a session for the given user.
+        
         Args:
             session (SessionMixin): The Flask session object.
-            user (User): The user object representing the logged-in user.
-
-        Example:
-            ```python
-            SessionHolder.session_hold(session, user)
-            ```
+            user (User): The authenticated user object.
         """
         token: str = SessionHolder.generate_token(user)
         SessionHolder.session_dict.setdefault(token, user)
@@ -56,19 +35,11 @@ class SessionHolder:
     @staticmethod
     def session_evict(session: SessionMixin, user: User) -> None:
         """
-        Removes a user session from the system.
-
-        If a user is provided, their specific session token is removed.
-        If no user is provided, the currently stored session token is deleted.
-
+        Clears the session for the given user or the current session if no user is specified.
+        
         Args:
             session (SessionMixin): The Flask session object.
-            user (Optional[User]): The user to evict, or None to remove the current session.
-
-        Example:
-            ```python
-            SessionHolder.session_evict(session, user)
-            ```
+            user (User): The user whose session needs to be evicted. If None, clears the current session.
         """
         if user == None:
             token: str = session.pop('token', None)
@@ -82,57 +53,36 @@ class SessionHolder:
     @staticmethod
     def current_login() -> User:
         """
-        Retrieves the currently logged-in user from the session.
-
+        Retrieves the currently logged-in user based on the session token.
+        
         Returns:
-            Optional[User]: The user object if a session exists, otherwise None.
-
-        Example:
-            ```python
-            user = SessionHolder.current_login()
-            if user:
-                print(f"Logged in as {user.username}")
-            ```
+            User: The currently authenticated user, or None if no session exists.
         """
         return SessionHolder.session_dict.get(session.get('token'), None)
     
     @staticmethod
     def session_exists(token: str) -> bool:
         """
-        Checks if a session token exists.
-
+        Checks if a session exists for the given token.
+        
         Args:
-            token (str): The session token to check.
-
+            token (str): The session token.
+        
         Returns:
-            bool: True if the session token exists, otherwise False.
-
-        Example:
-            ```python
-            if SessionHolder.session_exists("some_token"):
-                print("Session is valid")
-            ```
+            bool: True if the session exists, False otherwise.
         """
         return session.get('token') != None
 
     @staticmethod
     def generate_token(user: User) -> str:
         """
-        Generates a unique session token for a user.
-
-        The token is generated as an MD5 hash of the JSON-serialized user object.
-
+        Generates a unique session token for a given user.
+        
         Args:
-            user (User): The user object to generate a token for.
-
+            user (User): The user object for whom the token is generated.
+        
         Returns:
-            str: A unique session token.
-
-        Example:
-            ```python
-            token = SessionHolder.generate_token(user)
-            print(f"Generated Token: {token}")
-            ```
+            str: A hashed session token.
         """
         user_info = json.dumps({"user_id": user.user_id}, sort_keys = True)
         return hashlib.md5(user_info.encode()).hexdigest()
