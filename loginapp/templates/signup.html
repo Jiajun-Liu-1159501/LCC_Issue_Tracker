@@ -172,52 +172,16 @@
 			document.getElementById('confirmPassword').disabled = (this.value.trim() === "");
 		});
 
-		function preSubmitCheck() {
-			let canSubmit = true;
-			const usrInput = document.getElementById('userName')
-			if (usrInput.value.trim() === "") {
-				usrInput.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			const emailInput = document.getElementById('email')
-			if (emailInput.value.trim() === "") {
-				emailInput.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			const pwd = document.getElementById('password')
-			const pwdConform = document.getElementById('confirmPassword')
-			if (pwd.value.trim() === "") {
-				pwd.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			if (pwdConform.value.trim() !== pwd.value.trim()) {
-				pwdConform.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			const fnInput = document.getElementById('firstName')
-			if (fnInput.value.trim() === "") {
-				fnInput.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			const lnInput = document.getElementById('lastName')
-			if (lnInput.value.trim() === "") {
-				lnInput.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			const locationInput = document.getElementById('location')
-			if (locationInput.value.trim() === "") {
-				locationInput.classList.add('is-invalid', 'border-danger');
-				canSubmit = false;
-			}
-			return canSubmit;
-		}
 
 		function handleSubmit(event) {
 			event.preventDefault();
-			if (!preSubmitCheck()) {
+			if (!preSubmitCheck(['userName', 'email', 'firstName', 'lastName', 'location'])) {
 				return;
 			}
-			const termCheck = document.getElementById('termCheck')
+			if (!passwordConfirmCheck('password', 'passwordConfirm')) {
+				return;
+			}
+			const termCheck = document.getElementById('termCheck');
 			if (!termCheck.checked) {
 				termCheck.classList.add('is-invalid', 'border-danger');
 				return;
@@ -234,30 +198,14 @@
 					window.location.href = "/login";
 				}, 5000)
 			}).onBadRequest(data => {
-				const errData = data['err']
-				if ('user_name' in errData) {
-					const usrInput = document.querySelector('#user_name');
-					usrInput.classList.add('is-invalid', 'border-danger');
-					const invalidFeedback = usrInput.nextElementSibling;
-					invalidFeedback.textContent = errData['user_name']
-				}
-				if ('email' in errData) {
-					const emailInput = document.querySelector('#email');
-					emailInput.classList.add('is-invalid', 'border-danger');
-					const invalidFeedback = emailInput.nextElementSibling;
-					invalidFeedback.textContent = errData['email']
-				}
-				if ('password' in errData) {
-					const passwordInput = document.querySelector('#password');
-					passwordInput.classList.add('is-invalid', 'border-danger');
-					const invalidFeedback = passwordInput.nextElementSibling;
-					invalidFeedback.textContent = errData['password']
-				}
+				const errData = data['err'];
+				if ('user_name' in errData) { insertErrorTip('#user_name', errData['user_name']);}
+				if ('email' in errData) { insertErrorTip('#email', errData['email']);}
+				if ('password' in errData) { insertErrorTip('#password', errData['password']);}
 			}).onNotAllowed(data => {
 				
 			});
 		}
-
 
 	</script>
 

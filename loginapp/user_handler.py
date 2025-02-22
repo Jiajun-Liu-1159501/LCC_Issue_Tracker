@@ -33,7 +33,9 @@ def list_users_endpoint() -> List[User]:
 def edit_profile_endpoint() -> str:
     req: UserEditRequest = UserEditRequest.build(request)
     user_service.edit_user(req, lambda u: None)
-    return "success"
+    return jsonify({
+        "message": "success"
+    }), 200
 
 @user.post("/resetpwd")
 @current_user(id_func = lambda: request.form.get('user_id'))

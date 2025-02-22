@@ -150,7 +150,7 @@
     <div class="modal fade" id="editProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editProfileModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered w-auto">
             <div class="modal-content">
-                <form id="restPwdForm" class="needs-validation" onsubmit="handlePasswordChangeSubmit(event)">
+                <form id="editProfileForm" class="needs-validation" onsubmit="handleEditProfileSubmit(event)">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5 text-success" id="editProfileModalTitle">Edit Profile</h1>
                     </div>
@@ -213,6 +213,10 @@
         document.addEventListener('DOMContentLoaded', () => {
 			clearErrorOnInput('#password');
 			clearErrorOnInput('#confirmPassword');
+            clearErrorOnInput('#firstName');
+            clearErrorOnInput('#lastName');
+            clearErrorOnInput('#email');
+            clearErrorOnInput('#location');
 		});
 
         document.getElementById("togglePassword").addEventListener("click", function () {
@@ -253,16 +257,9 @@
 
         function handlePasswordChangeSubmit(event) {
             event.preventDefault();
-            const pwd = document.getElementById('password')
-			const pwdConform = document.getElementById('confirmPassword')
-			if (pwd.value.trim() === "") {
-				pwd.classList.add('is-invalid', 'border-danger');
-				return;
-			}
-			if (pwdConform.value.trim() !== pwd.value.trim()) {
-				pwdConform.classList.add('is-invalid', 'border-danger');
-				return;
-			}
+            if (!passwordConfirmCheck('password', 'confirmPassword')) {
+                return;
+            }
             const formData = new URLSearchParams();
             formData.append('user_id', currentUser['user_id']);
             formData.append('new_password', password.value);
@@ -271,18 +268,35 @@
                 body: urlEncodedData
             }).onSuccess((data) => {
                 showAlertModal('Successful, You will be redirected to login page in 5 seconds ...', "Login", () => {
-                    sessionStorage.clear();
 					window.location.href = "/login";
 				})
 				setTimeout(() => {
-                    sessionStorage.clear();
 					window.location.href = "/login";
 				}, 5000)
+            }).onBadRequest((data) => {
+                const errData = data['err'];
+                if ('password' in errData) { insertErrorTip('#password', errData['password']);}
             })
         }
 
         function handleEditProfileSubmit(event) {
             event.preventDefault();
+            if (!preSubmitCheck(["firstName", "lastName", "email", "location"])) {
+                return;
+            }
+            const formData = new FormData(document.querySelector('#editProfileForm'));
+            formData.append('user_id', currentUser['user_id'])
+			const urlEncodedData = new URLSearchParams(formData).toString();
+            formFetch('/api/user/edit', {
+                body: urlEncodedData
+            }).onSuccess((data) => {
+                showAlertModal('Successful, page will refresh in 5 seconds ...', "OK", () => {
+					window.location.reload(true);
+				})
+				setTimeout(() => {
+					window.location.reload(true);
+				}, 5000)
+            })
         }
 
         function handelPasswordChange() {

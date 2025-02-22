@@ -16,6 +16,41 @@ function clearErrorOnInput(selector) {
     });
 }
 
+function preSubmitCheck(elements) {
+    let canSubmit = true;
+    elements.forEach(element => {
+        const input = document.getElementById(element);
+        if (input.value.trim() === "") {
+            input.classList.add('is-invalid', 'border-danger');
+            canSubmit = false;
+        }
+    });
+    return canSubmit;
+}
+
+function passwordConfirmCheck(password, passwordConfirm) {
+    const pwd = document.getElementById(password);
+    const pwdConform = document.getElementById(passwordConfirm);
+    let canSubmit = true;
+	if (pwd.value.trim() === "") {
+        pwd.classList.add('is-invalid', 'border-danger');
+        canSubmit = false;
+    }
+    if (pwdConform.value.trim() !== pwd.value.trim()) {
+        pwdConform.classList.add('is-invalid', 'border-danger');
+        canSubmit = false;
+    }
+    return canSubmit;
+}
+
+function insertErrorTip(selector, message) {
+    const ipt = document.querySelector(selector);
+    ipt.classList.add('is-invalid', 'border-danger');
+    const invalidFeedback = ipt.nextElementSibling;
+    invalidFeedback.textContent = message
+}
+
+
 /**
  * Displays a Bootstrap modal with a custom message and button.
  * The modal will either close automatically or perform a custom action based on the provided button function.
@@ -80,15 +115,3 @@ function showAlertModal(message, btn_text = "OK", btn_func = null) {
     modal.show();
 }
 
-function clearAllCookies() {
-    // 获取所有的 cookies
-    const cookies = document.cookie.split(';');
-    
-    cookies.forEach(cookie => {
-        const cookieName = cookie.split('=')[0].trim(); // 获取 cookie 名称
-        // 设置过期时间为过去的时间，删除该 cookie
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
-        // 你可以选择设置更广泛的 path 来确保删除所有 cookies，如设置 path='/'
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
-    });
-}

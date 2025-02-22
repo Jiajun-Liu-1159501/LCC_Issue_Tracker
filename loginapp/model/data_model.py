@@ -27,7 +27,7 @@ class User:
         return User(
             dict.get('user_id'),
             dict.get('user_name'),
-            dict.get('password'),
+            dict.get('password_hash'),
             dict.get('email'),
             dict.get('first_name'),
             dict.get('last_name'),
