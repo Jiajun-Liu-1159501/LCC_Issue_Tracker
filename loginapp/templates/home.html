@@ -1,52 +1,12 @@
-{% extends "base.html" %}
+{% extends "home_base.html" %}
 
 {% block title %}
+    Home
+{% endblock %}
+
+
+
+
+{% block subContent %}
 Home
-{% endblock %}
-
-{% block user %}
-<div/>
-{% endblock %}
-
-{% block menu %}
-<div class="offcanvas-body d-flex flex-column align-items-center gap-3">
-    <ul class="nav nav-pills w-100" id="menuList">
-        <li class="nav-item w-100" id="my_issues">
-            <a class="nav-link text-center" href="">
-                <strong>My Issues</strong>
-            </a>
-        </li>
-        <li class="nav-item w-100" id="all_issues">
-            <a class="nav-link text-center" href="">
-                <strong>All Issues</strong>
-            </a>
-        </li>
-        <li class="nav-item w-100" id="user_management">
-            <a class="nav-link text-center" href="">
-                <strong>User Management</strong>
-            </a>
-        </li>
-    </ul>
-</div>
-{% endblock %}
-
-{% block content %}
-Home
-
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        getFetch('/api/user/current', {}).onSuccess(data => {
-			const operations = data['operations'];
-            const menuListItems = document.querySelectorAll('#menuList .nav-item');
-            menuListItems.forEach(item => {
-                const itemId = item.id;
-                if (!operations.includes(itemId)) {
-                    item.style.display = 'none';
-                } else {
-                    item.style.display = '';
-                }
-            });
-		})
-    });
-</script>
 {% endblock %}

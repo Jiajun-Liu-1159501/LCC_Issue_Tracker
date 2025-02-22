@@ -1,266 +1,265 @@
 {% extends "base.html" %}
 
 {% block title %}
-Sign Up
+	Sign Up
 {% endblock %}
 
 {% block user %}
-<div/>
+	<div/>
 {% endblock %}
 
 {% block menu %}
-<div class="offcanvas-body d-flex flex-column justify-content-center align-items-center">
-    <a href="{{ url_for('page.login_page') }}" class="btn btn-success w-75 py-2 d-block text-center">
-		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-			<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-			<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-		</svg>
-		Sign In
-	</a>
-    <div class="w-75 my-3 position-relative">
-        <div class="border-top"></div>
-        <span class="position-absolute top-50 start-50 translate-middle px-2 bg-white text-success">or</span>
-    </div>
-    <a href="{{ url_for('page.register_page') }}" class="btn btn-outline-success w-75 py-2 d-block text-center">
-		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
-			<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
-		</svg>
-		Sign Up
-	</a>
-</div>
+	<div class="offcanvas-body d-flex flex-column justify-content-center align-items-center">
+		<a href="{{ url_for('page.login_page') }}" class="btn btn-success w-75 py-2 d-block text-center">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+				<path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+			</svg>
+			Sign In
+		</a>
+		<div class="w-75 my-3 position-relative">
+			<div class="border-top"></div>
+			<span class="position-absolute top-50 start-50 translate-middle px-2 bg-white text-success">or</span>
+		</div>
+		<a href="{{ url_for('page.register_page') }}" class="btn btn-outline-success w-75 py-2 d-block text-center">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
+			</svg>
+			Sign Up
+		</a>
+	</div>
 {% endblock %}
 
 {% block content %}
 
-<div class="container my-auto">
-	<div class="row justify-content-center">
-	  	<div class="col-md-8 col-lg-6">
-			<div class="card mt-4 shadow-sm p-4">
-			  	<h5 class="card-title text-center text-success mb-4">Welcome To Campground !</h5>
-			  	<form id="signUpForm" class="needs-validation" onsubmit="handleSubmit(event)">
-				  	<div class="row">
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="userName" class="form-label text-success">User name</label>
-						  	<input type="text" class="form-control border-success" id="userName" name="user_name" placeholder="Enter your username">
-						  	<div id="userNameTip" class="invalid-feedback">not a valid input</div>
-					  	</div>
-						<div class="col-12 col-md-6 mb-3">
-							<label for="email" class="form-label text-success">Email</label>
-							<input type="text" class="form-control border-success" id="email" name="email" placeholder="xxxx@xxxx.com">
-							<div id="emailTip" class="invalid-feedback">not a valid input</div>
-						</div>
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="password" class="form-label text-success">Password</label>
-							<div class="input-group">
-								<input type="password" class="form-control border-success" id="password" name="password" placeholder="Enter your password">
-								<span class="input-group-text bg-white border-success" id="togglePassword" style="cursor: pointer;">
-									<svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
-										<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-										<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-									</svg>
-									<svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill text-success d-none" viewBox="0 0 16 16">
-										<path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-										<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-									</svg>
-								</span>
+	<div class="container my-auto">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-6">
+				<div class="card mt-4 shadow-sm p-4">
+					<h5 class="card-title text-center text-success mb-4">Welcome To Campground !</h5>
+					<form id="signUpForm" class="needs-validation" onsubmit="handleSubmit(event)">
+						<div class="row">
+							<div class="col-12 col-md-6 mb-3">
+								<label for="userName" class="form-label text-success">User name</label>
+								<input type="text" class="form-control border-success" id="userName" name="user_name" placeholder="Enter your username">
+								<div id="userNameTip" class="invalid-feedback">not a valid input</div>
 							</div>
-						  	<div id="passwordTip" class="invalid-feedback">not a valid input</div>
-					  	</div>
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="confirmPassword" class="form-label text-success">Confirm Password</label>
-							<div class="input-group">
-								<input type="password" class="form-control border-success" id="confirmPassword" placeholder="Confirm your password" disabled>
-								<span class="input-group-text bg-white border-success" id="togglePasswordC" style="cursor: pointer;">
-									<svg id="eyeOpenC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
-										<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-										<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-									</svg>
-									<svg id="eyeClosedC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill text-success d-none" viewBox="0 0 16 16">
-										<path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
-										<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
-									</svg>
-								</span>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="email" class="form-label text-success">Email</label>
+								<input type="text" class="form-control border-success" id="email" name="email" placeholder="xxxx@xxxx.com">
+								<div id="emailTip" class="invalid-feedback">not a valid input</div>
 							</div>
-						  	<div id="confirmPasswordTip" class="invalid-feedback">input does not match the password</div>
-					  	</div>
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="firstName" class="form-label text-success">First Name</label>
-						  	<input type="text" class="form-control border-success" id="firstName" name="first_name" placeholder="Enter your first name">
-						  	<div id="firstNameTip" class="invalid-feedback">not a valid input</div>
-					  	</div>
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="lastName" class="form-label text-success">Last Name</label>
-						  	<input type="text" class="form-control border-success" id="lastName" name="last_name" placeholder="Enter your last name">
-						  	<div id="lastNameTip" class="invalid-feedback">not a valid input</div>
-					  	</div>
-					  	<div class="col-12 col-md-6 mb-3">
-						  	<label for="location" class="form-label text-success">Location</label>
-						  	<input type="text" class="form-control border-success" id="location" name="location" placeholder="input your location">
-						  	<div id="locationTip" class="invalid-feedback">not a valid input</div>
-					  	</div>
-				  	</div>
-					<div class="col-12">
-						<div class="form-check">
-						  	<input class="form-check-input border-green" type="checkbox" value="" id="termCheck">
-						  	<label class="form-check-label" for="termCheck">
-								<span class="text-success">I agree to</span>
-								<a href="">terms and conditions</a>
-							</label>
-						  	<div class="invalid-feedback">You must agree before sign up.</div>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="password" class="form-label text-success">Password</label>
+								<div class="input-group">
+									<input type="password" class="form-control border-success" id="password" name="password" placeholder="Enter your password">
+									<span class="input-group-text bg-white border-success" id="togglePassword" style="cursor: pointer;">
+										<svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
+											<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+											<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+										</svg>
+										<svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill text-success d-none" viewBox="0 0 16 16">
+											<path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+											<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+										</svg>
+									</span>
+								</div>
+								<div id="passwordTip" class="invalid-feedback">not a valid input</div>
+							</div>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="confirmPassword" class="form-label text-success">Confirm Password</label>
+								<div class="input-group">
+									<input type="password" class="form-control border-success" id="confirmPassword" placeholder="Confirm your password" disabled>
+									<span class="input-group-text bg-white border-success" id="togglePasswordC" style="cursor: pointer;">
+										<svg id="eyeOpenC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
+											<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+											<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+										</svg>
+										<svg id="eyeClosedC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill text-success d-none" viewBox="0 0 16 16">
+											<path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+											<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+										</svg>
+									</span>
+								</div>
+								<div id="confirmPasswordTip" class="invalid-feedback">input does not match the password</div>
+							</div>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="firstName" class="form-label text-success">First Name</label>
+								<input type="text" class="form-control border-success" id="firstName" name="first_name" placeholder="Enter your first name">
+								<div id="firstNameTip" class="invalid-feedback">not a valid input</div>
+							</div>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="lastName" class="form-label text-success">Last Name</label>
+								<input type="text" class="form-control border-success" id="lastName" name="last_name" placeholder="Enter your last name">
+								<div id="lastNameTip" class="invalid-feedback">not a valid input</div>
+							</div>
+							<div class="col-12 col-md-6 mb-3">
+								<label for="location" class="form-label text-success">Location</label>
+								<input type="text" class="form-control border-success" id="location" name="location" placeholder="input your location">
+								<div id="locationTip" class="invalid-feedback">not a valid input</div>
+							</div>
 						</div>
-					</div>
-					<div class="d-flex justify-content-between align-items-center mt-4">
-						<button type="submit" class="btn btn-success w-100">
-							Sign Up
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
-								<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
-							</svg>
-						</button>
-				  	</div>
-			  	</form>
+						<div class="col-12">
+							<div class="form-check">
+								<input class="form-check-input border-green" type="checkbox" value="" id="termCheck">
+								<label class="form-check-label" for="termCheck">
+									<span class="text-success">I agree to</span>
+									<a href="">terms and conditions</a>
+								</label>
+								<div class="invalid-feedback">You must agree before sign up.</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<button type="submit" class="btn btn-success w-100">
+								Sign Up
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+									<path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
+								</svg>
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-	  	</div>
+		</div>
 	</div>
-</div>
 
-<script>
+	<script>
 
-	document.getElementById("togglePassword").addEventListener("click", function () {
-        let passwordInput = document.getElementById("password");
-        let eyeOpen = document.getElementById("eyeOpen");
-        let eyeClosed = document.getElementById("eyeClosed");
+		document.getElementById("togglePassword").addEventListener("click", function () {
+			let passwordInput = document.getElementById("password");
+			let eyeOpen = document.getElementById("eyeOpen");
+			let eyeClosed = document.getElementById("eyeClosed");
 
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            eyeOpen.classList.add("d-none");
-            eyeClosed.classList.remove("d-none");
-        } else {
-            passwordInput.type = "password";
-            eyeOpen.classList.remove("d-none");
-            eyeClosed.classList.add("d-none");
-        }
-    });
-
-	document.getElementById("togglePasswordC").addEventListener("click", function () {
-        let passwordInput = document.getElementById("confirmPassword");
-        let eyeOpen = document.getElementById("eyeOpenC");
-        let eyeClosed = document.getElementById("eyeClosedC");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            eyeOpen.classList.add("d-none");
-            eyeClosed.classList.remove("d-none");
-        } else {
-            passwordInput.type = "password";
-            eyeOpen.classList.remove("d-none");
-            eyeClosed.classList.add("d-none");
-        }
-    });
-
-	document.addEventListener('DOMContentLoaded', () => {
-		clearErrorOnInput('#userName');
-		clearErrorOnInput('#email');
-		clearErrorOnInput('#password');
-		clearErrorOnInput('#confirmPassword');
-		clearErrorOnInput('#firstName');
-		clearErrorOnInput('#lastName');
-		clearErrorOnInput('#location');
-		clearErrorOnInput('#termCheck');
-	});
-
-	document.getElementById('password').addEventListener('input', function() {
-    	document.getElementById('confirmPassword').disabled = (this.value.trim() === "");
-	});
-
-	function preSubmitCheck() {
-		let canSubmit = true;
-		const usrInput = document.getElementById('userName')
-		if (usrInput.value.trim() === "") {
-			usrInput.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		const emailInput = document.getElementById('email')
-		if (emailInput.value.trim() === "") {
-			emailInput.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		const pwd = document.getElementById('password')
-		const pwdConform = document.getElementById('confirmPassword')
-		if (pwd.value.trim() === "") {
-			pwd.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		if (pwdConform.value.trim() !== pwd.value.trim()) {
-			pwdConform.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		const fnInput = document.getElementById('firstName')
-		if (fnInput.value.trim() === "") {
-			fnInput.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		const lnInput = document.getElementById('lastName')
-		if (lnInput.value.trim() === "") {
-			lnInput.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		const locationInput = document.getElementById('location')
-		if (locationInput.value.trim() === "") {
-			locationInput.classList.add('is-invalid', 'border-danger');
-			canSubmit = false;
-		}
-		return canSubmit;
-	}
-
-	function handleSubmit(event) {
-		event.preventDefault();
-		if (!preSubmitCheck()) {
-			return;
-		}
-		const termCheck = document.getElementById('termCheck')
-		if (!termCheck.checked) {
-			termCheck.classList.add('is-invalid', 'border-danger');
-			return;
-		}
-		const formData = new FormData(document.querySelector('#signUpForm'));
-		const urlEncodedData = new URLSearchParams(formData).toString();
-		formFetch('/api/auth/register', {
-			method: "POST",
-			body: urlEncodedData
-		}).onSuccess(data => {
-			showAlertModal('Successful, redirect to login page in 5 seconds ...', "Login", () => {
-				window.location.href = "/login";
-			})
-			setTimeout(() => {
-				window.location.href = "/login";
-			}, 5000)
-		}).onBadRequest(data => {
-			const errData = data['err']
-			if ('user_name' in errData) {
-				const usrInput = document.querySelector('#user_name');
-				usrInput.classList.add('is-invalid', 'border-danger');
-          		const invalidFeedback = usrInput.nextElementSibling;
-         		invalidFeedback.textContent = errData['user_name']
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+				eyeOpen.classList.add("d-none");
+				eyeClosed.classList.remove("d-none");
+			} else {
+				passwordInput.type = "password";
+				eyeOpen.classList.remove("d-none");
+				eyeClosed.classList.add("d-none");
 			}
-			if ('email' in errData) {
-				const emailInput = document.querySelector('#email');
-				emailInput.classList.add('is-invalid', 'border-danger');
-          		const invalidFeedback = emailInput.nextElementSibling;
-				invalidFeedback.textContent = errData['email']
-			}
-			if ('password' in errData) {
-				const passwordInput = document.querySelector('#password');
-          		passwordInput.classList.add('is-invalid', 'border-danger');
-          		const invalidFeedback = passwordInput.nextElementSibling;
-          		invalidFeedback.textContent = errData['password']
-			}
-		}).onNotAllowed(data => {
-			
 		});
-	}
+
+		document.getElementById("togglePasswordC").addEventListener("click", function () {
+			let passwordInput = document.getElementById("confirmPassword");
+			let eyeOpen = document.getElementById("eyeOpenC");
+			let eyeClosed = document.getElementById("eyeClosedC");
+
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+				eyeOpen.classList.add("d-none");
+				eyeClosed.classList.remove("d-none");
+			} else {
+				passwordInput.type = "password";
+				eyeOpen.classList.remove("d-none");
+				eyeClosed.classList.add("d-none");
+			}
+		});
+
+		document.addEventListener('DOMContentLoaded', () => {
+			clearErrorOnInput('#userName');
+			clearErrorOnInput('#email');
+			clearErrorOnInput('#password');
+			clearErrorOnInput('#confirmPassword');
+			clearErrorOnInput('#firstName');
+			clearErrorOnInput('#lastName');
+			clearErrorOnInput('#location');
+			clearErrorOnInput('#termCheck');
+		});
+
+		document.getElementById('password').addEventListener('input', function() {
+			document.getElementById('confirmPassword').disabled = (this.value.trim() === "");
+		});
+
+		function preSubmitCheck() {
+			let canSubmit = true;
+			const usrInput = document.getElementById('userName')
+			if (usrInput.value.trim() === "") {
+				usrInput.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			const emailInput = document.getElementById('email')
+			if (emailInput.value.trim() === "") {
+				emailInput.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			const pwd = document.getElementById('password')
+			const pwdConform = document.getElementById('confirmPassword')
+			if (pwd.value.trim() === "") {
+				pwd.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			if (pwdConform.value.trim() !== pwd.value.trim()) {
+				pwdConform.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			const fnInput = document.getElementById('firstName')
+			if (fnInput.value.trim() === "") {
+				fnInput.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			const lnInput = document.getElementById('lastName')
+			if (lnInput.value.trim() === "") {
+				lnInput.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			const locationInput = document.getElementById('location')
+			if (locationInput.value.trim() === "") {
+				locationInput.classList.add('is-invalid', 'border-danger');
+				canSubmit = false;
+			}
+			return canSubmit;
+		}
+
+		function handleSubmit(event) {
+			event.preventDefault();
+			if (!preSubmitCheck()) {
+				return;
+			}
+			const termCheck = document.getElementById('termCheck')
+			if (!termCheck.checked) {
+				termCheck.classList.add('is-invalid', 'border-danger');
+				return;
+			}
+			const formData = new FormData(document.querySelector('#signUpForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+			formFetch('/api/auth/register', {
+				body: urlEncodedData
+			}).onSuccess(data => {
+				showAlertModal('Successful, redirect to login page in 5 seconds ...', "Login", () => {
+					window.location.href = "/login";
+				})
+				setTimeout(() => {
+					window.location.href = "/login";
+				}, 5000)
+			}).onBadRequest(data => {
+				const errData = data['err']
+				if ('user_name' in errData) {
+					const usrInput = document.querySelector('#user_name');
+					usrInput.classList.add('is-invalid', 'border-danger');
+					const invalidFeedback = usrInput.nextElementSibling;
+					invalidFeedback.textContent = errData['user_name']
+				}
+				if ('email' in errData) {
+					const emailInput = document.querySelector('#email');
+					emailInput.classList.add('is-invalid', 'border-danger');
+					const invalidFeedback = emailInput.nextElementSibling;
+					invalidFeedback.textContent = errData['email']
+				}
+				if ('password' in errData) {
+					const passwordInput = document.querySelector('#password');
+					passwordInput.classList.add('is-invalid', 'border-danger');
+					const invalidFeedback = passwordInput.nextElementSibling;
+					invalidFeedback.textContent = errData['password']
+				}
+			}).onNotAllowed(data => {
+				
+			});
+		}
 
 
-</script>
+	</script>
 
 {% endblock %}
 

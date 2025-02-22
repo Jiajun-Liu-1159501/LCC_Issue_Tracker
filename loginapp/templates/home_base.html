@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block user %}
+    <button class="btn p-0 ms-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAvatar" aria-controls="offcanvasAvatar">
+        <img src="" alt="User Avatar" class="rounded-circle border border-white" width="40" height="40">
+    </button>
+{% endblock %}
+
+{% block menu %}
+    <div class="offcanvas-body d-flex flex-column align-items-start gap-3 ps-5">
+        <ul class="nav nav-pills w-100" id="menuList">
+            <li class="nav-item w-100" id="my_issues">
+                <a class="nav-link text-center" href="">
+                    <strong>My Issues</strong>
+                </a>
+            </li>
+            <li class="nav-item w-100" id="all_issues">
+                <a class="nav-link text-center" href="">
+                    <strong>All Issues</strong>
+                </a>
+            </li>
+            <li class="nav-item w-100" id="user_management">
+                <a class="nav-link text-center" href="">
+                    <strong>User Management</strong>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAvatar" aria-labelledby="offcanvasAvatarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-success d-flex align-items-center gap-2" id="offcanvasLabel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                </svg>
+                Settings
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column align-items-start gap-3 ps-5">
+            <ul class="nav nav-pills w-100" id="avaMenuList">
+                <li class="nav-item w-100" id="view_profile">
+                    <a class="nav-link text-start text-success d-flex align-items-center gap-3" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                        </svg>
+                        <strong>View my profile</strong>
+                    </a>
+                </li>
+                <li class="nav-item w-100" id="edit_profile">
+                    <a class="nav-link text-start text-success d-flex align-items-center gap-3" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                        <strong>Edit my profile</strong>
+                    </a>
+                </li>
+                <li class="nav-item w-100" id="change_password">
+                    <a class="nav-link text-start text-success d-flex align-items-center gap-3" onclick="handelPasswordChange()" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-p-circle" viewBox="0 0 16 16">
+                            <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h2.962C10.045 4.002 11 5.104 11 6.586c0 1.494-.967 2.578-2.55 2.578H6.784V12H5.5zm2.77 4.072c.893 0 1.419-.545 1.419-1.488s-.526-1.482-1.42-1.482H6.778v2.97z"/>
+                        </svg>
+                        <strong>Change password</strong>
+                    </a>
+                </li>
+                <li class="nav-item w-100" id="logout">
+                    <a class="nav-link text-start text-danger d-flex align-items-center gap-3" onclick="handleSignOut()" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                        </svg>
+                        <strong>Sign Out</strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+
+    {% block subContent %}
+    {% endblock %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            getFetch('/api/user/current', {}).onSuccess(data => {
+                const operations = data['operations'];
+                const menuListItems = document.querySelectorAll('#menuList .nav-item');
+                menuListItems.forEach(item => {
+                    const itemId = item.id;
+                    if (!operations.includes(itemId)) {
+                        item.style.display = 'none';
+                    } else {
+                        item.style.display = '';
+                    }
+                });
+            })
+        });
+
+        function handelPasswordChange() {
+            
+        }
+
+        function handleSignOut() {
+            formFetch('/api/auth/logout', {}).onSuccess((data) => {
+                showAlertModal('Logged out, redirect to login page in 5 seconds ...', "Sign In", () => {
+                    window.location.href = "/login";
+                })
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 5000)
+            })
+        }
+
+    </script>
+
+{% endblock %}
