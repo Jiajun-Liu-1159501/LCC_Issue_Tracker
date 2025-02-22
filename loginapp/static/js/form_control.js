@@ -79,3 +79,16 @@ function showAlertModal(message, btn_text = "OK", btn_func = null) {
     let modal = new bootstrap.Modal(document.getElementById("alertModal"));
     modal.show();
 }
+
+function clearAllCookies() {
+    // 获取所有的 cookies
+    const cookies = document.cookie.split(';');
+    
+    cookies.forEach(cookie => {
+        const cookieName = cookie.split('=')[0].trim(); // 获取 cookie 名称
+        // 设置过期时间为过去的时间，删除该 cookie
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        // 你可以选择设置更广泛的 path 来确保删除所有 cookies，如设置 path='/'
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+    });
+}

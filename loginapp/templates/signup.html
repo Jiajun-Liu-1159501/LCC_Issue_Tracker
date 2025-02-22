@@ -52,7 +52,6 @@
 							<div class="col-12 col-md-6 mb-3">
 								<label for="password" class="form-label text-success">Password</label>
 								<div class="input-group">
-									<input type="password" class="form-control border-success" id="password" name="password" placeholder="Enter your password">
 									<span class="input-group-text bg-white border-success" id="togglePassword" style="cursor: pointer;">
 										<svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
 											<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -63,13 +62,13 @@
 											<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
 										</svg>
 									</span>
+									<input type="password" class="form-control border-success" id="password" name="password" placeholder="Enter your password">
+									<div id="passwordTip" class="invalid-feedback">not a valid input</div>
 								</div>
-								<div id="passwordTip" class="invalid-feedback">not a valid input</div>
 							</div>
 							<div class="col-12 col-md-6 mb-3">
 								<label for="confirmPassword" class="form-label text-success">Confirm Password</label>
 								<div class="input-group">
-									<input type="password" class="form-control border-success" id="confirmPassword" placeholder="Confirm your password" disabled>
 									<span class="input-group-text bg-white border-success" id="togglePasswordC" style="cursor: pointer;">
 										<svg id="eyeOpenC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
 											<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -80,8 +79,9 @@
 											<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
 										</svg>
 									</span>
+									<input type="password" class="form-control border-success" id="confirmPassword" placeholder="Confirm your password" disabled>
+									<div id="confirmPasswordTip" class="invalid-feedback">input does not match the password</div>
 								</div>
-								<div id="confirmPasswordTip" class="invalid-feedback">input does not match the password</div>
 							</div>
 							<div class="col-12 col-md-6 mb-3">
 								<label for="firstName" class="form-label text-success">First Name</label>

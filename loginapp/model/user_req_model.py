@@ -121,7 +121,7 @@ class PasswordResetRequest:
 
     @staticmethod
     def build(request: Request) -> 'PasswordResetRequest':
-        model: UserUpdateRequest =  UserUpdateRequest(
+        model: PasswordResetRequest =  PasswordResetRequest(
             int(request.form.get('user_id')),
             request.form.get('new_password')
         )
@@ -129,7 +129,7 @@ class PasswordResetRequest:
         return model
     
     def verify(self) -> None:
-        if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("not a valid password input")
+        if (not self.new_password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.new_password)): raise ArgumentError("password","not a valid password input")
 
 
 @dataclass

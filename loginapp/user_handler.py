@@ -16,6 +16,7 @@ user: Blueprint = Blueprint('user', __name__)
 def get_current_login() -> Response:
     user: User = SessionHolder.current_login()
     return jsonify({
+        "user_info": user,
         "operations": user.get_role_enum().get_allowed_operations()
     }), 200
 
@@ -39,7 +40,9 @@ def edit_profile_endpoint() -> str:
 def reset_pwd_endpoint() -> str:
     req: PasswordResetRequest = PasswordResetRequest.build(request)
     user_service.password_reset(req, lambda u: SessionHolder.session_evict(session, u) and None)
-    return "success"
+    return jsonify({
+        "message": "success"
+    }), 200
 
 @user.post("/resetimg")
 @current_user(id_func = lambda: request.form.get('user_id'))

@@ -45,6 +45,7 @@ def token_check(*, options: List[Role]):
             # Check if the session is still valid
             current_login: User = SessionHolder.current_login()
             if not current_login:
+                SessionHolder.session_evict(session, None)
                 raise UnauthorizedError('login information expires')
             # If no role restrictions are provided, allow access
             if options is None or len(options) == 0:
@@ -91,9 +92,12 @@ def current_user(*, id_func: Callable[[], str]):
             if token is None:
                 raise UnauthorizedError('no login information found')
             # Retrieve the currently logged-in user from the session
-            current_login: User = session.get('user')
+            current_login: User = SessionHolder.current_login()
+            if not current_login:
+                SessionHolder.session_evict(session, None)
+                raise UnauthorizedError('login information expires')
             # Check if the current user's ID matches the expected ID
-            if current_login.user_id != id_func():
+            if str(current_login.user_id) != id_func():
                 raise AccessDeclinedError('this operation is not allowed')
             # If all checks pass, execute the original function
             return func(*args, **kwargs)

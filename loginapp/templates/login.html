@@ -46,7 +46,6 @@
 						<div class="mb-3">
 							<label for="loginPassword" class="form-label text-success">Password</label>
 							<div class="input-group">
-								<input type="password" class="form-control border-success" id="loginPassword" name="password">
 								<span class="input-group-text bg-white border-success" id="togglePassword" style="cursor: pointer;">
 									<svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
 										<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -57,8 +56,9 @@
 										<path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
 									</svg>
 								</span>
+								<input type="password" class="form-control border-success" id="loginPassword" name="password">
+								<div id="passwordTip" class="invalid-feedback"></div>
 							</div>
-							<div id="passwordTip" class="invalid-feedback"></div>
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-5">
 							<button type="submit" class="btn btn-success w-100">
@@ -100,6 +100,7 @@
 
 		function handleSubmit(event) {
 			event.preventDefault();
+			clearAllCookies()
 			const formData = new FormData(document.querySelector('#loginForm'));
 			const urlEncodedData = new URLSearchParams(formData).toString();
 			formFetch('/api/auth/login', {

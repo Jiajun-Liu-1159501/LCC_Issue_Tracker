@@ -1,5 +1,6 @@
 
 from dataclasses import asdict
+import token
 from flask import session
 from flask.sessions import SessionMixin
 from loginapp.model.data_model import User
@@ -28,6 +29,7 @@ class SessionHolder:
     """
 
     session_dict: ConcurrentDict[str, User] = ConcurrentDict()
+    token_dict: ConcurrentDict[str, SessionMixin] = ConcurrentDict()
 
     @staticmethod
     def session_hold(session: SessionMixin, user: User) -> None:
@@ -35,7 +37,7 @@ class SessionHolder:
         Creates and stores a session for the given user.
 
         Generates a unique token for the user and stores it in both the 
-        `session_dict` and the Flask session object.
+        `session_dict` and the Flask session object.S
 
         Args:
             session (SessionMixin): The Flask session object.
@@ -48,6 +50,7 @@ class SessionHolder:
         """
         token: str = SessionHolder.generate_token(user)
         SessionHolder.session_dict.setdefault(token, user)
+        SessionHolder.token_dict.setdefault(token, session)
         session.setdefault('token', token)
 
     @staticmethod
@@ -68,10 +71,13 @@ class SessionHolder:
             ```
         """
         if user == None:
-            SessionHolder.session_dict.pop(session.pop('token', None))
+            token: str = session.pop('token', None)
+            SessionHolder.session_dict.pop(token, None)
+            SessionHolder.token_dict.pop(token, None)
         else:
             token: str = SessionHolder.generate_token(user)
             SessionHolder.session_dict.pop(token, None)
+            SessionHolder.token_dict.pop(token, None).pop('token', None)
 
     @staticmethod
     def current_login() -> User:
@@ -128,5 +134,5 @@ class SessionHolder:
             print(f"Generated Token: {token}")
             ```
         """
-        user_info = json.dumps(asdict(user), sort_keys = True)
+        user_info = json.dumps({"user_id": user.user_id}, sort_keys = True)
         return hashlib.md5(user_info.encode()).hexdigest()

@@ -100,9 +100,9 @@ class UserService:
     def password_reset(self, req: PasswordResetRequest, on_reset: Callable[[User], T]) -> T:
         user: User = self.get_user_by_id(req.user_id)
         if user.password == req.new_password:
-            raise OperationNotAllowedError("cannot use the same password")
+            raise ArgumentError("password", "cannot use the same password")
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("UPDATE users SET password = %s WHERE user_id = %s", [req.new_password, req.user_id])
+        cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s", [req.new_password, req.user_id])
         return on_reset(user) if on_reset is not None else None
     
     def image_reset(self, req: ImageResetRequest) -> None:
