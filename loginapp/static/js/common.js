@@ -10,7 +10,7 @@ class Admin {
     }
 
     handleProfileBadge(button) {
-        button.classList.add("btn-primary");
+        button.classList.add("btn-outline-primary");
         button.innerHTML = this.value;
     }
 
@@ -28,7 +28,7 @@ class Helper {
     }
 
     handleProfileBadge(button) {
-        button.classList.add("btn-warning");
+        button.classList.add("btn-outline-warning");
         button.innerHTML = this.value;
     }
 
@@ -46,7 +46,7 @@ class Visitor {
     }
 
     handleProfileBadge(button) {
-        button.classList.add("btn-secondary");
+        button.classList.add("btn-outline-secondary");
         button.innerHTML = this.value;
     }
 

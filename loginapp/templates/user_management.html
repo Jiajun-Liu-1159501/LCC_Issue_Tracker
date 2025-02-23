@@ -58,22 +58,73 @@
                 </div>
             </div>
         </form>
-        
         <div class="mb-3" style="height: 1px; background: linear-gradient(to right, #e0e0e0, #9e9e9e, #e0e0e0);"></div>
-        
-        <h4 class="text-success d-flex align-items-center gap-2 mb-3">
+        <h4 class="text-success d-flex align-items-center gap-2 mb-3 text-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
                 <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z"/>
             </svg>
             Search Result
         </h4>
-
+        <div class="table-responsive mb-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="display: none;">User Id</th>
+                        <th class="text-success" scope="col">User Name</th>
+                        <th class="text-success" scope="col">Email</th>
+                        <th class="text-success" scope="col">First Name</th>
+                        <th class="text-success" scope="col">Last Name</th>
+                        <th class="text-success" scope="col">Location</th>
+                        <th class="text-success" scope="col">Role</th>
+                        <th class="text-success" scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">   
+                </tbody>  
+            </table>
+        </div>
     </div>
 
     <script>
 
         function handleSearch(event) {
             event.preventDefault();
+            refillTableData();
+        }
+
+        function refillTableData() {
+            const formData = new FormData(document.querySelector('#userSerchForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+			getFetch(`/api/user/list?${urlEncodedData}`, {
+			}).onSuccess((data) => {
+                const tbody = document.getElementById('userTable');
+                tbody.innerHTML = '';
+                data['data'].forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="display: none;">${item['user_id']}</td>
+                        <td>${item['user_name']}</td>
+                        <td>${item['email']}</td>
+                        <td>${item['first_name']}</td>
+                        <td>${item['last_name']}</td>
+                        <td>${item['location']}</td>
+                        <td>
+                            <button type="button" class="btn" id="tableRole${item['user_id']}"></button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn" id="tableStatus${item['user_id']}">${item['status']}</button>
+                        </td>
+                        `;
+                    tbody.appendChild(row);
+                    Role.getRole(item['role']).handleProfileBadge(row.querySelector(`#tableRole${item['user_id']}`));
+                    const statusButton = row.querySelector(`#tableStatus${item['user_id']}`);
+                    if (item['status'] === 'active') {
+                        statusButton.classList.add('btn-outline-success');
+                    } else if (item['status'] === 'inactive') {
+                        statusButton.classList.add('btn-outline-danger');
+                    }
+                });
+            })
         }
         
     </script>
