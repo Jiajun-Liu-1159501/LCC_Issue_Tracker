@@ -30,14 +30,14 @@ function preSubmitCheck(elements) {
 
 function passwordConfirmCheck(password, passwordConfirm) {
     const pwd = document.getElementById(password);
-    const pwdConform = document.getElementById(passwordConfirm);
+    const confirm = document.getElementById(passwordConfirm);
     let canSubmit = true;
 	if (pwd.value.trim() === "") {
         pwd.classList.add('is-invalid', 'border-danger');
         canSubmit = false;
     }
-    if (pwdConform.value.trim() !== pwd.value.trim()) {
-        pwdConform.classList.add('is-invalid', 'border-danger');
+    if (confirm.value.trim() !== pwd.value.trim()) {
+        confirm.classList.add('is-invalid', 'border-danger');
         canSubmit = false;
     }
     return canSubmit;
@@ -113,5 +113,15 @@ function showAlertModal(message, btn_text = "OK", btn_func = null) {
     // Initialize and show the modal
     let modal = new bootstrap.Modal(document.getElementById("alertModal"));
     modal.show();
+}
+
+function loadButton(button) {
+    button.disabled = true;
+    button.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+}
+
+function restoreButton(button, html) {
+    button.disabled = false;
+    button.innerHTML = html;
 }
 

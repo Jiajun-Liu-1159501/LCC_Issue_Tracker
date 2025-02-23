@@ -29,7 +29,7 @@ class RegisterRequest:
             request.form.get('last_name'),
             request.form.get('location'),
             request.form.get('profile_image', ''),
-            Role.VISIOTR,
+            Role.VISITOR,
             UserStatus.ACTIVE
         )
         model.verify()

@@ -71,7 +71,7 @@
 							</div>
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-5">
-							<button type="submit" class="btn btn-success w-100">
+							<button id="loginBtn" type="submit" class="btn btn-success w-100">
 								Sign In
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
 									<path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
@@ -110,6 +110,9 @@
 
 		function handleSubmit(event) {
 			event.preventDefault();
+			const btn = document.getElementById('loginBtn');
+			const inner = btn.innerHTML;
+			loadButton(submitButton);
 			const formData = new FormData(document.querySelector('#loginForm'));
 			const urlEncodedData = new URLSearchParams(formData).toString();
 			formFetch('/api/auth/login', {
@@ -120,8 +123,10 @@
 				const errData = data['err']
 				if ('user_name' in errData) { insertErrorTip('#loginUserName', errData['user_name']);}
 				if ('password' in errData) { insertErrorTip('#loginPassword', errData['password']);}
+				restoreButton(btn, inner);
 			}).onNotAllowed(data => {
 				showWarningModal(data['err'], "OK", null)
+				restoreButton(btn, inner);
 			});
 		}
 
