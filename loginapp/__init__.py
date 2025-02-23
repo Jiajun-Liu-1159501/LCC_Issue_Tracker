@@ -117,3 +117,5 @@ def register_router(app: Flask) -> None:
     app.register_blueprint(auth, url_prefix = '/api/auth')
     app.register_blueprint(user, url_prefix = '/api/user')
     app.register_blueprint(issue, url_prefix = '/api/issue')
+
+app: Flask = create_app()
