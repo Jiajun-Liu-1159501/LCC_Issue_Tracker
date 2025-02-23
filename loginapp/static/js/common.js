@@ -9,6 +9,11 @@ class Admin {
         badge.innerHTML = this.value;
     }
 
+    handleProfileBadge(button) {
+        button.classList.add("btn-primary");
+        button.innerHTML = this.value;
+    }
+
 }
 
 class Helper {
@@ -22,6 +27,11 @@ class Helper {
         badge.innerHTML = this.value;
     }
 
+    handleProfileBadge(button) {
+        button.classList.add("btn-warning");
+        button.innerHTML = this.value;
+    }
+
 }
 
 class Visitor {
@@ -33,6 +43,11 @@ class Visitor {
     handleAvatorBadge(badge) {
         badge.classList.add("text-bg-secondary");
         badge.innerHTML = this.value;
+    }
+
+    handleProfileBadge(button) {
+        button.classList.add("btn-secondary");
+        button.innerHTML = this.value;
     }
 
 }
