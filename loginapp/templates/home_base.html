@@ -314,22 +314,22 @@
 
         let currentUser
 
-        // document.addEventListener("DOMContentLoaded", async () => {
-        //     getFetch('/api/user/current', {}).onSuccess(data => {
-        //         const operations = data['operations'];
-        //         const menuListItems = document.querySelectorAll('#menuList .nav-item');
-        //         menuListItems.forEach(item => {
-        //             const itemId = item.id;
-        //             if (!operations.includes(itemId)) {
-        //                 item.style.display = 'none';
-        //             } else {
-        //                 item.style.display = '';
-        //             }
-        //         });
-        //         currentUser = data['user_info'];
-        //         Role.getRole(currentUser['role']).handleAvatorBadge(document.getElementById('roleBadge'));
-        //     })
-        // });
+        document.addEventListener("DOMContentLoaded", async () => {
+            getFetch('/api/user/current', {}).onSuccess(data => {
+                const operations = data['operations'];
+                const menuListItems = document.querySelectorAll('#menuList .nav-item');
+                menuListItems.forEach(item => {
+                    const itemId = item.id;
+                    if (!operations.includes(itemId)) {
+                        item.style.display = 'none';
+                    } else {
+                        item.style.display = '';
+                    }
+                });
+                currentUser = data['user_info'];
+                Role.getRole(currentUser['role']).handleAvatorBadge(document.getElementById('roleBadge'));
+            })
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
 			clearErrorOnInput('#password');

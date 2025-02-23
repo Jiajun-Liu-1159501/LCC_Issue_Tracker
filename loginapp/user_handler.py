@@ -22,7 +22,7 @@ def get_current_login() -> Response:
 
 @user.get("/list")
 @token_check(options = [Role.ADMIN])
-def list_users_endpoint() -> List[User]:
+def list_users_endpoint() -> Response:
     user_name: str = request.args.get('user_name', type = str)
     first_name: str = request.args.get('first_name', type = str)
     last_name: str = request.args.get('last_name', type = str)
@@ -33,7 +33,7 @@ def list_users_endpoint() -> List[User]:
 
 @user.post("/edit")
 @current_user(id_func = lambda: request.form.get('user_id'))
-def edit_profile_endpoint() -> str:
+def edit_profile_endpoint() -> Response:
     req: UserEditRequest = UserEditRequest.build(request)
     user_service.edit_user(req, lambda u: None)
     return jsonify({
@@ -42,7 +42,7 @@ def edit_profile_endpoint() -> str:
 
 @user.post("/resetpwd")
 @current_user(id_func = lambda: request.form.get('user_id'))
-def reset_pwd_endpoint() -> str:
+def reset_pwd_endpoint() -> Response:
     req: PasswordResetRequest = PasswordResetRequest.build(request)
     user_service.password_reset(req, lambda u: SessionHolder.session_evict(session, u) and None)
     return jsonify({
@@ -51,14 +51,18 @@ def reset_pwd_endpoint() -> str:
 
 @user.post("/resetimg")
 @current_user(id_func = lambda: request.form.get('user_id'))
-def reset_image_endpoint() -> str:
+def reset_image_endpoint() -> Response:
     req: ImageResetRequest = ImageResetRequest.build(request)
     user_service.image_reset(req)
-    return "success"
+    return jsonify({
+        "message": "success"
+    }), 200
 
 @user.post("/update")
 @token_check(options = [Role.ADMIN])
-def update_user_endpoint() -> str:
+def update_user_endpoint() -> Response:
     req: UserUpdateRequest = UserUpdateRequest.build(request)
     user_service.update_user(req, lambda u: SessionHolder.session_evict(session, u) and None)
-    return "success"
+    return jsonify({
+        "message": "success"
+    }), 200
