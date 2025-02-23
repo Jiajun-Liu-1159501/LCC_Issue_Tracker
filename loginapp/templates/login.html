@@ -112,7 +112,7 @@
 			event.preventDefault();
 			const btn = document.getElementById('loginBtn');
 			const inner = btn.innerHTML;
-			loadButton(submitButton);
+			loadButton(btn);
 			const formData = new FormData(document.querySelector('#loginForm'));
 			const urlEncodedData = new URLSearchParams(formData).toString();
 			formFetch('/api/auth/login', {

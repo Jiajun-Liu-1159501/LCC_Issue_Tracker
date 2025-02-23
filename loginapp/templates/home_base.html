@@ -3,6 +3,7 @@
 {% block user %}
     <button class="btn p-0 ms-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAvatar" aria-controls="offcanvasAvatar">
         <img src="" alt="User Avatar" class="rounded-circle border border-white" width="40" height="40">
+        <span id="roleBadge" class="position-relative top-50 start-30 translate-middle badge rounded-pill"></span>
     </button>
 {% endblock %}
 
@@ -309,6 +310,8 @@
                     }
                 });
                 currentUser = data['user_info'];
+                const badge = document.getElementById('roleBadge');
+                Role.getRole(currentUser['role']).handleAvatorBadge(badge);
             })
         });
 
