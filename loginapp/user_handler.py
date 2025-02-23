@@ -26,7 +26,10 @@ def list_users_endpoint() -> List[User]:
     user_name: str = request.args.get('user_name', type = str)
     first_name: str = request.args.get('first_name', type = str)
     last_name: str = request.args.get('last_name', type = str)
-    return user_service.list_users(user_name,  first_name, last_name)
+    users: List[User] = user_service.list_users(user_name,  first_name, last_name)
+    return jsonify({
+        "data": users 
+    }), 200
 
 @user.post("/edit")
 @current_user(id_func = lambda: request.form.get('user_id'))

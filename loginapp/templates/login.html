@@ -45,7 +45,7 @@
 								User name
 							</label>
 							<input type="text" class="form-control border-success" id="loginUserName" name="user_name" placeholder="Enter user name to login">
-							<div id="userNameTip" class="invalid-feedback"></div>
+							<div id="userNameTip" class="invalid-feedback">not a valid input</div>
 						</div>
 						<div class="mb-3">
 							<label for="loginPassword" class="form-label text-success d-flex align-items-center gap-2">
@@ -67,7 +67,7 @@
 									</svg>
 								</span>
 								<input type="password" class="form-control border-success" id="loginPassword" name="password">
-								<div id="passwordTip" class="invalid-feedback"></div>
+								<div id="passwordTip" class="invalid-feedback">not a valid input</div>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-5">
@@ -110,6 +110,9 @@
 
 		function handleSubmit(event) {
 			event.preventDefault();
+			if (!preSubmitCheck(['loginUserName', 'loginPassword'])) {
+				return;
+			}
 			const btn = document.getElementById('loginBtn');
 			const inner = btn.innerHTML;
 			loadButton(btn);
