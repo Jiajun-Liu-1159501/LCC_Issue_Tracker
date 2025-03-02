@@ -18,4 +18,3 @@ def home_page() -> str:
 @page.get("/userManage")
 def user_management_page() -> str:
     return render_template("user_management.html")
-

@@ -53,6 +53,7 @@ def login_endpoint() -> Response:
     """
     req: LoginRequest = LoginRequest.build(request)
     user: User = user_service.user_login(req, lambda u: SessionHolder.session_hold(session, u) and u)
+    
     return jsonify({
         "message": "success",
     }), 200

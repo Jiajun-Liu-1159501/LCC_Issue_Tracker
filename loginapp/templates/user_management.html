@@ -85,6 +85,8 @@
         </div>
     </div>
 
+
+
     <script>
 
         function handleSearch(event) {
@@ -123,6 +125,19 @@
                     } else if (item['status'] === 'inactive') {
                         statusButton.classList.add('btn-outline-danger');
                     }
+                    statusButton.addEventListener('click', () => {
+                        showWarningModal(`<span class='text-success'>${item['user_name']}</span> will be set to <span class='text-danger'>${item['status'] === 'active'? 'INACTIVE' : 'ACTIVE'}</span>`, "Confirm", () => {
+                            const formData = new URLSearchParams();
+                            formData.append('user_id', item['user_id']);
+                            formData.append('status', item['status'] === 'active'? 'incative' : 'active')
+                            const urlEncodedData = new URLSearchParams(formData).toString();
+                            formFetch('/api/user/update', {
+                                body: urlEncodedData
+                            }).onSuccess((data) => {
+                                refillTableData()
+                            })
+                        })
+                    })
                 });
             })
         }

@@ -109,8 +109,7 @@ class UserUpdateRequest:
         return model
     
     def verify(self) -> None:
-        if not self.role: raise ArgumentError("invalid user role input")
-        if not self.status: raise ArgumentError("invalid user status input")
+        pass
 
 
 @dataclass
