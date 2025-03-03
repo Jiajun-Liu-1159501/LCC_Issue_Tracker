@@ -21,11 +21,30 @@ def create_issue_endpoint() -> Response:
 
 @issue.get("/all")
 @token_check(options = None)
-def all_issue_endpoint() -> Response:
+def all_issues_endpoint() -> Response:
     summary: str = request.args.get('summary', type = str)
     user_name: str = request.args.get('user_name', type = str)
     user_id: str = request.args.get('user_id', type = str)
     data: List[IssueListResponse] = issue_service.all_issues(summary, user_name, user_id, lambda x: IssueListResponse(
+        x['issue_id'],
+        x['summary'],
+        x['created_at'],
+        x['status'],
+        x['user_id'],
+        x['user_name'],
+        x['profile_image'],
+        x['comments']
+    ))
+    return jsonify({
+        "data": data
+    }), 200
+
+@issue.get("/my")
+@token_check(options = None)
+def my_issues_endpoint() -> Response:
+    summary: str = request.args.get('summary', type = str)
+    user_id: int = SessionHolder.current_login().user_id
+    data: List[IssueListResponse] = issue_service.all_issues(summary, None, user_id, lambda x: IssueListResponse(
         x['issue_id'],
         x['summary'],
         x['created_at'],

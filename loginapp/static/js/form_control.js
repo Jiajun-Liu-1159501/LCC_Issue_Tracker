@@ -1,9 +1,4 @@
-/**
- * Clears the error state on the input element when the user starts typing.
- * It removes the "is-invalid" class and clears the error message.
- * 
- * @param {string} selector - The CSS selector to target the input element.
- */
+
 function clearErrorOnInput(selector) {
     const inputElement = document.querySelector(selector);
     if (!inputElement) return; // Exit if the element doesn't exist.
@@ -50,67 +45,20 @@ function insertErrorTip(selector, message) {
     invalidFeedback.textContent = message
 }
 
-
-/**
- * Displays a Bootstrap modal with a custom message and button.
- * The modal will either close automatically or perform a custom action based on the provided button function.
- * 
- * @param {string} message - The message to display in the modal.
- * @param {string} btn_text - The text to display on the modal button (defaults to "OK").
- * @param {function|null} btn_func - A custom function to execute when the button is clicked (defaults to closing the modal).
- */
-function showWarningModal(message, btn_text = "OK", btn_func = null) {
-    // Set the modal message
-    document.getElementById("warningModalMessage").innerHTML = message;
-
-    // Get the button inside the modal and update its text content
-    const modalButton = document.getElementById("warningModalButton");
-    modalButton.textContent = btn_text;
-
-    // Clone the button to remove previous event listeners before reattaching
-    modalButton.replaceWith(modalButton.cloneNode(true));
-    const newModalButton = document.getElementById("warningModalButton");
-
-    // If a custom function is provided, bind it to the button click event
-    if (btn_func && typeof btn_func === "function") {
-        newModalButton.addEventListener("click", btn_func);
-    } else {
-        // Default behavior: close the modal when the button is clicked
-        newModalButton.addEventListener("click", () => {
-            let modal = bootstrap.Modal.getInstance(document.getElementById("warningModal"));
-            modal.hide(); // Hide the modal
-        });
-    }
-
-    // Initialize and show the modal
-    let modal = new bootstrap.Modal(document.getElementById("warningModal"));
-    modal.show();
-}
-
 function showAlertModal(message, btn_text = "OK", btn_func = null) {
-    // Set the modal message
     document.getElementById("alertModalMessage").innerHTML = message;
-
-    // Get the button inside the modal and update its text content
     const modalButton = document.getElementById("alertModalButton");
     modalButton.textContent = btn_text;
-
-    // Clone the button to remove previous event listeners before reattaching
     modalButton.replaceWith(modalButton.cloneNode(true));
     const newModalButton = document.getElementById("alertModalButton");
-
-    // If a custom function is provided, bind it to the button click event
     if (btn_func && typeof btn_func === "function") {
         newModalButton.addEventListener("click", btn_func);
     } else {
-        // Default behavior: close the modal when the button is clicked
         newModalButton.addEventListener("click", () => {
             let modal = bootstrap.Modal.getInstance(document.getElementById("alertModal"));
-            modal.hide(); // Hide the modal
+            modal.hide();
         });
     }
-
-    // Initialize and show the modal
     let modal = new bootstrap.Modal(document.getElementById("alertModal"));
     modal.show();
 }
@@ -123,5 +71,27 @@ function loadButton(button) {
 function restoreButton(button, html) {
     button.disabled = false;
     button.innerHTML = html;
+}
+
+function showErrorToast(errorMessage, timeout) {
+    const toastElement = document.getElementById('error-toast');
+	const toastMessageElement = document.getElementById('error-toast-message');
+	toastMessageElement.textContent = errorMessage;
+	const toast = new bootstrap.Toast(toastElement);
+	toast.show();
+	setTimeout(() => {
+        toast.hide();
+    }, timeout); 
+}
+
+function showInfoToast(infoMessage, timeout) {
+    const toastElement = document.getElementById('info-toast');
+	const toastMessageElement = document.getElementById('info-toast-message');
+	toastMessageElement.textContent = infoMessage;
+	const toast = new bootstrap.Toast(toastElement);
+	toast.show();
+	setTimeout(() => {
+        toast.hide();
+    }, timeout); 
 }
 

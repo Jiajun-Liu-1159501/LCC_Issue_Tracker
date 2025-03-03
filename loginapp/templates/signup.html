@@ -234,12 +234,10 @@
 			formFetch('/api/auth/register', {
 				body: urlEncodedData
 			}).onSuccess(data => {
-				showAlertModal('Successful, redirect to login page in 5 seconds ...', "Login", () => {
-					window.location.href = "/login";
-				})
+				showInfoToast("Successful, redirect to login page in 5 seconds ...", 3000);
 				setTimeout(() => {
 					window.location.href = "/login";
-				}, 5000)
+				}, 3000);
 			}).onBadRequest(data => {
 				const errData = data['err'];
 				if ('user_name' in errData) { insertErrorTip('#userName', errData['user_name']);}
