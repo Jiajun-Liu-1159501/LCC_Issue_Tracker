@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li class="nav-item w-100" id="all_issues">
-                <a class="nav-link text-start text-success d-flex align-items-center gap-3" style="cursor: pointer;">
+                <a class="nav-link text-start text-success d-flex align-items-center gap-3" href="{{url_for('page.all_issues_page')}}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-menu-button-wide" viewBox="0 0 16 16">
                         <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5z"/>
                         <path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0M0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
@@ -307,6 +307,45 @@
         </div>
     </div>
 
+    <div class="modal fade" id="createIssueModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createIssueModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form id="createIssueForm" class="needs-validation" onsubmit="handleIssueCreateSubmit(event)">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-success" id="createIssueModalTitle">Create An Issue</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="createIssueSummary" class="form-label text-success d-flex align-items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-braces" viewBox="0 0 16 16">
+                                    <path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.759 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6M13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6"/>
+                                </svg>
+                                Issue Summary
+                            </label>
+                            <input type="text" class="form-control border-success" id="createIssueSummary" name="summary" placeholder="Enter a brief summary">
+                            <div id="firstNameTip" class="invalid-feedback">Not a valid input</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="createIssueDescription" class="form-label text-success d-flex align-items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+                                    <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8z"/>
+                                </svg>
+                                Issue Description
+                            </label>
+                            <textarea class="form-control border-success" id="createIssueDescription" name="description" placeholder="Enter detailed description" rows="4"></textarea>
+                            <div id="lastNameTip" class="invalid-feedback">Not a valid input</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     {% block subContent %}
     {% endblock %}
 
@@ -454,6 +493,24 @@
             document.getElementById('viewModalLocation').value = currentUser['location'];
             Role.getRole(currentUser['role']).handleProfileBadge(document.getElementById('viewModalRole'));
             myModal.show();
+        }
+
+        function handleIssueCreateSubmit(event) {
+            event.preventDefault();
+            if (!preSubmitCheck(["createIssueSummary", "createIssueDescription"])) {
+                return;
+            }
+            const formData = new FormData(document.querySelector('#createIssueForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+            formFetch('/api/issue/create', {
+                body: urlEncodedData
+            }).onSuccess((data) => {
+                window.location.reload(true);
+            }).onBadRequest((data) => {
+                const errData = data['err'];
+                if ('summary' in errData) { insertErrorTip('#createIssueSummary', errData['summary']);}
+                if ('description' in errData) { insertErrorTip('#createIssueDescription', errData['description']);}
+            })
         }
 
     </script>

@@ -48,7 +48,9 @@ class SessionHolder:
         else:
             token: str = SessionHolder.generate_token(user)
             SessionHolder.session_dict.pop(token, None)
-            SessionHolder.token_dict.pop(token, None).pop('token', None)
+            session: SessionMixin = SessionHolder.token_dict.pop(token, None)
+            if session:
+                session.pop('token', None)
 
     @staticmethod
     def current_login() -> User:

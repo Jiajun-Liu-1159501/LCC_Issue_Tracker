@@ -77,11 +77,69 @@
                         <th class="text-success" scope="col">Location</th>
                         <th class="text-success" scope="col">Role</th>
                         <th class="text-success" scope="col">Status</th>
+                        <th class="text-success" scope="col">Options</th>
                     </tr>
                 </thead>
                 <tbody id="userTable">   
                 </tbody>  
             </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changeStatusModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changeStatusModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <form id="changeStatusForm" class="needs-validation" onsubmit="handleStatusChangeSubmit(event)">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-success" id="changeStatusModalTitle">User Status Change</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="hidden" id="changeStatusModalUserId" name="user_id">
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" id="changeStatusModalUserRole" name="role">
+                        </div>
+                        <div class="mb-3">
+                            <select type="text" class="form-control border-success" id="statusList" name="status">
+                            </select>
+                            <div class="invalid-feedback">Not a valid input</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changeRoleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changeRoleModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <form id="changeRoleForm" class="needs-validation" onsubmit="handleRoleChangeSubmit(event)">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-success" id="changeStatusModalTitle">User Role Change</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="hidden" id="changeRoleModalUserId" name="user_id">
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" id="changeRoleModalUserStatus" name="status">
+                        </div>
+                        <div class="mb-3">
+                            <select type="text" class="form-control border-success" id="roleList" name="role">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-outline-success">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -111,10 +169,17 @@
                         <td>${item['last_name']}</td>
                         <td>${item['location']}</td>
                         <td>
-                            <button type="button" class="btn" id="tableRole${item['user_id']}"></button>
+                            <button type="button" class="btn" id="tableRole${item['user_id']}" onclick="handleRoleChange(event)" data-user='${JSON.stringify(item)}'></button>
                         </td>
                         <td>
-                            <button type="button" class="btn" id="tableStatus${item['user_id']}">${item['status']}</button>
+                            <button type="button" class="btn" id="tableStatus${item['user_id']}" onclick="handleStatusChange(event)" data-user='${JSON.stringify(item)}'>
+                                ${item['status']}
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success" id="tableProfile${item['user_id']}" onclick="handleListUserProfileView(event)" data-user='${JSON.stringify(item)}'>
+                                Profile
+                            </button>
                         </td>
                         `;
                     tbody.appendChild(row);
@@ -125,21 +190,85 @@
                     } else if (item['status'] === 'inactive') {
                         statusButton.classList.add('btn-outline-danger');
                     }
-                    statusButton.addEventListener('click', () => {
-                        showWarningModal(`<span class='text-success'>${item['user_name']}</span> will be set to <span class='text-danger'>${item['status'] === 'active'? 'INACTIVE' : 'ACTIVE'}</span>`, "Confirm", () => {
-                            const formData = new URLSearchParams();
-                            formData.append('user_id', item['user_id']);
-                            formData.append('status', item['status'] === 'active'? 'incative' : 'active')
-                            const urlEncodedData = new URLSearchParams(formData).toString();
-                            formFetch('/api/user/update', {
-                                body: urlEncodedData
-                            }).onSuccess((data) => {
-                                refillTableData()
-                            })
-                        })
-                    })
                 });
             })
+        }
+
+        function handleRoleChange(event) {
+            const user = JSON.parse(event.currentTarget.getAttribute('data-user'));
+            document.getElementById('changeRoleModalUserId').value = user.user_id;
+            document.getElementById('changeRoleModalUserStatus').value = user.status;
+            const roleList = document.getElementById('roleList');
+            roleList.innerHTML = `
+                <option value="admin">ADMIN</option>
+                <option value="helper">HELPER</option>
+                <option value="visitor">VISITOR</option>
+            `;
+            const currentRole = user['role'];
+            const option = roleList.querySelector(`option[value="${currentRole}"]`);
+            roleList.removeChild(option);
+            var myModal = new bootstrap.Modal(document.getElementById('changeRoleModal'));
+            myModal.show();
+        }
+        
+        function handleRoleChangeSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(document.querySelector('#changeRoleForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+            formFetch('/api/user/update', {
+				body: urlEncodedData
+			}).onSuccess(data => {                
+				refillTableData();
+                bootstrap.Modal.getInstance(document.getElementById('changeRoleModal')).hide();
+			}).onBadRequest(data => {
+				
+			}).onNotAllowed(data => {
+				
+			});
+        }
+
+        function handleStatusChange(event) {
+            const user = JSON.parse(event.currentTarget.getAttribute('data-user'));
+            document.getElementById('changeStatusModalUserId').value = user.user_id;
+            document.getElementById('changeStatusModalUserRole').value = user.role;
+            const statusList = document.getElementById('statusList');
+            statusList.innerHTML = `
+                <option value="active">ACTIVE</option>
+                <option value="inactive">INACTIVE</option>
+            `;
+            const currentStatus = user['status'];
+            const option = statusList.querySelector(`option[value="${currentStatus}"]`);
+            statusList.removeChild(option);
+            var myModal = new bootstrap.Modal(document.getElementById('changeStatusModal'));
+            myModal.show();
+        }
+
+        function handleStatusChangeSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(document.querySelector('#changeStatusForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+            formFetch('/api/auth/update', {
+				body: urlEncodedData
+			}).onSuccess(data => {
+				refillTableData();
+                bootstrap.Modal.getInstance(document.getElementById('changeStatusModal')).hide();
+			}).onBadRequest(data => {
+				
+			}).onNotAllowed(data => {
+				
+			});
+        }
+
+        function handleListUserProfileView(event) {
+            const user = JSON.parse(event.currentTarget.getAttribute('data-user'));
+            var myModal = new bootstrap.Modal(document.getElementById('viewProfileModal'));
+            document.getElementById('viewModalUserName').value = user['user_name'];
+            document.getElementById('viewModalEmail').value = user['email'];
+            document.getElementById('viewModalFirstName').value = user['first_name'];
+            document.getElementById('viewModalLastName').value = user['last_name'];
+            document.getElementById('viewModalLocation').value = user['location'];
+            Role.getRole(user['role']).handleProfileBadge(document.getElementById('viewModalRole'));
+            myModal.show();
         }
         
     </script>

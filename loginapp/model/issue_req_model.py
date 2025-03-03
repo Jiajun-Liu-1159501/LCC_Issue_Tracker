@@ -1,8 +1,10 @@
 from dataclasses import dataclass
+import re
 
 from flask import Request
 
 from loginapp.constant.issue_status import IssusStatus
+from loginapp.constant.user_role import Role
 from loginapp.exception.custom_error import ArgumentError
 
 
@@ -23,5 +25,5 @@ class IssueCreateRequest:
         return model
     
     def verify(self) -> None:
-        if not self.summary: raise ArgumentError("not a valid summary input")
-        if not self.description: raise ArgumentError("not a valid description input")
+        if not self.summary: raise ArgumentError("summary", "not a valid summary input")
+        if not self.description: raise ArgumentError("description", "not a valid description input")

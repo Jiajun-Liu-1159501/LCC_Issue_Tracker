@@ -49,7 +49,7 @@ class UserService:
                 where_statement.append("last_name LIKE %s ")
                 query_args.append(f"%{last_name}%")
             query_statement += "AND ".join(where_statement)
-        cur.execute(query_statement + "ORDER BY user_id DESC", query_args)
+        cur.execute(query_statement + "ORDER BY user_id DESC;", query_args)
         return User.of_all(cur.fetchall())
     
     def edit_user(self, req: UserEditRequest, on_success: Callable[[User], T]) -> None:
@@ -102,9 +102,9 @@ class UserService:
         if user.password == req.new_password:
             raise ArgumentError("password", "cannot use the same password")
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s", [req.new_password, req.user_id])
+        cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s;", [req.new_password, req.user_id])
         return on_reset(user) if on_reset is not None else None
     
     def image_reset(self, req: ImageResetRequest) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("UPDATE users SET  = %s WHERE user_id = %s", [req.image_content, req.user_id])
+        cur.execute("UPDATE users SET  = %s WHERE user_id = %s;", [req.image_content, req.user_id])
