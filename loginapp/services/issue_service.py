@@ -1,5 +1,5 @@
-from typing import Any, List
-from loginapp import get_connection
+from typing import Any, Callable, Dict, List
+from loginapp import T, get_connection
 from loginapp.model.issue_req_model import IssueCreateRequest
 from mysql.connector import cursor
 
@@ -13,12 +13,12 @@ class IssueService:
     def list_issues(self) -> None:
         pass
 
-    def all_issues(self, summary: str, user_name: str, user_id: str) -> None:
+    def all_issues(self, summary: str, user_name: str, user_id: str, convert: Callable[[Dict[str, Any]], T]) -> List[T]:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        query_statement: str = "SELECT a.*, b.* FROM issues a LEFT JOIN users b ON a.user_id = b.user_id "
+        query_statement: str = "SELECT a.issue_id, a.summary, a.created_at, a.status, b.user_id, b.user_name, b.profile_image, COUNT(c.comment_id) as comments FROM issues a LEFT JOIN users b ON a.user_id = b.user_id LEFT JOIN comments c ON c.issue_id = a.issue_id "
         where_statement: List[str] = []
         query_args: List[Any] = []
-        if any(s for s in [query_statement, where_statement, query_args]):
+        if any(s for s in [summary, user_name, user_id]):
             query_statement += "WHERE "
             if summary:
                 where_statement.append("a.summary LIKE %s ")
@@ -30,5 +30,8 @@ class IssueService:
                 where_statement.append("a.user_id LIKE %s ")
                 query_args.append(f"%{user_id}%")
             query_statement += "AND ".join(where_statement)
-        cur.execute(query_statement + "ORDER BY issue_id DESC;", query_args)
-        
+        query_statement += "GROUP BY a.issue_id, b.user_id ORDER BY a.created_at DESC;"
+        print(query_statement)
+        cur.execute(query_statement, query_args)
+        issue_dict: Dict[str, Any] = cur.fetchall()
+        return issue_dict if not convert else list(map(lambda x: convert(x), issue_dict))
