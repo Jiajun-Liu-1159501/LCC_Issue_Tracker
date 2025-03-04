@@ -7,11 +7,7 @@ class IssueService:
     
     def create_issue(self, req: IssueCreateRequest, user_id: int) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("INSERT INTO issues (user_id, summary, description, status) VALUES (%s, %s, %s, %s)", [user_id, req.summary, req.description, req.status.value])
-
-
-    def list_issues(self) -> None:
-        pass
+        cur.execute("INSERT INTO issues (user_id, summary, description, status) VALUES (%s, %s, %s, %s);", [user_id, req.summary, req.description, req.status.value])
 
     def all_issues(self, summary: str, user_name: str, user_id: str, convert: Callable[[Dict[str, Any]], T]) -> List[T]:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
@@ -31,7 +27,16 @@ class IssueService:
                 query_args.append(f"%{user_id}%")
             query_statement += "AND ".join(where_statement)
         query_statement += "GROUP BY a.issue_id, b.user_id ORDER BY a.created_at DESC;"
-        print(query_statement)
         cur.execute(query_statement, query_args)
         issue_dict: Dict[str, Any] = cur.fetchall()
         return issue_dict if not convert else list(map(lambda x: convert(x), issue_dict))
+
+    def issue_detail(self, issue_id: int, function: Callable[[Dict[str, Any], List[Dict[str, Any]]], T]) -> T:
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        query_statement: str = "SELECT a.issue_id, a.summary, a.description, a.created_at, a.status, b.user_id, b.user_name, b.profile_image FROM issues a LEFT JOIN users b ON a.user_id = b.user_id WHERE a.issue_id = %s;"
+        cur.execute(query_statement, [issue_id])
+        issue: Dict[str, Any] = cur.fetchone()
+        comment_statement: str = "SELECT a.comment_id, a.content, a.created_at, b.user_id, b.user_name, b.profile_image, b.role FROM comments a LEFT JOIN users b ON a.user_id = b.user_id WHERE a.issue_id = %s ORDER BY a.created_at ASC;"
+        cur.execute(comment_statement, [issue_id])
+        comments: List[Dict[str, Any]] = cur.fetchall()
+        return function(issue, comments)
