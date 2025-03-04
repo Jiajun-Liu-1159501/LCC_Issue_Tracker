@@ -7,13 +7,9 @@ from loginapp.model.data_model import User
 from mysql.connector import cursor
 
 from loginapp.model.user_req_model import ImageResetRequest, LoginRequest, PasswordResetRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
+from loginapp.services import repo_service
 
 class UserService:
-
-    def get_user_by_id(self, user_id: int) -> User:
-        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("SELECT * FROM users WHERE user_id = %s", [user_id])
-        return User.of(cur.fetchone())
     
     def new_user_register(self, req: RegisterRequest) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
@@ -79,10 +75,10 @@ class UserService:
         return on_success(user) if on_success is not None else None
 
     def update_user(self, req: UserUpdateRequest, on_update: Callable[[User], T]) -> T:
-        user: User = self.get_user_by_id(req.user_id)
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        user: User = repo_service.get_user_by_id(req.user_id, cur)
         if (user.get_role_enum() is req.role) and (user.get_status_enum() is req.status):
             return
-        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         update_statement: str = "UPDATE users SET "
         set_statement: List[str] = []
         update_args: List[str] = []
@@ -98,10 +94,10 @@ class UserService:
         return on_update(user) if on_update is not None else None
     
     def password_reset(self, req: PasswordResetRequest, on_reset: Callable[[User], T]) -> T:
-        user: User = self.get_user_by_id(req.user_id)
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        user: User = repo_service.get_user_by_id(req.user_id, cur)
         if user.password == req.new_password:
             raise ArgumentError("password", "cannot use the same password")
-        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s;", [req.new_password, req.user_id])
         return on_reset(user) if on_reset is not None else None
     

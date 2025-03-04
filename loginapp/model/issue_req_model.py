@@ -27,3 +27,21 @@ class IssueCreateRequest:
     def verify(self) -> None:
         if not self.summary: raise ArgumentError("summary", "not a valid summary input")
         if not self.description: raise ArgumentError("description", "not a valid description input")
+
+
+@dataclass
+class AddCommentRequest:
+
+    issue_id: int
+    comment: str
+
+    def build(request: Request) -> 'AddCommentRequest':
+        model: AddCommentRequest =  AddCommentRequest(
+            int(request.form.get('issue_id')),
+            request.form.get('comment')
+        )
+        model.verify()
+        return model
+    
+    def verify(self) -> None:
+        if not self.comment: raise ArgumentError("comment", "not a valid comment input")

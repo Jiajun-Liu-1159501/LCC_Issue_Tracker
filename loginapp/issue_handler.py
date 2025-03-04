@@ -4,7 +4,7 @@ from flask import Blueprint, Response, jsonify, request
 
 from loginapp.aspect import token_check
 from loginapp.constant.user_role import Role
-from loginapp.model.issue_req_model import IssueCreateRequest
+from loginapp.model.issue_req_model import AddCommentRequest, IssueCreateRequest
 from loginapp.model.issue_res_model import IssueComment, IssueDetailResponse, IssueListResponse
 from loginapp.services import issue_service
 from loginapp.session_holder import SessionHolder
@@ -84,4 +84,14 @@ def issue_detail_endpoint() -> Response:
     ))
     return jsonify({
         "data": data
+    }), 200
+
+@issue.post("/comment")
+@token_check(options = None)
+def add_comment_endpoint() -> Response:
+    req: AddCommentRequest = AddCommentRequest.build(request)
+    user_id = SessionHolder.current_login().user_id
+    issue_service.add_comment(user_id, req)
+    return jsonify({
+        "message": "success"
     }), 200

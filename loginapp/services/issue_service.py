@@ -1,7 +1,12 @@
 from typing import Any, Callable, Dict, List
 from loginapp import T, get_connection
-from loginapp.model.issue_req_model import IssueCreateRequest
+from loginapp.constant.issue_status import IssusStatus
+from loginapp.constant.user_role import Role
+from loginapp.model.data_model import User
+from loginapp.model.issue_req_model import AddCommentRequest, IssueCreateRequest
 from mysql.connector import cursor
+
+from loginapp.services import repo_service
 
 class IssueService:
     
@@ -40,3 +45,17 @@ class IssueService:
         cur.execute(comment_statement, [issue_id])
         comments: List[Dict[str, Any]] = cur.fetchall()
         return function(issue, comments)
+    
+    def add_comment(self, user_id: int, req: AddCommentRequest) -> None:
+        cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        user: User = repo_service.get_user_by_id(user_id, cur)
+        cur.execute("INSERT INTO comments (issue_id, user_id, content) VALUES (%s, %s, %s, %s);", [req.issue_id, user_id, req.comment])
+        if user.get_role_enum is Role.VISITOR:
+            return
+        self.update_issues(req.issue_id, IssusStatus.OPEN.value, cur)
+
+    def update_issues(self, issue_id: int, status: str, cur: cursor.MySQLCursor) -> None:
+        if not cur:
+            cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        cur.execute("UPDATE comments set status = %s WHERE issue_id = %s;", [status, issue_id])
+
