@@ -1,15 +1,13 @@
 
 from typing import Any, Callable, List
 
-from flask import session
 from loginapp import T, get_connection
 from loginapp.constant.user_status import UserStatus
-from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, NotFoundError, OperationNotAllowedError
+from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError
 from loginapp.model.data_model import User
 from mysql.connector import cursor
 
 from loginapp.model.user_req_model import ImageResetRequest, LoginRequest, PasswordResetRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
-from loginapp.session_holder import SessionHolder
 
 class UserService:
 
@@ -24,13 +22,17 @@ class UserService:
         cur.execute("SELECT COUNT(1) as count FROM users WHERE user_name = %s;", [req.user_name])
         if cur.fetchone()['count'] != 0:
             raise ArgumentError("user_name","user name is existing")
-        cur.execute("INSERT INTO users (user_name, password_hash, email, first_name, last_name, location, profile_image, role, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", [req.user_name, req.password, req.email, req.first_name, req.last_name, req.location, req.profile_image, req.role.value, req.status.value])
+        from loginapp import encrypt
+        cur.execute("INSERT INTO users (user_name, password_hash, email, first_name, last_name, location, profile_image, role, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);", [req.user_name, encrypt.generate_password_hash(req.password), req.email, req.first_name, req.last_name, req.location, req.profile_image, req.role.value, req.status.value])
         
     def user_login(self, req: LoginRequest, on_pass:Callable[[User], T]) -> T:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("SELECT * FROM users WHERE user_name = %s AND password_hash = %s;", [req.user_name, req.password])
+        cur.execute("SELECT * FROM users WHERE user_name = %s;", [req.user_name])
         user: User = User.of(cur.fetchone())
         if user == None:
+            raise AccessDeclinedError("user name or password is incorrect")
+        from loginapp import encrypt
+        if not encrypt.check_password_hash(user.password, req.password):
             raise AccessDeclinedError("user name or password is incorrect")
         if UserStatus.INACTIVE is user.get_status_enum():
             raise AccessDeclinedError("login failed! current user is inactive")
@@ -104,11 +106,12 @@ class UserService:
     def password_reset(self, req: PasswordResetRequest, on_reset: Callable[[User], T]) -> T:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         user: User = self.get_user_by_id(req.user_id, cur)
-        if user.password == req.new_password:
+        from loginapp import encrypt
+        if encrypt.check_password_hash(user.password, req.new_password):
             raise ArgumentError("password", "cannot use the same password")
-        cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s;", [req.new_password, req.user_id])
+        cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s;", [encrypt.generate_password_hash(req.new_password), req.user_id])
         return on_reset(user) if on_reset is not None else None
     
     def image_reset(self, req: ImageResetRequest) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("UPDATE users SET  = %s WHERE user_id = %s;", [req.image_content, req.user_id])
+        cur.execute("UPDATE users SET profile_image = %s WHERE user_id = %s;", [req.image_content, req.user_id])

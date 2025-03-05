@@ -1,12 +1,12 @@
 # This script runs automatically when our `loginapp` module is first loaded,
 # and handles all the setup for our Flask app.
-from nturl2path import url2pathname
 from flask import Flask, g
 from typing import Dict, Any, TypeVar
 from mysql.connector import pooling, cursor
 # Set up database connection.
 from loginapp import connect
 from loginapp.error_handler import init_error_handlers
+from flask_bcrypt import Bcrypt
 
 T = TypeVar("T")
 
@@ -119,3 +119,4 @@ def register_router(app: Flask) -> None:
     app.register_blueprint(issue, url_prefix = '/api/issue')
 
 app: Flask = create_app()
+encrypt = Bcrypt(app)
