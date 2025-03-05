@@ -1,5 +1,7 @@
 
 from typing import Any, Callable, List
+
+from flask import session
 from loginapp import T, get_connection
 from loginapp.constant.user_status import UserStatus
 from loginapp.exception.custom_error import AccessDeclinedError, ArgumentError, NotFoundError, OperationNotAllowedError
@@ -7,6 +9,7 @@ from loginapp.model.data_model import User
 from mysql.connector import cursor
 
 from loginapp.model.user_req_model import ImageResetRequest, LoginRequest, PasswordResetRequest, RegisterRequest, UserEditRequest, UserUpdateRequest
+from loginapp.session_holder import SessionHolder
 
 class UserService:
 
@@ -31,6 +34,8 @@ class UserService:
             raise AccessDeclinedError("user name or password is incorrect")
         if UserStatus.INACTIVE is user.get_status_enum():
             raise AccessDeclinedError("login failed! current user is inactive")
+        if SessionHolder.session_exists(SessionHolder.generate_token(user)):
+            SessionHolder.session_evict(session, user)
         return on_pass(user) if on_pass is not None else None
 
     def list_users(self, user_name: str, first_name: str, last_name: str) -> List[User]:
