@@ -2,7 +2,7 @@
 
 {% block user %}
     <button class="btn p-0 ms-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAvatar" aria-controls="offcanvasAvatar">
-        <img src="" alt="User Avatar" class="rounded-circle border border-white" width="40" height="40">
+        <img src="" id="userAvatarNav" alt="User Avatar" class="rounded-circle border border-white" width="40" height="40">
         <span id="roleBadge" class="position-relative top-50 start-30 translate-middle badge rounded-pill"></span>
     </button>
 {% endblock %}
@@ -236,8 +236,9 @@
     <div class="modal fade" id="viewProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewProfileModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered w-auto">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header d-flex justify-content-between align-items-center">
                     <h1 class="modal-title fs-5 text-success" id="editProfileModalTitle">View Profile</h1>
+                    <img src="" id="viewModalAvatar" alt="User Avatar" class="rounded-circle border border-white" width="40" height="40">
                 </div>
                 <div class="modal-body">
                     <div class="row">	
@@ -366,9 +367,10 @@
                     }
                 });
                 currentUser = data['user_info'];
+                const profileImage = currentUser['profile_image'];
+                document.getElementById('userAvatarNav').src = profileImage ? profileImage : DETAULT_AVATOR;
                 Role.getRole(currentUser['role']).handleAvatorBadge(document.getElementById('roleBadge'));
             })
-            
         });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -476,6 +478,7 @@
 
         function handleProfileView() {
             var myModal = new bootstrap.Modal(document.getElementById('viewProfileModal'));
+            document.getElementById('viewModalAvatar').src = currentUser['profile_image'] ? currentUser['profile_image'] : DETAULT_AVATOR;
             document.getElementById('viewModalUserName').value = currentUser['user_name'];
             document.getElementById('viewModalEmail').value = currentUser['email'];
             document.getElementById('viewModalFirstName').value = currentUser['first_name'];

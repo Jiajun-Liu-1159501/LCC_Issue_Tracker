@@ -1,3 +1,5 @@
+const DETAULT_AVATOR = '../static/profile/default.png'
+
 class Admin {
 
     constructor(value) {

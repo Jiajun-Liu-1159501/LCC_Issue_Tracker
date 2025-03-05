@@ -167,7 +167,12 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td style="display: none;">${item['user_id']}</td>
-                        <td>${item['user_name']}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="${item['profile_image'] || DETAULT_AVATOR}" alt="User Avatar" class="rounded-circle" width="30" height="30">
+                                <span>${item['user_name']}</span>
+                            </div>
+                        </td>
                         <td>${item['email']}</td>
                         <td>${item['first_name']}</td>
                         <td>${item['last_name']}</td>
@@ -266,6 +271,7 @@
         function handleListUserProfileView(event) {
             const user = JSON.parse(event.currentTarget.getAttribute('data-user'));
             var myModal = new bootstrap.Modal(document.getElementById('viewProfileModal'));
+            document.getElementById('viewModalAvatar').src = user['profile_image'] ? user['profile_image'] : DETAULT_AVATOR;
             document.getElementById('viewModalUserName').value = user['user_name'];
             document.getElementById('viewModalEmail').value = user['email'];
             document.getElementById('viewModalFirstName').value = user['first_name'];
