@@ -25,14 +25,14 @@ VALUES
 ('visitor19', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'visitor19@example.com', 'Paul', 'Wright', 'Detroit', '', 'visitor', 'active'),
 ('visitor20', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'visitor20@example.com', 'Quinn', 'Scott', 'Minneapolis', '', 'visitor', 'active'),
 
-('helper1', 'hash21hash', 'helper1@example.com', 'Ron', 'Adams', 'Austin', '', 'helper', 'active'),
-('helper2', 'hash22hash', 'helper2@example.com', 'Sophia', 'Nelson', 'Charlotte', '', 'helper', 'active'),
-('helper3', 'hash23hash', 'helper3@example.com', 'Travis', 'Hill', 'Columbus', '', 'helper', 'active'),
-('helper4', 'hash24hash', 'helper4@example.com', 'Uma', 'Green', 'Indianapolis', '', 'helper', 'active'),
-('helper5', 'hash25hash', 'helper5@example.com', 'Victor', 'Baker', 'San Jose', '', 'helper', 'active'),
+('helper1', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'helper1@example.com', 'Ron', 'Adams', 'Austin', '', 'helper', 'active'),
+('helper2', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'helper2@example.com', 'Sophia', 'Nelson', 'Charlotte', '', 'helper', 'active'),
+('helper3', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'helper3@example.com', 'Travis', 'Hill', 'Columbus', '', 'helper', 'active'),
+('helper4', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'helper4@example.com', 'Uma', 'Green', 'Indianapolis', '', 'helper', 'active'),
+('helper5', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'helper5@example.com', 'Victor', 'Baker', 'San Jose', '', 'helper', 'active'),
 
-('admin1', 'hash26hash', 'admin1@example.com', 'Walter', 'Gonzalez', 'Washington', '', 'admin', 'active'),
-('admin2', 'hash27hash', 'admin2@example.com', 'Xena', 'Carter', 'St. Louis', '', 'admin', 'active');
+('admin1', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'admin1@example.com', 'Walter', 'Gonzalez', 'Washington', '', 'admin', 'active'),
+('admin2', '$2b$12$9ox5GcobYTzD53.wVBbFpeHS1lPjqNWYpRM9C1RQGJlSnRJbPvrOe', 'admin2@example.com', 'Xena', 'Carter', 'St. Louis', '', 'admin', 'active');
 
 -- Insert `issue` data（at least 20 issues）
 INSERT INTO issues (user_id, summary, description, status)
