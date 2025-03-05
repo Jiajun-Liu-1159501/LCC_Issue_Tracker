@@ -464,11 +464,7 @@
             const cardElement = card.querySelector(".col");
             cardElement.setAttribute("data-issue-id", issue.issue_id);
             cardElement.querySelector(".issue-id").textContent = issue.issue_id;
-            let summary = issue.summary;
-            if (summary.length > 20) {
-                summary = summary.substring(0, 20) + "..."
-            }
-            cardElement.querySelector(".issueSummary").textContent = summary;
+            cardElement.querySelector(".issueSummary").textContent = summary.length > 20 ? summary.substring(0, 20) + " ..." : summary;
             cardElement.querySelector(".userName").textContent = issue.user_name;
             cardElement.querySelector(".cardAvatar").src = issue.user_profile ? issue.user_profile : DETAULT_AVATOR;
             cardElement.querySelector(".createdAt").textContent = new Date(issue.created_at).toLocaleString();
