@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import re
 
 from flask import Request
 
@@ -45,3 +44,17 @@ class AddCommentRequest:
     
     def verify(self) -> None:
         if not self.comment: raise ArgumentError("comment", "not a valid comment input")
+
+
+@dataclass
+class UpdateIssueRequest:
+
+    issue_id: int
+    status: IssusStatus
+
+    def build(request: Request) -> 'UpdateIssueRequest':
+        model: UpdateIssueRequest =  UpdateIssueRequest(
+            int(request.form.get('issue_id')),
+            IssusStatus.of(request.form.get('status'))
+        )
+        return model

@@ -8,7 +8,7 @@ class IssusStatus(Enum):
     NEW = ("new")
     OPEN = ("open")
     STALLED = ("stalled")
-    CLOSED = ("closed")
+    RESOLVED = ("resolved")
 
     def __new__(cls, value: str):
         obj = object.__new__(cls)
