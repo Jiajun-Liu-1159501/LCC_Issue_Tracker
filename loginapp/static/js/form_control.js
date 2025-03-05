@@ -1,4 +1,9 @@
-
+/**
+ * Clears the error styles and adds a success border when the user starts typing in the input.
+ * This function listens for an "input" event and applies the styles accordingly.
+ * 
+ * @param {string} selector - The CSS selector for the input element to apply the event listener.
+ */
 function clearErrorOnInput(selector) {
     const inputElement = document.querySelector(selector);
     if (!inputElement) return;
@@ -8,6 +13,13 @@ function clearErrorOnInput(selector) {
     });
 }
 
+/**
+ * Checks if all elements in the provided list have valid values (non-empty).
+ * If any field is empty, it applies error styles to the input and prevents submission.
+ * 
+ * @param {Array<string>} elements - An array of element IDs to check for validity.
+ * @returns {boolean} - Returns `true` if all elements have values, otherwise `false`.
+ */
 function preSubmitCheck(elements) {
     let canSubmit = true;
     elements.forEach(element => {
@@ -20,6 +32,14 @@ function preSubmitCheck(elements) {
     return canSubmit;
 }
 
+/**
+ * Validates the password and password confirmation fields to ensure they match.
+ * Adds error styles if the fields are empty or do not match.
+ * 
+ * @param {string} password - The ID of the password input element.
+ * @param {string} passwordConfirm - The ID of the password confirmation input element.
+ * @returns {boolean} - Returns `true` if the passwords match and are not empty, otherwise `false`.
+ */
 function passwordConfirmCheck(password, passwordConfirm) {
     const pwd = document.getElementById(password);
     const confirm = document.getElementById(passwordConfirm);
@@ -35,6 +55,12 @@ function passwordConfirmCheck(password, passwordConfirm) {
     return canSubmit;
 }
 
+/**
+ * Inserts an error message next to the input element and applies error styles.
+ * 
+ * @param {string} selector - The CSS selector for the input element.
+ * @param {string} message - The error message to display.
+ */
 function insertErrorTip(selector, message) {
     const ipt = document.querySelector(selector);
     ipt.classList.add('is-invalid', 'border-danger');
@@ -42,34 +68,33 @@ function insertErrorTip(selector, message) {
     invalidFeedback.textContent = message
 }
 
-function showAlertModal(message, btn_text = "OK", btn_func = null) {
-    document.getElementById("alertModalMessage").innerHTML = message;
-    const modalButton = document.getElementById("alertModalButton");
-    modalButton.textContent = btn_text;
-    modalButton.replaceWith(modalButton.cloneNode(true));
-    const newModalButton = document.getElementById("alertModalButton");
-    if (btn_func && typeof btn_func === "function") {
-        newModalButton.addEventListener("click", btn_func);
-    } else {
-        newModalButton.addEventListener("click", () => {
-            let modal = bootstrap.Modal.getInstance(document.getElementById("alertModal"));
-            modal.hide();
-        });
-    }
-    let modal = new bootstrap.Modal(document.getElementById("alertModal"));
-    modal.show();
-}
-
+/**
+ * Disables the button and displays a loading spinner to indicate an ongoing process.
+ * 
+ * @param {HTMLElement} button - The button element to be disabled.
+ */
 function loadButton(button) {
     button.disabled = true;
     button.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
 }
 
+/**
+ * Restores the button to its original state, enabling it and setting the button text back to the provided HTML.
+ * 
+ * @param {HTMLElement} button - The button element to be restored.
+ * @param {string} html - The original HTML content for the button (e.g., button text).
+ */
 function restoreButton(button, html) {
     button.disabled = false;
     button.innerHTML = html;
 }
 
+/**
+ * Displays an error toast message to the user for a specified duration.
+ * 
+ * @param {string} errorMessage - The error message to display.
+ * @param {number} timeout - The duration in milliseconds to show the toast.
+ */
 function showErrorToast(errorMessage, timeout) {
     const toastElement = document.getElementById('error-toast');
 	const toastMessageElement = document.getElementById('error-toast-message');
@@ -81,6 +106,12 @@ function showErrorToast(errorMessage, timeout) {
     }, timeout); 
 }
 
+/**
+ * Displays an informational toast message to the user for a specified duration.
+ * 
+ * @param {string} infoMessage - The informational message to display.
+ * @param {number} timeout - The duration in milliseconds to show the toast.
+ */
 function showInfoToast(infoMessage, timeout) {
     const toastElement = document.getElementById('info-toast');
 	const toastMessageElement = document.getElementById('info-toast-message');
@@ -91,4 +122,3 @@ function showInfoToast(infoMessage, timeout) {
         toast.hide();
     }, timeout); 
 }
-

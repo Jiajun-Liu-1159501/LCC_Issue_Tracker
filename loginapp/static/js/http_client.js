@@ -1,3 +1,15 @@
+/**
+ * Extends the Promise prototype to handle different HTTP response statuses.
+ * These methods allow for handling specific HTTP error or success cases in a streamlined way.
+ */
+
+/**
+ * Handles the case where a 400 Bad Request response is received.
+ * It allows a callback to be executed when the response status is 400 (Bad Request).
+ * 
+ * @param {function} callback - The function to be called with the response data when the status is 400.
+ * @returns {Promise} - The promise chain continues after handling the Bad Request response.
+ */
 Promise.prototype.onBadRequest = async function(callback) {
     return this.then((response) => {
         if (response.status === 400) {
@@ -10,6 +22,13 @@ Promise.prototype.onBadRequest = async function(callback) {
     });
 };
 
+/**
+ * Handles the case where a 200 OK response is received.
+ * It allows a callback to be executed when the response status is 200 (OK).
+ * 
+ * @param {function} callback - The function to be called with the response data when the status is 200.
+ * @returns {Promise} - The promise chain continues after handling the successful response.
+ */
 Promise.prototype.onSuccess = async function(callback) {
     return this.then((response) => {
         if (response.status === 200) {
@@ -22,6 +41,13 @@ Promise.prototype.onSuccess = async function(callback) {
     });
 };
 
+/**
+ * Handles the case where a 401 Unauthorized response is received.
+ * Redirects the user to the login page with the error message if the response status is 401.
+ * 
+ * @param {function} callback - This parameter is unused but kept for consistency in the function signature.
+ * @returns {Promise} - The promise chain continues after handling the Unauthorized response.
+ */
 Promise.prototype.onUnauthorized = async function(callback) {
     return this.then((response) => {
         if (response.status === 401) {
@@ -35,6 +61,13 @@ Promise.prototype.onUnauthorized = async function(callback) {
     });
 };
 
+/**
+ * Handles the case where a 403 Forbidden response is received.
+ * It allows a callback to be executed when the response status is 403 (Forbidden).
+ * 
+ * @param {function} callback - The function to be called with the response data when the status is 403.
+ * @returns {Promise} - The promise chain continues after handling the Forbidden response.
+ */
 Promise.prototype.onNotAllowed = async function(callback) {
     return this.then((response) => {
         if (response.status === 403) {
@@ -48,8 +81,8 @@ Promise.prototype.onNotAllowed = async function(callback) {
 };
 
 /**
- * Fetches data from the given URL using the Fetch API.
- * This function adds default options for credentials and handles errors by logging them.
+ * Fetches data from a URL using the Fetch API with additional options for credentials handling.
+ * Provides the foundation for all HTTP requests (GET, POST, etc.).
  * 
  * @param {string} url - The URL to fetch data from.
  * @param {object} options - The options to pass to the Fetch API (optional).
@@ -74,8 +107,8 @@ async function dataFetcher(url, options = {}) {
 }
 
 /**
- * A helper function to fetch form data with the `application/x-www-form-urlencoded` content type.
- * It uses the `dataFetcher` function with specific headers set for form submissions.
+ * A helper function for making POST requests with form data (`application/x-www-form-urlencoded` content type).
+ * Uses the `dataFetcher` function to send form submissions.
  * 
  * @param {string} url - The URL to submit the form data to.
  * @param {object} options - The options to pass to the Fetch API (optional).
@@ -93,10 +126,10 @@ async function formFetch(url, options = {}) {
 }
 
 /**
- * A helper function to fetch form data with the `GET` request type.
- * It uses the `dataFetcher` function with specific headers set for form submissions.
+ * A helper function for making GET requests to fetch data.
+ * Uses the `dataFetcher` function with a GET method to retrieve data from the given URL.
  * 
- * @param {string} url - The URL to submit the form data to.
+ * @param {string} url - The URL to fetch data from.
  * @param {object} options - The options to pass to the Fetch API (optional).
  * @returns {Promise} - A Promise that resolves to the fetch response.
  */
