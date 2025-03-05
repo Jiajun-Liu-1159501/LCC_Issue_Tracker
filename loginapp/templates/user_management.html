@@ -147,6 +147,10 @@
 
     <script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+            refillTableData();
+		});
+
         function handleSearch(event) {
             event.preventDefault();
             refillTableData();

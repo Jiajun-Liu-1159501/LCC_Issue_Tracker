@@ -14,7 +14,7 @@ user: Blueprint = Blueprint('user', __name__)
 @user.get("/current")
 @token_check(options = [])
 def get_current_login() -> Response:
-    user: User = user_service.get_user_by_id(SessionHolder.current_login().user_id)
+    user: User = user_service.get_user_by_id(SessionHolder.current_login().user_id, None)
     return jsonify({
         "user_info": user,
         "operations": user.get_role_enum().get_allowed_operations()

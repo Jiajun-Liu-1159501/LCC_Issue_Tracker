@@ -323,7 +323,7 @@
                                 Issue Summary
                             </label>
                             <input type="text" class="form-control border-success" id="createIssueSummary" name="summary" placeholder="Enter a brief summary">
-                            <div id="firstNameTip" class="invalid-feedback">Not a valid input</div>
+                            <div id="issueSummaryTip" class="invalid-feedback">Not a valid input</div>
                         </div>
                         
                         <div class="mb-3">
@@ -334,7 +334,7 @@
                                 Issue Description
                             </label>
                             <textarea class="form-control border-success" id="createIssueDescription" name="description" placeholder="Enter detailed description" rows="4"></textarea>
-                            <div id="lastNameTip" class="invalid-feedback">Not a valid input</div>
+                            <div id="issueDescTip" class="invalid-feedback">Not a valid input</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -368,6 +368,7 @@
                 currentUser = data['user_info'];
                 Role.getRole(currentUser['role']).handleAvatorBadge(document.getElementById('roleBadge'));
             })
+            
         });
 
         document.addEventListener('DOMContentLoaded', () => {

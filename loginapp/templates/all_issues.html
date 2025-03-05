@@ -198,12 +198,13 @@
                                     <button id="addCommentBtn" class="btn btn-outline-success mt-2" onclick="showCommentForm()">Add Comment</button>
                                 </div>
                                 <div id="newCommentSection" class="mt-2 d-none">
-                                    <form id="addCommentForm" onsubmit="sumbitComment()">
+                                    <form id="addCommentForm" class="needs-validation" onsubmit="handlNewCommentSubmit(event)">
                                         <div class="mb-3">
-                                            <input type="hidden" id="changeRoleModalUserId" name="user_id">
+                                            <input type="hidden" id="newCommentIssueId" name="issue_id">
                                         </div>
                                         <div class="mb-3">
                                             <textarea class="form-control border-success" id="newComment" name="comment" placeholder="Enter your comment" rows="3"></textarea>
+                                            <div id="commentTip" class="invalid-feedback">Not a valid input</div>
                                         </div>
                                         <div class="d-flex justify-content-end gap-2 mb-3">
                                             <button type="button" id="cancelComment" class="btn btn-outline-danger" onclick="cancelCommentAction()">Cancel</button>
@@ -298,15 +299,33 @@
 
     <script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+			clearErrorOnInput('#newComment');
+            refillTableData();
+		});
+
         document.getElementById('issueDetailModal').addEventListener('hidden.bs.modal', function () {
             document.getElementById("newCommentSection").classList.add("d-none");
             document.getElementById("addCommentBtn").classList.remove("d-none");
             document.getElementById("newComment").value = "";
         });
 
-        function sumbitComment(event) {
+        function handlNewCommentSubmit(event) {
             event.preventDefault();
-            
+            if (!preSubmitCheck(["newComment"])) {
+                return;
+            }
+            const formData = new FormData(document.querySelector('#addCommentForm'));
+			const urlEncodedData = new URLSearchParams(formData).toString();
+            formFetch('/api/issue/comment', {
+                body: urlEncodedData
+            }).onSuccess((data) => {
+                cancelCommentAction();
+                window.location.reload(true);
+            }).onBadRequest((data) => {
+                const errData = data['err']
+				if ('comment' in errData) { insertErrorTip('#newComment', errData['comment']);}
+            })
         }
 
         function showCommentForm() {
@@ -328,6 +347,7 @@
                 const { data: issueData } = data;
                 const modal = document.getElementById("issueDetailModal");
                 modal.setAttribute("data-issue-id", issueData.issue_id);
+                document.getElementById("newCommentIssueId").value = issueData.issue_id;
                 document.getElementById("detailIssueSummary").value = issueData.summary;
                 document.getElementById("detailIssueDescription").value = issueData.description;
                 document.getElementById("detailIssueCreator").textContent = issueData.user_name;

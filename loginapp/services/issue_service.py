@@ -6,9 +6,13 @@ from loginapp.model.data_model import User
 from loginapp.model.issue_req_model import AddCommentRequest, IssueCreateRequest
 from mysql.connector import cursor
 
-from loginapp.services import repo_service
-
 class IssueService:
+
+    def get_user_by_id(self, user_id: int, cur: cursor.MySQLCursor) -> User:
+        if not cur:
+            cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
+        cur.execute("SELECT * FROM users WHERE user_id = %s", [user_id])
+        return User.of(cur.fetchone())
     
     def create_issue(self, req: IssueCreateRequest, user_id: int) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
@@ -48,8 +52,8 @@ class IssueService:
     
     def add_comment(self, user_id: int, req: AddCommentRequest) -> None:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        user: User = repo_service.get_user_by_id(user_id, cur)
-        cur.execute("INSERT INTO comments (issue_id, user_id, content) VALUES (%s, %s, %s, %s);", [req.issue_id, user_id, req.comment])
+        user: User = self.get_user_by_id(user_id, cur)
+        cur.execute("INSERT INTO comments (issue_id, user_id, content) VALUES (%s, %s, %s);", [req.issue_id, user_id, req.comment])
         if user.get_role_enum is Role.VISITOR:
             return
         self.update_issues(req.issue_id, IssusStatus.OPEN.value, cur)
@@ -57,5 +61,5 @@ class IssueService:
     def update_issues(self, issue_id: int, status: str, cur: cursor.MySQLCursor) -> None:
         if not cur:
             cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
-        cur.execute("UPDATE comments set status = %s WHERE issue_id = %s;", [status, issue_id])
+        cur.execute("UPDATE issues SET status = %s WHERE issue_id = %s;", [status, issue_id])
 
