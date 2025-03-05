@@ -42,6 +42,9 @@ class RegisterRequest:
 
         Returns:
             RegisterRequest: A validated RegisterRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: RegisterRequest =  RegisterRequest(
             request.form.get('user_name'),
@@ -60,6 +63,12 @@ class RegisterRequest:
     def verify(self) -> None:
         """
         Validates the registration request data. Raises ArgumentError if validation fails.
+
+        Validations:
+            - username cannot be empty
+            - password must contain at least 8 characters, including letters and numbers
+            - email must follow a valid email format
+            - first name, last name, and location cannot be empty
         """
         if not self.user_name: raise ArgumentError("user_name", "not a valid user name input")
         if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("password", "at least 8 chars including number and letter")
@@ -92,6 +101,9 @@ class LoginRequest:
 
         Returns:
             LoginRequest: A validated LoginRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: LoginRequest =  LoginRequest(
             request.form.get('user_name'),
@@ -103,6 +115,10 @@ class LoginRequest:
     def verify(self) -> None:
         """
         Validates the login request data. Raises ArgumentError if validation fails.
+
+        Validations:
+            - username cannot be empty
+            - password must meet the same requirements as in registration
         """
         if not self.user_name: raise ArgumentError("user_name", "not a valid user name input")
         if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("password", "not a valid password input")
@@ -136,6 +152,9 @@ class UserEditRequest:
 
         Returns:
             UserEditRequest: A validated UserEditRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: UserEditRequest = UserEditRequest(
             int(request.form.get('user_id')),
@@ -150,6 +169,10 @@ class UserEditRequest:
     def verify(self) -> None:
         """
         Validates the user edit request data. Raises ArgumentError if validation fails.
+
+        Validations:
+            - email must be in a valid format
+            - first name, last name, and location cannot be empty
         """
         if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("email", "not a valid email input")
         if not self.first_name: raise ArgumentError("first_name", "not a valid first name input")
@@ -182,6 +205,9 @@ class UserUpdateRequest:
 
         Returns:
             UserUpdateRequest: A validated UserUpdateRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: UserUpdateRequest =  UserUpdateRequest(
             int(request.form.get('user_id')),
@@ -218,6 +244,9 @@ class PasswordResetRequest:
 
         Returns:
             PasswordResetRequest: A validated PasswordResetRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: PasswordResetRequest =  PasswordResetRequest(
             int(request.form.get('user_id')),
@@ -229,6 +258,9 @@ class PasswordResetRequest:
     def verify(self) -> None:
         """
         Validates the password reset request data. Raises ArgumentError if validation fails.
+
+        Validations:
+            - new password must meet the same requirements as in registration
         """
         if (not self.new_password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.new_password)): raise ArgumentError("password","not a valid password input")
 
@@ -256,6 +288,9 @@ class ImageResetRequest:
 
         Returns:
             ImageResetRequest: A validated ImageResetRequest object.
+
+        Raises:
+            ArgumentError: If the request data fails validation.
         """
         model: UserUpdateRequest =  UserUpdateRequest(
             int(request.form.get('user_id')),
