@@ -18,6 +18,7 @@ for creating, retrieving, updating, and commenting on issues.
 
 issue: Blueprint = Blueprint('issue', __name__)
 
+
 @issue.post("/create")
 @token_check(options = None)
 def create_issue_endpoint() -> Response:
@@ -32,6 +33,7 @@ def create_issue_endpoint() -> Response:
     return jsonify({
         "message": "success"
     }), 200
+
 
 @issue.get("/all")
 @token_check(options = [Role.ADMIN, Role.HELPER])
@@ -59,6 +61,7 @@ def all_issues_endpoint() -> Response:
         "data": data
     }), 200
 
+
 @issue.get("/my")
 @token_check(options = None)
 def my_issues_endpoint() -> Response:
@@ -83,6 +86,7 @@ def my_issues_endpoint() -> Response:
     return jsonify({
         "data": data
     }), 200
+
 
 @issue.get("/detail")
 @token_check(options = None)
@@ -117,6 +121,7 @@ def issue_detail_endpoint() -> Response:
         "data": data
     }), 200
 
+
 @issue.post("/comment")
 @token_check(options = None)
 def add_comment_endpoint() -> Response:
@@ -132,6 +137,7 @@ def add_comment_endpoint() -> Response:
     return jsonify({
         "message": "success"
     }), 200
+
 
 @issue.post("/update")
 @token_check(options = [Role.ADMIN, Role.HELPER])

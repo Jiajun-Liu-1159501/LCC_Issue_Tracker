@@ -25,6 +25,7 @@ from loginapp.session_holder import SessionHolder
 
 auth: Blueprint = Blueprint('auth', __name__)
 
+
 @auth.post('/register')
 def register_endpoint() -> str:
     """
@@ -41,6 +42,7 @@ def register_endpoint() -> str:
         "message": "success",
     }), 200
 
+
 @auth.post('/login')
 def login_endpoint() -> Response:
     """
@@ -56,6 +58,7 @@ def login_endpoint() -> Response:
     return jsonify({
         "message": "success",
     }), 200
+
 
 @auth.post("/logout")
 def logout_endpoint() -> str:

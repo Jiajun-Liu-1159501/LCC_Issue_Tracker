@@ -24,6 +24,7 @@ class SessionHolder:
     session_dict: ConcurrentDict[str, User] = ConcurrentDict()
     token_dict: ConcurrentDict[str, SessionMixin] = ConcurrentDict()
 
+    
     @staticmethod
     def session_hold(session: SessionMixin, user: User) -> None:
         """
@@ -43,6 +44,7 @@ class SessionHolder:
         SessionHolder.token_dict.setdefault(token, session)
         session.setdefault('token', token)
 
+    
     @staticmethod
     def session_evict(session: SessionMixin, user: User) -> None:
         """
@@ -68,6 +70,7 @@ class SessionHolder:
             if session:
                 session.pop('token', None)
 
+    
     @staticmethod
     def current_login() -> User:
         """
@@ -77,6 +80,7 @@ class SessionHolder:
             User: The User object corresponding to the active session, or None if no valid session exists.
         """
         return SessionHolder.session_dict.get(session.get('token'), None)
+    
     
     @staticmethod
     def session_exists(token: str) -> bool:
@@ -91,6 +95,7 @@ class SessionHolder:
         """
         return session.get('token') != None
 
+    
     @staticmethod
     def generate_token(user: User) -> str:
         """

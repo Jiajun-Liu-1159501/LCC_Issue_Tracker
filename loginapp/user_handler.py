@@ -12,6 +12,7 @@ from loginapp.session_holder import SessionHolder
 # Define a Flask Blueprint for user-related endpoints, grouping related routes together
 user: Blueprint = Blueprint('user', __name__)
 
+
 @user.get("/current")
 @token_check(options = [])
 def get_current_login() -> Response:
@@ -28,6 +29,7 @@ def get_current_login() -> Response:
         "user_info": user,
         "operations": user.get_role_enum().get_allowed_operations()
     }), 200
+
 
 @user.get("/list")
 @token_check(options = [Role.ADMIN])
@@ -51,6 +53,7 @@ def list_users_endpoint() -> Response:
         "data": users 
     }), 200
 
+
 @user.post("/edit")
 @current_user(id_func = lambda: request.form.get('user_id'))
 def edit_profile_endpoint() -> Response:
@@ -68,6 +71,7 @@ def edit_profile_endpoint() -> Response:
         "message": "success"
     }), 200
 
+
 @user.post("/resetpwd")
 @current_user(id_func = lambda: request.form.get('user_id'))
 def reset_pwd_endpoint() -> Response:
@@ -84,6 +88,7 @@ def reset_pwd_endpoint() -> Response:
     return jsonify({
         "message": "success"
     }), 200
+
 
 @user.post("/resetimg")
 @current_user(id_func = lambda: request.form.get('user_id'))
@@ -103,6 +108,7 @@ def reset_image_endpoint() -> Response:
     return jsonify({
         "message": "success"
     }), 200
+
 
 @user.post("/update")
 @token_check(options = [Role.ADMIN])

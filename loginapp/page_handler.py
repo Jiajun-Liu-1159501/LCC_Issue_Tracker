@@ -10,6 +10,7 @@ and user management.
 
 page: Blueprint = Blueprint("page", __name__)
 
+
 @page.get("/login")
 def login_page() -> str:
     """
@@ -19,6 +20,7 @@ def login_page() -> str:
         str: The rendered HTML content of the login page.
     """
     return render_template("login.html")
+
 
 @page.get("/register")
 def register_page() -> str:
@@ -30,6 +32,7 @@ def register_page() -> str:
     """
     return render_template("signup.html")
 
+
 @page.get("/")
 def home_page() -> str:
     """
@@ -39,6 +42,7 @@ def home_page() -> str:
         str: The rendered HTML content of the home page.
     """
     return render_template("home.html")
+
 
 @page.get("/userManage")
 def user_management_page() -> str:
@@ -50,6 +54,7 @@ def user_management_page() -> str:
     """
     return render_template("user_management.html")
 
+
 @page.get("/myIssues")
 def my_issues_page() -> str:
     """
@@ -59,6 +64,7 @@ def my_issues_page() -> str:
         str: The rendered HTML content of the "My Issues" page.
     """
     return render_template("my_issues.html")
+
 
 @page.get("/allIssues")
 def all_issues_page() -> str:
