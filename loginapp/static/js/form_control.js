@@ -1,11 +1,8 @@
 
 function clearErrorOnInput(selector) {
     const inputElement = document.querySelector(selector);
-    if (!inputElement) return; // Exit if the element doesn't exist.
-
-    // Add event listener to the input element for 'input' event
+    if (!inputElement) return;
     inputElement.addEventListener("input", () => {
-        // Remove the 'is-invalid' class when the user starts typing
         inputElement.classList.remove('is-invalid', 'border-danger');
         inputElement.classList.add("border-success");
     });

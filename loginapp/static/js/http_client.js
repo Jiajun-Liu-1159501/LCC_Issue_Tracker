@@ -1,86 +1,48 @@
-/**
- * Extends the Promise prototype with a custom method `onBadRequest`.
- * This method checks if the response status is 400 (Bad Request) and executes the provided callback with the error data.
- * 
- * @param {function} callback - A function to execute if the response status is 400.
- * @returns {Promise} - The original Promise, enabling chaining.
- */
 Promise.prototype.onBadRequest = async function(callback) {
     return this.then((response) => {
         if (response.status === 400) {
-            // Parse the response JSON data and invoke the callback
             return response.json().then((data) => {
-                callback(data); // Call the provided callback with the error data
-                return data; // Return the error data for further chaining if necessary
+                callback(data);
+                return data;
             });
         }
-        // Return the original response if the status is not 400
         return response;
     });
 };
 
-/**
- * Extends the Promise prototype with a custom method `onSuccess`.
- * This method checks if the response status is 200 (Success) and executes the provided callback with the response data.
- * 
- * @param {function} callback - A function to execute if the response status is 200.
- * @returns {Promise} - The original Promise, enabling chaining.
- */
 Promise.prototype.onSuccess = async function(callback) {
     return this.then((response) => {
         if (response.status === 200) {
-            // Parse the response JSON data and invoke the callback
             return response.json().then((data) => {
-                callback(data); // Call the provided callback with the success data
-                return data; // Return the data for further chaining if necessary
+                callback(data);
+                return data;
             });
         }
-        // Return the original response if the status is not 200
         return response;
     });
 };
 
-/**
- * Extends the Promise prototype with a custom method `onUnauthorized`.
- * This method checks if the response status is 401 (Unauthorized) and shows an alert modal with the error message.
- * It also redirects the user to the login page after a 3-second delay or when the user clicks "OK".
- * 
- * @param {function} callback - A function to execute if the response status is 401 (not used in this implementation).
- * @returns {Promise} - The original Promise, enabling chaining.
- */
 Promise.prototype.onUnauthorized = async function(callback) {
     return this.then((response) => {
         if (response.status === 401) {
-            // Parse the response JSON data to get the error message
             response.json().then((data) => {
                 const message = data['err'];
-                // Add the error message to the URL to pass it to the login page
                 const redirectUrl = "/login?error=" + encodeURIComponent(message);
-                window.location.href = redirectUrl; // Redirect to login page with error message
+                window.location.href = redirectUrl;
             });
         }
-        // Return the original response if the status is not 401
         return response;
     });
 };
 
-/**
- * Extends the Promise prototype with a custom method `onNotAllowed`.
- * This method checks if the response status is 403 (Forbidden) and executes the provided callback with the error data.
- * 
- * @param {function} callback - A function to execute if the response status is 403.
- * @returns {Promise} - The original Promise, enabling chaining.
- */
 Promise.prototype.onNotAllowed = async function(callback) {
     return this.then((response) => {
         if (response.status === 403) {
-            // Parse the response JSON data and invoke the callback
             return response.json().then((data) => {
-                callback(data); // Call the provided callback with the forbidden data
-                return data; // Return the data for further chaining if necessary
+                callback(data);
+                return data;
             });
         }
-        // Return the original response if the status is not 403
         return response;
     });
 };

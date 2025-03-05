@@ -128,8 +128,8 @@
 				if ('password' in errData) { insertErrorTip('#loginPassword', errData['password']);}
 				restoreButton(btn, inner);
 			}).onNotAllowed(data => {
-				showWarningModal(data['err'], "OK", null)
 				restoreButton(btn, inner);
+				showErrorToast(data['err'], 5000)
 			});
 		}
 
