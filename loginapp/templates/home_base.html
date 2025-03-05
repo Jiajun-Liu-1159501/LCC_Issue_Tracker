@@ -452,6 +452,12 @@
                 body: urlEncodedData
             }).onSuccess((data) => {
                 window.location.reload(true);
+            }).onBadRequest((data) => {
+                const errData = data['err'];
+                if ('email' in errData) { insertErrorTip('#editModalEmail', errData['email']);}
+                if ('first_name' in errData) { insertErrorTip('#editModalFirstName', errData['first_name']);}
+                if ('last_name' in errData) { insertErrorTip('#editModalLastName', errData['last_name']);}
+                if ('location' in errData) { insertErrorTip('#editModalLocation', errData['location']);}
             })
         }
 
