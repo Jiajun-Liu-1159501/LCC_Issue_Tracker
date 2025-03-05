@@ -35,7 +35,7 @@ class UserService:
         if UserStatus.INACTIVE is user.get_status_enum():
             raise AccessDeclinedError("login failed! current user is inactive")
         if SessionHolder.session_exists(SessionHolder.generate_token(user)):
-            SessionHolder.session_evict(session, user)
+            SessionHolder.session_evict(SessionHolder.session_dict.get(session.get('token'), None), user)
         return on_pass(user) if on_pass is not None else None
 
     def list_users(self, user_name: str, first_name: str, last_name: str) -> List[User]:
