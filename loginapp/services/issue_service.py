@@ -32,8 +32,8 @@ class IssueService:
                 where_statement.append("b.user_name LIKE %s ")
                 query_args.append(f"%{user_name}%")
             if user_id:
-                where_statement.append("a.user_id LIKE %s ")
-                query_args.append(f"%{user_id}%")
+                where_statement.append("a.user_id = %s ")
+                query_args.append(user_id)
             query_statement += "AND ".join(where_statement)
         query_statement += "GROUP BY a.issue_id, b.user_id ORDER BY a.created_at DESC;"
         cur.execute(query_statement, query_args)
@@ -54,7 +54,7 @@ class IssueService:
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         user: User = self.get_user_by_id(user_id, cur)
         cur.execute("INSERT INTO comments (issue_id, user_id, content) VALUES (%s, %s, %s);", [req.issue_id, user_id, req.comment])
-        if user.get_role_enum is Role.VISITOR:
+        if user.get_role_enum() is Role.VISITOR:
             return
         self.update_issues(req.issue_id, IssusStatus.OPEN.value, cur)
 
