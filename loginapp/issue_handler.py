@@ -9,11 +9,24 @@ from loginapp.model.issue_res_model import IssueComment, IssueDetailResponse, Is
 from loginapp.services import issue_service
 from loginapp.session_holder import SessionHolder
 
+"""
+Defines route handlers for managing issues and comments in the application.
+
+This class sets up a Flask Blueprint named "issue" and provides endpoints
+for creating, retrieving, updating, and commenting on issues.
+"""
+
 issue: Blueprint = Blueprint('issue', __name__)
 
 @issue.post("/create")
 @token_check(options = None)
 def create_issue_endpoint() -> Response:
+    """
+    Handles the creation of a new issue.
+    
+    Returns:
+        Response: A JSON response indicating success.
+    """
     req: IssueCreateRequest = IssueCreateRequest.build(request)
     issue_service.create_issue(req, SessionHolder.current_login().user_id)
     return jsonify({
@@ -23,6 +36,12 @@ def create_issue_endpoint() -> Response:
 @issue.get("/all")
 @token_check(options = [Role.ADMIN, Role.HELPER])
 def all_issues_endpoint() -> Response:
+    """
+    Retrieves all issues, with optional filters for summary, user name, or user ID.
+    
+    Returns:
+        Response: A JSON response containing a list of issues.
+    """
     summary: str = request.args.get('summary', type = str)
     user_name: str = request.args.get('user_name', type = str)
     user_id: str = request.args.get('user_id', type = str)
@@ -43,6 +62,12 @@ def all_issues_endpoint() -> Response:
 @issue.get("/my")
 @token_check(options = None)
 def my_issues_endpoint() -> Response:
+    """
+    Retrieves issues assigned to the currently logged-in user.
+    
+    Returns:
+        Response: A JSON response containing the user's issues.
+    """
     summary: str = request.args.get('summary', type = str)
     user_id: int = SessionHolder.current_login().user_id
     data: List[IssueListResponse] = issue_service.all_issues(summary, None, user_id, lambda x: IssueListResponse(
@@ -62,6 +87,12 @@ def my_issues_endpoint() -> Response:
 @issue.get("/detail")
 @token_check(options = None)
 def issue_detail_endpoint() -> Response:
+    """
+    Retrieves detailed information about a specific issue, including comments.
+    
+    Returns:
+        Response: A JSON response containing issue details.
+    """
     issue_id: int = request.args.get('issue_id', type = int)
     data: IssueDetailResponse = issue_service.issue_detail(issue_id, lambda x, y: IssueDetailResponse(
         x['issue_id'],
@@ -89,6 +120,12 @@ def issue_detail_endpoint() -> Response:
 @issue.post("/comment")
 @token_check(options = None)
 def add_comment_endpoint() -> Response:
+    """
+    Adds a comment to an issue.
+    
+    Returns:
+        Response: A JSON response indicating success.
+    """
     req: AddCommentRequest = AddCommentRequest.build(request)
     user_id = SessionHolder.current_login().user_id
     issue_service.add_comment(user_id, req)
@@ -99,6 +136,12 @@ def add_comment_endpoint() -> Response:
 @issue.post("/update")
 @token_check(options = [Role.ADMIN, Role.HELPER])
 def update_comment_endpoint() -> Response:
+    """
+    Updates the status of an issue. Only accessible by admins and helpers.
+    
+    Returns:
+        Response: A JSON response indicating success.
+    """
     req: UpdateIssueRequest = UpdateIssueRequest.build(request)
     issue_service.update_issues(req.issue_id, req.status.value, None)
     return jsonify({

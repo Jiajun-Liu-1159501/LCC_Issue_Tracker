@@ -29,7 +29,7 @@ def token_check(*, options: List[Role]):
 
     Example:
         ```python
-        @token_check(options=[Role.ADMIN, Role.MODERATOR])
+        @token_check(options=[Role.ADMIN])
         def admin_dashboard():
             return "Welcome to the admin panel"
         ```
