@@ -212,9 +212,11 @@ class UserService:
         Returns:
             None
         """
-        from loginapp import STATIC_DIR
-        file_path: str = os.path.join(STATIC_DIR, req.image_content.filename)
-        req.image_content.save(file_path)
-        file_path_storage: str = os.path.join('../static/profile', req.image_content.filename)
+        file_path_storage: str = ""
+        if req.image_content:
+            from loginapp import STATIC_DIR
+            file_path: str = os.path.join(STATIC_DIR, req.image_content.filename)
+            req.image_content.save(file_path)
+            file_path_storage = os.path.join('../static/profile', req.image_content.filename)
         cur: cursor.MySQLCursor = get_connection().cursor(dictionary = True, buffered = False)
         cur.execute("UPDATE users SET profile_image = %s WHERE user_id = %s;", [file_path_storage, req.user_id])

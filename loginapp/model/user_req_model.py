@@ -297,7 +297,7 @@ class ImageResetRequest:
         """
         model: ImageResetRequest =  ImageResetRequest(
             int(request.form.get('user_id')),
-            request.files['image_content']           
+            "" if 'image_content' not in request.files else request.files['image_content']           
         )
         model.verify()
         return model
