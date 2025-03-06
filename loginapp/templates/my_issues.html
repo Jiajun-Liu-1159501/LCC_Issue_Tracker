@@ -94,19 +94,15 @@
         </template>
 
         <template id="commentTemplate">
-            <div class="d-flex align-items-start mb-3">
-                <div class="me-3 d-flex align-items-center gap-2">
+            <div class="d-flex flex-column align-items-start mb-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
                     <img src="" id="commentAvatar" alt="User Avatar" class="rounded-circle" width="30" height="30">
                     <strong class="text-success" id="commentUserName"></strong>
                 </div>
-                <div class="flex-grow-1">
-                    <div>
-                        <p id="commentContent" class="border border-success bg-success text-white rounded-4 p-2" style="width: 100%; max-width: 100%; overflow-wrap: break-word; white-space: normal; word-wrap: break-word;">
-                            <!-- Comment content goes here -->
-                        </p>
-                        <small id="commentTime" class="text-muted"></small>
-                    </div>
-                </div>
+                <p id="commentContent" class="border border-success bg-success text-white rounded-4 p-2" style="width: 100%; max-width: 100%; overflow-wrap: break-word; white-space: normal; word-wrap: anywhere;">
+                    <!-- Comment content goes here -->
+                </p>
+                <small id="commentTime" class="text-muted align-self-center"></small>
             </div>
         </template>
 
