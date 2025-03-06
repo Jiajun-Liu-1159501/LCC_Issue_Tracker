@@ -72,8 +72,7 @@ Promise.prototype.onNotAllowed = async function(callback) {
     return this.then((response) => {
         if (response.status === 403) {
             return response.json().then((data) => {
-                callback(data);
-                return data;
+                window.location.href = "/declined"
             });
         }
         return response;
@@ -100,6 +99,8 @@ async function dataFetcher(url, options = {}) {
         .then((response) => {
             return response; // Return the response for further handling
         }).onUnauthorized(data => {
+
+        }).onNotAllowed((data) => {
 
         }).catch((err) => {
             console.error("Error sending request:", err); // Log any errors encountered during the fetch

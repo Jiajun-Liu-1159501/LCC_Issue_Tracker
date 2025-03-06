@@ -75,3 +75,14 @@ def all_issues_page() -> str:
         str: The rendered HTML content of the "All Issues" page.
     """
     return render_template("all_issues.html")
+
+
+@page.get("/declined")
+def access_declined_page() -> str:
+    """
+    Renders the "All Issues" page, which displays all reported issues in the system.
+    
+    Returns:
+        str: The rendered HTML content of the "All Issues" page.
+    """
+    return render_template("access_denied.html")
