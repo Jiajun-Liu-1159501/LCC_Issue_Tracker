@@ -91,7 +91,7 @@ def reset_pwd_endpoint() -> Response:
 
 
 @user.post("/resetimg")
-@current_user(id_func = lambda: request.form.get('user_id'))
+# @current_user(id_func = lambda: request.form.get('user_id'))
 def reset_image_endpoint() -> Response:
     """
     Reset user profile image.

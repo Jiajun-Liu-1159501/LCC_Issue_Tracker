@@ -1,5 +1,6 @@
 # This script runs automatically when our `loginapp` module is first loaded,
 # and handles all the setup for our Flask app.
+import os
 from flask import Flask, g
 from typing import Dict, Any, TypeVar
 from mysql.connector import pooling, cursor
@@ -120,3 +121,4 @@ def register_router(app: Flask) -> None:
 
 app: Flask = create_app()
 encrypt = Bcrypt(app)
+STATIC_DIR = os.path.join(app.root_path, 'static/profile')

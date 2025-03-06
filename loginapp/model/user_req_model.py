@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from werkzeug.datastructures import FileStorage
 import re
 from flask import Request
 
@@ -72,6 +73,7 @@ class RegisterRequest:
             - first name, last name, and location cannot be empty
         """
         if not self.user_name: raise ArgumentError("user_name", "not a valid user name input")
+        if len(self.user_name) > 10: raise ArgumentError("user_name", "user name should be less than 10")
         if (not self.password) or (not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", self.password)): raise ArgumentError("password", "at least 8 chars including number and letter")
         if (not self.email) or (not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", self.email)): raise ArgumentError("email", "not a valid email format")
         if not self.first_name: raise ArgumentError("first_name", "not a valid first name input")
@@ -273,11 +275,11 @@ class ImageResetRequest:
 
     Attributes:
         user_id (int): The ID of the user.
-        image_content (str): The new profile image content.
+        image_content (FileStorage): The new profile image content.
     """
     
     user_id: int
-    image_content: str
+    image_content: FileStorage
 
     @staticmethod
     def build(request: Request) -> 'ImageResetRequest':
@@ -293,9 +295,9 @@ class ImageResetRequest:
         Raises:
             ArgumentError: If the request data fails validation.
         """
-        model: UserUpdateRequest =  UserUpdateRequest(
+        model: ImageResetRequest =  ImageResetRequest(
             int(request.form.get('user_id')),
-            request.form.get('image_content', "")
+            request.files['image_content']           
         )
         model.verify()
         return model
