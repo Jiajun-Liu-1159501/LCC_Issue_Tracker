@@ -1,4 +1,4 @@
-# Login Example v2.0.2 (13 February 2025)
+# Lincoln Community Campground (06 March 2025)
 
 This sample app demonstrates a simple login system that allows users to
 register, log in, and view pages specific to their user role. Those pages don't
@@ -14,7 +14,7 @@ Anyone who registers via the app will be a **Customer**. The only way to create
 **Staff** or **Admin** accounts in this simple app is to insert them directly
 into the database. Hey, we didn't say this app was complete!
 
-## Getting this Example Running
+## Getting this Project Running
 
 To run the example yourself, you'll need to:
 
