@@ -493,9 +493,6 @@
             dataFetcher('/api/user/resetimg', {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    "Content-Type": "multipart/form-data" // Specify content type for form data
-                }
             }).onSuccess((data) => {
                 window.location.reload(true);
             })
