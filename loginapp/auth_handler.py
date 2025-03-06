@@ -74,3 +74,19 @@ def logout_endpoint() -> str:
     return jsonify({
         "message": "success",
     }), 200
+
+
+@auth.get("/loggedin")
+def check_loggin_endpoint() -> str:
+    """
+    Handle if user has logged in already.
+    
+    returns the status of login
+    
+    Returns:
+        Response: JSON response indicating success.
+    """
+    user: User = SessionHolder.current_login()
+    return jsonify({
+        "message": user is not None
+    }), 200

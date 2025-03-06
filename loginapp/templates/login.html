@@ -167,6 +167,12 @@
 		});
 
 		document.addEventListener("DOMContentLoaded", () => {
+			getFetch('/api/auth/loggedin', {
+			}).onSuccess((data) => {
+				if (data['message']) {
+					window.location.href = "/"
+				}
+			})
 			clearErrorOnInput('#loginUserName');
 			clearErrorOnInput('#loginPassword');
 		});
