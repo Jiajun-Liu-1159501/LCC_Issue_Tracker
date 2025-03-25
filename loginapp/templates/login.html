@@ -125,9 +125,11 @@
 			loadButton(btn);
 			const formData = new FormData(document.querySelector('#loginForm'));
 			const urlEncodedData = new URLSearchParams(formData).toString();
-			formFetch('/api/auth/login', {
+			formFetchWithoutToken('/api/auth/login', {
 				body: urlEncodedData
 			}).onSuccess(data => {
+				const token = data.token;
+				localStorage.setItem("auth_token", token);
 				window.location.href = "/";
 			}).onBadRequest(data => {
 				const errData = data['err']

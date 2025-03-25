@@ -525,6 +525,7 @@
             formFetch('/api/user/resetpwd', {
                 body: urlEncodedData
             }).onSuccess((data) => {
+                localStorage.removeItem("auth_token");
                 showInfoToast("Successful, You will be redirected to login page in 3 seconds ...", 3000)
 				setTimeout(() => {
 					window.location.href = "/login";
@@ -572,6 +573,7 @@
 
         function handleSignOut() {
             formFetch('/api/auth/logout', {}).onSuccess((data) => {
+                localStorage.removeItem("auth_token");
                 const redirectUrl = "/login?info=" + encodeURIComponent("you have logged out successfully");
                 window.location.href = redirectUrl;
             })

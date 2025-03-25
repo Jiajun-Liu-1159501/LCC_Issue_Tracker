@@ -115,13 +115,33 @@ async function dataFetcher(url, options = {}) {
  * @param {object} options - The options to pass to the Fetch API (optional).
  * @returns {Promise} - A Promise that resolves to the fetch response.
  */
-async function formFetch(url, options = {}) {
+async function formFetchWithoutToken(url, options = {}) {
     // Call the dataFetcher function with the necessary options and headers for form submission
     return dataFetcher(url, {
         ...options,
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded" // Specify content type for form data
+        }
+    });
+}
+
+/**
+ * A helper function for making POST requests with form data (`application/x-www-form-urlencoded` content type).
+ * Uses the `dataFetcher` function to send form submissions.
+ * 
+ * @param {string} url - The URL to submit the form data to.
+ * @param {object} options - The options to pass to the Fetch API (optional).
+ * @returns {Promise} - A Promise that resolves to the fetch response.
+ */
+async function formFetch(url, options = {}) {
+    // Call the dataFetcher function with the necessary options and headers for form submission
+    return dataFetcher(url, {
+        ...options,
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded", // Specify content type for form data
+            "token": localStorage.getItem("auth_token")
         }
     });
 }
@@ -138,6 +158,9 @@ async function getFetch(url, options = {}) {
     // Call the dataFetcher function with the necessary options and headers for form submission
     return dataFetcher(url, {
         ...options,
-        method: "GET"
+        method: "GET",
+        headers: {
+            "token": localStorage.getItem("auth_token")
+        }
     });
 }

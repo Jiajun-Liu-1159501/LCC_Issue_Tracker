@@ -24,7 +24,8 @@ def get_current_login() -> Response:
     Returns:
         Response: JSON response containing the user's information and their role-based operations.
     """
-    user: User = user_service.get_user_by_id(SessionHolder.current_login().user_id, None)
+    token: str = request.headers.get('token')
+    user: User = user_service.get_user_by_id(SessionHolder.current_login(token).user_id, None)
     return jsonify({
         "user_info": user,
         "operations": user.get_role_enum().get_allowed_operations()
@@ -84,7 +85,7 @@ def reset_pwd_endpoint() -> Response:
         Response: JSON response indicating whether the password reset was successful.
     """
     req: PasswordResetRequest = PasswordResetRequest.build(request)
-    user_service.password_reset(req, lambda u: SessionHolder.session_evict(session, u) and None)
+    user_service.password_reset(req, lambda u: SessionHolder.session_evict(u) and None)
     return jsonify({
         "message": "success"
     }), 200
@@ -124,7 +125,7 @@ def update_user_endpoint() -> Response:
         Response: JSON response indicating whether the update was successful.
     """
     req: UserUpdateRequest = UserUpdateRequest.build(request)
-    user_service.update_user(req, lambda u: SessionHolder.session_evict(session, u) and None)
+    user_service.update_user(req, lambda u: SessionHolder.session_evict(u) and None)
     return jsonify({
         "message": "success"
     }), 200

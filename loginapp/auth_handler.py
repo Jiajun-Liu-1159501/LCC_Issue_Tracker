@@ -54,9 +54,9 @@ def login_endpoint() -> Response:
         Response: JSON response indicating success or failure.
     """
     req: LoginRequest = LoginRequest.build(request)
-    user: User = user_service.user_login(req, lambda u: SessionHolder.session_hold(session, u) and u)
+    token: str = user_service.user_login(req, lambda u: SessionHolder.session_hold(session, u))
     return jsonify({
-        "message": "success",
+        "token": token,
     }), 200
 
 
@@ -70,7 +70,8 @@ def logout_endpoint() -> str:
     Returns:
         Response: JSON response indicating success.
     """
-    SessionHolder.session_evict(session, None)
+    token: str = request.headers.get('token')
+    SessionHolder.session_evict(SessionHolder.current_login(token))
     return jsonify({
         "message": "success",
     }), 200
@@ -86,7 +87,8 @@ def check_loggin_endpoint() -> str:
     Returns:
         Response: JSON response indicating success.
     """
-    user: User = SessionHolder.current_login()
+    token: str = request.headers.get('token')
+    user: User = SessionHolder.current_login(token)
     return jsonify({
         "message": user is not None
     }), 200

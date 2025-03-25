@@ -22,11 +22,10 @@ class SessionHolder:
 
 
     session_dict: ConcurrentDict[str, User] = ConcurrentDict()
-    token_dict: ConcurrentDict[str, SessionMixin] = ConcurrentDict()
 
     
     @staticmethod
-    def session_hold(session: SessionMixin, user: User) -> None:
+    def session_hold(session: SessionMixin, user: User) -> str:
         """
         Establishes a new session for the given authenticated user by generating a unique session token
         and storing the session details in the internal dictionaries.
@@ -41,12 +40,12 @@ class SessionHolder:
         """
         token: str = SessionHolder.generate_token(user)
         SessionHolder.session_dict.setdefault(token, user)
-        SessionHolder.token_dict.setdefault(token, session)
         session.setdefault('token', token)
+        return token
 
     
     @staticmethod
-    def session_evict(session: SessionMixin, user: User) -> None:
+    def session_evict(user: User) -> None:
         """
         Terminates an active session for the given user. If no user is specified,
         it clears the session for the current token.
@@ -59,27 +58,19 @@ class SessionHolder:
             - Removes the session token from internal storage.
             - Deletes the session token from the Flask session.
         """
-        if user == None:
-            token: str = session.pop('token', None)
-            SessionHolder.session_dict.pop(token, None)
-            SessionHolder.token_dict.pop(token, None)
-        else:
-            token: str = SessionHolder.generate_token(user)
-            SessionHolder.session_dict.pop(token, None)
-            session: SessionMixin = SessionHolder.token_dict.pop(token, None)
-            if session:
-                session.pop('token', None)
+        token: str = SessionHolder.generate_token(user)
+        SessionHolder.session_dict.pop(token, None)
 
     
     @staticmethod
-    def current_login() -> User:
+    def current_login(token: str) -> User:
         """
         Retrieves the currently authenticated user based on the active session token.
 
         Returns:
             User: The User object corresponding to the active session, or None if no valid session exists.
         """
-        return SessionHolder.session_dict.get(session.get('token'), None)
+        return SessionHolder.session_dict.get(token, None)
     
     
     @staticmethod

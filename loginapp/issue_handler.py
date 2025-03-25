@@ -28,8 +28,9 @@ def create_issue_endpoint() -> Response:
     Returns:
         Response: A JSON response indicating success.
     """
+    token: str = request.headers.get('token')
     req: IssueCreateRequest = IssueCreateRequest.build(request)
-    issue_service.create_issue(req, SessionHolder.current_login().user_id)
+    issue_service.create_issue(req, SessionHolder.current_login(token).user_id)
     return jsonify({
         "message": "success"
     }), 200
@@ -71,8 +72,9 @@ def my_issues_endpoint() -> Response:
     Returns:
         Response: A JSON response containing the user's issues.
     """
+    token: str = request.headers.get('token')
     summary: str = request.args.get('summary', type = str)
-    user_id: int = SessionHolder.current_login().user_id
+    user_id: int = SessionHolder.current_login(token).user_id
     data: List[IssueListResponse] = issue_service.all_issues(summary, None, user_id, lambda x: IssueListResponse(
         x['issue_id'],
         x['summary'],
@@ -131,8 +133,9 @@ def add_comment_endpoint() -> Response:
     Returns:
         Response: A JSON response indicating success.
     """
+    token: str = request.headers.get('token')
     req: AddCommentRequest = AddCommentRequest.build(request)
-    user_id = SessionHolder.current_login().user_id
+    user_id = SessionHolder.current_login(token).user_id
     issue_service.add_comment(user_id, req)
     return jsonify({
         "message": "success"
